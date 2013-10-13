@@ -1,4 +1,4 @@
-816208c57e7006a1e4a4f98adffc0d81 *DESCRIPTION
+0d4dacaab33e936a87bb79e7b1dbc420 *DESCRIPTION
 3ab0372843207e84eeefc6cce6bc9108 *NAMESPACE
 56654f38e9201ca65617fb0bc7703a5c *R/Arrows.R
 6fc49b21048146a039d27daa114720fc *R/Interp.R
@@ -20,6 +20,8 @@ b51b5fce4b6cd55c1c5cb1d0bc4cf751 *R/grepNonStandardCharacters.R
 c198a217c48dfc3bca1d9d96555b04f4 *R/interpPairs.R
 200c83b7d21566939a20ea3115f83177 *R/interpPairs.list.R
 204600545fee633021155327f8fbcd5f *R/match.data.frame.R
+39c54801c9c1148f0beb7bd253e30746 *R/matchName.R
+9ed4ebe40ca799c8076065765180d260 *R/matchName1.R
 77ad0632c7850ac89499b38a7467a719 *R/matchQuote.R
 00d6730d3c68f0ca88b668a3252d5b33 *R/mergeUShouse.senate.R
 b615febdb89e3fedcaf068f87a654cf0 *R/mergeVote.R
@@ -27,8 +29,9 @@ b615febdb89e3fedcaf068f87a654cf0 *R/mergeVote.R
 1a5f0b68ff08acc4c29748d0b537c86d *R/nchar0.R
 2f4edfb0710f0cbe770c8c7d9cfac821 *R/parseCommas.R
 4d6775a5ba0e802f23728fbc5bdb1d25 *R/parseDollars.R
-92afd437552e5db0850c16f11a7fdb08 *R/parseName.R
+eef06e29cd66e59c32a9acfe7997a624 *R/parseName.R
 514ddf3179845b82dc791f3424d0e2dd *R/ping.R
+a2c37b98a1b0d3125a7cfa13d27144b7 *R/pmatch2.R
 dc66fd206c5883d06a6a0785905542eb *R/ptruncdist.R
 d6e492558b21c4d6754fc6c39cef459c *R/qqnorm2.R
 31a992c7ede3240799aac34986ce681a *R/qqnorm2s.R
@@ -45,8 +48,8 @@ d0f1af188eee5e491a4ebf7546382e43 *R/readUSstateAbbreviations.R
 7c6d57982f1f926518073c8440073784 *R/recode2.R
 2b29f72bda641ad1eaa8b51cdf9bc3d5 *R/rtruncdist.R
 4b83c6b90c0626756784340658a17e5c *R/strsplit1.R
-63fdc53f7461b81002aa6bccfe43b001 *R/subNonStandardCharacters.R
-544e25347a2c29d081939e29d9518a5a *R/subNonStandardNames.R
+a8e7391c26f933a3e8af65aca79126e3 *R/subNonStandardCharacters.R
+e8bc170431b151ee5aa5e99c708df5cb *R/subNonStandardNames.R
 4ee6258b20a4c5122796865f007e5aec *R/testURLs.R
 e59b5fedbed5f2e56022d12aadeb3e06 *R/trimImage.R
 2ff9ddf1f142da6e39d65d23fdc8c778 *R/whichAeqB.R
@@ -69,6 +72,7 @@ db9d1e33b1fbbe0d0a8b4f96e756d1b7 *man/createX2matchY.Rd
 837f79ab760768367f83b6501ec3573d *man/interpChar.Rd
 8903215dfe7f6cb8ff093312d065f649 *man/interpPairs.Rd
 804a2f496433c92e4f39f7b027484312 *man/match.data.frame.Rd
+a7a8b1c68faeedcc3cfe2b7ca7dd0b71 *man/matchName.Rd
 1930cefa6f5b58975847224d86c21c87 *man/matchQuote.Rd
 00779c95e6beecc5a81eeb3d83418921 *man/mergeUShouse.senate.Rd
 2f30ed56f9c2a413aa2cdfeed003a926 *man/mergeVote.Rd
@@ -76,7 +80,8 @@ db9d1e33b1fbbe0d0a8b4f96e756d1b7 *man/createX2matchY.Rd
 db9986e37476b9a7884358aa92bd24f3 *man/nchar0.Rd
 51564a4866dc0085fa665df610f8fdbc *man/parseCommas.Rd
 f967324563679fc4244817558bda5bfd *man/parseDollars.Rd
-2492561c972961df81bc9a455a0cd427 *man/parseName.Rd
+8fd4011107236131aa98125b939b8425 *man/parseName.Rd
+22b91b414f4d37555b011744f937677b *man/pmatch2.Rd
 291cb6246dd1374bf155ac89c67cf40e *man/qqnorm2.Rd
 8fd62919fac68a9f78e8e13245777d69 *man/qqnorm2s.Rd
 b18e8a82c0adb50f7f15d13dba6d5716 *man/rasterImageAdj.Rd
@@ -90,8 +95,8 @@ b8ee5c85841add4c6c1b68c6df214348 *man/readUShouse.Rd
 6247f6ce95c0833063079858d369e3a4 *man/readUSstateAbbreviations.Rd
 a7fead04fc85ce89591109158f933d56 *man/recode2.Rd
 291c3c31adc8da8a5070e0ef9da36414 *man/strsplit1.Rd
-381eac9779b7bab5dac6331adebd10f9 *man/subNonStandardCharacters.Rd
-73cd88d34a558fe3a49c9e0cf9d352c0 *man/subNonStandardNames.Rd
+839ada8ca788c89b1965a30814f80b49 *man/subNonStandardCharacters.Rd
+545a05e71f6eddc98013af9e8dd437bd *man/subNonStandardNames.Rd
 697275e00d2b256e924249790d98168b *man/testURLs.Rd
 d30e7d95667c531f26afa336312b467c *man/trimImage.Rd
 9301ecb6b753d06336d5ae23884c0df7 *man/truncdist.Rd
