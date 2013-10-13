@@ -13,5 +13,6 @@ import(
   tis,
   jpeg,
   MASS,
-  TeachingDemos
+  TeachingDemos,
+  stringi
 )

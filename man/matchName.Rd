@@ -11,8 +11,9 @@
 }
 \usage{
 matchName(x, data, Names=1:2, 
-          nicknames=matrix(character(0), 0, 2), ...)
-matchName1(x1, data, name=1,         
+          nicknames=matrix(character(0), 0, 2), 
+          namesNotFound="attr.replacement", ...)
+matchName1(x1, data, name=data[, 1],     
           nicknames=matrix(character(0), 0, 2), ...)
 }
 \arguments{
@@ -43,16 +44,17 @@ matchName1(x1, data, name=1,
     be sought:  
 
     \itemize{ 
-      \item A character matrix or \code{data.frame} with the 
-        same number of rows as \code{data}.  
-      \item A character vector whose length matches the number 
-        of rows of \code{data}.  This will be replaced by 
-        \code{parseName(Names)}.  
+      \item A character vector or matrix or a \code{data.frame} 
+        for which \code{NROW(Names) == nrow(data)}.  
+% ?     \item A character vector whose length matches the number 
+% ?      of rows of \code{data}.  This will be replaced by 
+% ?       \code{parseName(Names)}.  
       \item Something to select columns of \code{data} to 
-        produce a character matrix or \code{data.frame} via 
-        \code{data[, Names]}.  In this case, accents will be 
-        stripped using \code{\link{subNonStandardNames}}.  
-    }  
+        produce a character vector or matrix or 
+        \code{data.frame} via \code{data[, Names]}.  In this 
+        case, accents will be stripped using 
+        \code{\link{subNonStandardNames}}.  
+    }
   }
   \item{nicknames}{
     a character matrix with two columns, each row giving a pair 
@@ -62,18 +64,27 @@ matchName1(x1, data, name=1,
   \item{\dots}{ 
     optional arguments passed to \code{subNonStandardNames}
   }
-  \item{x1}{ a character vector of names to match \code{name}}
-  \item{name}{
-    Either a character vector of names whose length matches 
-    \code{nrow(data)} or something identifying a column of 
-    \code{data} to use in matching \code{x1}  
+  \item{x1}{ 
+    a character vector of names to match \code{name}. 
     
-    NOTE:  If \code{name} is a character vector of names, it 
-    is assumed NOT to include any accented characters like are 
-    used in Spanish, French, German, and many other languages 
-    that use the Latin alphabet.  If \code{name} identifies
-    a column of \code{data}, \code{name} is replaced by 
-    \code{subNonStandardNames(data[, name])}.  
+    NOTE:  \code{matchName} calls \code{subNonStandardNames}, 
+    but \code{matchName1} does not.  Thus, \code{x1} is 
+    assumed to NOT to contain characters not in standard 
+    English.  
+  }
+  \item{name}{
+    A character vector or matrix for which \code{NROW(name)}
+    == \code{nrow(data)}.  
+
+    NOTE:  \code{matchName} calls \code{subNonStandardNames}, 
+    but \code{matchName1} does not.  Thus, \code{name} is 
+    assumed to NOT to contain characters not in standard 
+    English.  
+  }
+  \item{namesNotFound}{
+    character vector passed to \code{subNonStandardNames} and used 
+    to compute any "namesNotFound" attribute of the object returned 
+    by \code{parseName}.  
   }
 }
 \details{
@@ -114,6 +125,8 @@ matchName1(x1, data, name=1,
   \code{matchName} returns a list of the same length as \code{x}, 
   each of whose components is object obtained as a subset of rows 
   of \code{data} or \code{NULL} if no acceptable matches are found.   
+  The list may have an attribute "namesNotFound" as determined per 
+  the argument of that name.  
   
   \code{matchNames1} returns a list of vectors of integers for 
   subsets of \code{data} matching \code{x1}.  
@@ -147,42 +160,77 @@ Names2mtch <- c("Andr_ Bruce C_rdenas", "Dolores Ella Feinstein",
 ## 2.  Data = matrix(..., byrow=TRUE) to exercise the combinations 
 ##     the combinations from 1 
 ##
-Data1 <- matrix(c("C_rdenas", "Andre B.", "123", 
+Data1 <- matrix(c("Feld", "Don", "789", 
                   "C_rdenas", "Don", "456", 
-                  "Feld", "Don", "789", "Young", "Bill", "369"), 
-                4, byrow=TRUE)
+                  "C_rdenas", "Andre B.", "123", 
+                  "Smith", "George", "aaa", 
+                  "Young", "Bill", "369"), 
+                ncol=3, byrow=TRUE)
+Data1. <- subNonStandardNames(Data1)                
 ##
 ## 3.  matchName1
 ##        
 parceNm1 <- parseName(Names2mtch)
-match1.1 <- matchName1(parceNm1[, 'surname'], Data1)
+match1.1 <- matchName1(parceNm1[, 'surname'], Data1.)
 
 # check
-match1.1s <- vector(10, mode='list')
-match1.1s[[1]] <- 1:2
-match1.1s[[9]] <- 4
+match1.1s <- vector('list', 10)
+match1.1s[[1]] <- 2:3
+match1.1s[[9]] <- 5
 names(match1.1s) <- parceNm1[, 'surname'] 
 \dontshow{stopifnot(}
 all.equal(match1.1, match1.1s)
 \dontshow{)}
 
 ##
-## 4.  matchName
+## 4.  matchName1 with name = multiple columns 
+##
+match1.2 <- matchName1(c('Cardenas', 'Don'), Data1., 
+                       name=Data1.[, 1:2])
+
+# check 
+match1.2a <- list(Cardenas=2:3, Don=1:2)
+\dontshow{stopifnot(}
+all.equal(match1.2, match1.2a)
+\dontshow{)}
+
+##
+## 5.  matchName 
 ##
 nickNames <- matrix(c("William", "Bill"), 1, byrow=TRUE)
 
 match1 <- matchName(Names2mtch, Data1, nicknames=nickNames)
                   
 # check 
-match1a <- list("Cardenas, Andre Bruce"=Data1[1, ], 
+match1a <- list("Cardenas, Andre Bruce"=Data1[3,, drop=FALSE ], 
                 "Feinstein, Dolores Ella"=NULL, 
                 "Homer, George"=NULL, "Kappa, Inez Jane"=NULL, 
                 "Noel, Luke Michael"=NULL, "Papa, Oscar"=NULL, 
                 "Stevens, Quincy Raul"=NULL, 
                 "Velazquez, Thomas U."=NULL, 
-                "Young, William X."=Data1[4,], ", Zebra"=NULL)
+                "Young, William X."=Data1[5,, drop=FALSE], 
+                "Zebra"=NULL)
 \dontshow{stopifnot(}
 all.equal(match1, match1a)
+\dontshow{)}
+##
+## 6.  namesNotFound 
+##
+tstNotFound <- matchName('xx_x', Data1)
+
+# check 
+tstNF <- list('xx_x'=NULL)
+attr(tstNF, 'namesNotFound') <- 'xx_x'
+\dontshow{stopifnot(}
+all.equal(tstNotFound, tstNF)
+\dontshow{)}
+
+##
+## 7.  matchName(NULL) to simplify use 
+##
+mtchNULL <- matchName(NULL, Data1)
+\dontshow{stopifnot(}
+all.equal(mtchNULL, NULL)
 \dontshow{)}
 }
 \keyword{manip}

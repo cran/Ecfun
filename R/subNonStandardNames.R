@@ -1,15 +1,19 @@
 subNonStandardNames <- function(x,
-   standardCharacters=c(letters, LETTERS, ' ','.', ',', 0:9,
-      '\"', "\'", '-', '_', '(', ')', '[', ']', '\n'),
+   standardCharacters=c(letters, LETTERS, ' ','.', '?', '!', 
+      ',', 0:9, '/', '*', '$', '%', '\"', "\'", '-', '+', '&', '_', ';', 
+      '(', ')', '[', ']', '\n'),
    replacement='_',
    gsubList=list(list(pattern='\\\\\\\\|\\\\', replacement='\"')),
-   removeSecondLine=TRUE,
-   nonStandardNames=Ecdat::nonEnglishNames, ...) {
+   removeSecondLine=TRUE, nonStandardNames=Ecdat::nonEnglishNames, 
+   namesNotFound="attr.replacement", ...) {
 ##
 ## 1.  removeSecondLine
 ##
   x0 <- x
   if(is.data.frame(x0))x <- as.matrix(x0)
+  if(length(x)<1){
+    return(NULL)
+  }
   if(removeSecondLine){
     nch0 <- (nchar(x)<1)
     X2. <- strsplit(x, '\n')
@@ -39,23 +43,42 @@ subNonStandardNames <- function(x,
 ## 4.  Eliminate leading and trailing blanks
 ##
 #  if(require(tis)){
-      x. <- stripBlanks(x.)
+      x. <- tis::stripBlanks(x.)
 #  } else {
 #      warning('need stripBlanks{tis} to delete leading and trailing',
 #              ' blanks;  not available')
 #  }
 ##
-## 5.  Reformat at matrix or data.frame 
+## 5.  namesNotFound?
 ##
+  if('attr.replacement' %in% namesNotFound){
+    nNF <- grep(replacement, x.) 
+  } else if('attr.notFound' %in% namesNotFound){
+    nNF <- which(x0 != x.) 
+  } else nNF <- integer(0)
+##
+## 6.  Reformat as matrix or data.frame 
+##
+  x1 <- x. 
   if(is.matrix(x0)){
     attributes(x.) <- attributes(x0)
   } else if(is.data.frame(x0)){
     dim(x.) <- dim(x0)
     colnames(x.) <- colnames(x0)
-    x. <- as.data.frame(x.)
+    x. <- as.data.frame(x., stringsAsFactors=FALSE)
   }
 ##
-## 6.  Done
+## 7.  attr(x., 'namesNotFound') 
+##
+  if(length(nNF)>0){
+    attr(x., 'namesNotFound') <- x1[nNF]
+    if('print' %in% namesNotFound){
+      cat('Non-standard names not in nonStandardNames: ', 
+          x1[nNF], '\n')
+    }
+  }
+##
+## 8.  Done
 ##
   nchx2 <- nchar(x2)
   nchx2[is.na(x2)] <- 0 
