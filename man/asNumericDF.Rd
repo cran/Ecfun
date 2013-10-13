@@ -5,20 +5,31 @@
   Coerce to numeric dropping commas and info after a blank
 }
 \description{
-  Delete commas (thousand separators) and drop information after a
-  blank, then coerce to numeric and order the rows by the
-  \code{orderBy}.  Some Excel imports include commas as thousand
-  separators;  this replaces any commas with char(0), ''.  Also, some
-  character data includes footnote references following the year.  Table
-  F-1 from the US Census Bureau needs all three of these features:  It
-  needs \code{orderBy}, because the most recent year appears first, just
-  the opposite of most other data sets where the most recent year
-  appears last.  It has footnote references following a character string
-  indicating the year.  And it includes commas as thousand separators.
+  Delete a leading dollar sign plus commas (thousand separators)
+  and drop information after a blank, then coerce to numeric.  
+  
+  For a \code{\link{data.frame}}, apply to all columns, drop 
+  non-numeric columns, and order the rows by the \code{orderBy}.  
+  Some Excel imports include commas as thousand separators;  
+  this replaces any commas with char(0), ''.  
+  
+  Similarly, if "\%" is found as the last character in any field,
+  drop the percent sign and divide the resulting numeric conversion 
+  by 100 to convert to proportion.  
+  
+  Also, some character data includes footnote references following 
+  the year.  
+  
+  Table F-1 from the US Census Bureau needs all three of these 
+  features:  It needs \code{orderBy}, because the most recent year 
+  appears first, just the opposite of most other data sets where 
+  the most recent year appears last.  It has footnote references 
+  following a character string indicating the year.  And it 
+  includes commas as thousand separators.
 }
 \usage{
 asNumericChar(x)
-asNumericDF(x, keep=function(x)any(!is.na(x)), orderBy)
+asNumericDF(x, keep=function(x)any(!is.na(x)), orderBy=NA)
 }
 \arguments{
   \item{x}{
@@ -31,7 +42,8 @@ asNumericDF(x, keep=function(x)any(!is.na(x)), orderBy)
     something to indicate which columns to keep
   }
   \item{orderBy}{
-    Which columns to order the rows of \code{x[, keep]} by
+    Which columns to order the rows of \code{x[, keep]} by.  
+    Default is to keep the input order.  
   }
 }
 \details{
@@ -46,7 +58,7 @@ asNumericDF(x, keep=function(x)any(!is.na(x)), orderBy)
 
   5.  lapply(x, 1-4)
 
-  6. order the rows;  by default, ascending on the first column
+  6. order the rows
 }
 \value{
   all numeric data.frame
@@ -61,25 +73,37 @@ asNumericDF(x, keep=function(x)any(!is.na(x)), orderBy)
 }
 %\references{}
 \examples{
-
+##
+## 1.  simple example 
+##
 fakeF1 <- data.frame(yr=c('1948', '1947 (1)'),
-                     q1=c('1,234', ''), duh=rep(NA, 2) )
+                     q1=c('1,234', ''), duh=rep(NA, 2), 
+                     dol=c('$1,234', ''), 
+                     pct=c('1\%', '2\%'))
 nF1 <- asNumericDF(fakeF1)
 
 nF1. <- data.frame(yr=asNumericChar(fakeF1$yr),
-                   q1=asNumericChar(fakeF1$q1))[2:1,]
+                   q1=asNumericChar(fakeF1$q1), 
+                   dol=asNumericChar(fakeF1$dol), 
+                   pct=c(.01, .02))
 
-# correct answer
-row.names(nF1.) <- 2:1
-
-nF1c <- data.frame(yr=1947:1948, q1=c(NA, 1234))
-row.names(nF1c) <- 2:1
+nF1c <- data.frame(yr=1948:1947, q1=c(1234, NA), 
+                   dol=c(1234, NA), pct=c(.01, .02))
 
 \dontshow{stopifnot(}
 all.equal(nF1, nF1.)
 \dontshow{)}
 \dontshow{stopifnot(}
-all.equal(nF1, nF1c)
+all.equal(nF1., nF1c)
+\dontshow{)}
+
+##
+## 2.  orderBy=1:2
+##
+nF. <- asNumericDF(fakeF1, orderBy=1:2)
+
+\dontshow{stopifnot(}
+all.equal(nF., nF1c[2:1,])
 \dontshow{)}
 }
 \keyword{manip}

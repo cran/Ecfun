@@ -84,23 +84,26 @@ bankingCrises <- readFinancialCrisisFiles(FinancialCrisisFiles)
 
 ##
 ## Toy example using local data to check the code
-## and illustrate returning all the data not just one crisisTpe
+## and illustrate returning all the data not just one crisisType
 ##
 Ecdat.demoFiles <- system.file('demoFiles', package='Ecdat')
 Ecdat.xls <- dir(Ecdat.demoFiles, pattern='xls$',
                  full.names=TRUE)
-tst <- financialCrisisFiles(Ecdat.xls)
+if(require(gdata)){
+  tst <- financialCrisisFiles(Ecdat.xls)
 
-bankingCrises.tst <- readFinancialCrisisFiles(tst)
-allCrises.tst <- readFinancialCrisisFiles(tst, 1:8)
+  bankingCrises.tst <- readFinancialCrisisFiles(tst)
+# optional tests if not CRAN   
+  if(!fda::CRAN()){
+  allCrises.tst <- readFinancialCrisisFiles(tst, 1:8)
 
 # Manually construct tst from allCrises.tst
-tst2 <- data.frame(year=1800:1999)
-tst2$Algeria <- as.numeric(allCrises.tst$Algeria[-(1:12), 8])
-tst2$CentralAfricanRep <- as.numeric(
+  tst2 <- data.frame(year=1800:1999)
+  tst2$Algeria <- as.numeric(allCrises.tst$Algeria[-(1:12), 8])
+  tst2$CentralAfricanRep <- as.numeric(
                     allCrises.tst$CentralAfricanRep[-(1:12), 8])
-tst2$Taiwan <- as.numeric(allCrises.tst$Taiwan[-(1:11), 8])
-tst2$UK <- as.numeric(allCrises.tst$UK[-(1:11), 8])
+  tst2$Taiwan <- as.numeric(allCrises.tst$Taiwan[-(1:11), 8])
+  tst2$UK <- as.numeric(allCrises.tst$UK[-(1:11), 8])
 
 \dontshow{stopifnot(}
 all.equal(bankingCrises.tst, tst2)
@@ -113,6 +116,8 @@ all.equal(bankingCrises.tst,
    bankingCrises[1:200, c('year', 'Algeria', 'CentralAfricanRep',
                            'Taiwan', 'UK')])
 \dontshow{)}
+}
+}
 }
 \keyword{datasets}
 \keyword{IO}
