@@ -45,7 +45,7 @@ index2class(i, otherCharacter=TRUE)
   and raw:  See also 
   \href{http://adv-r.had.co.nz/Data-structures.html}{Wickham 
   (2013, section on "Atomic vectors" in the chapter on   
-  "Data structures")}.  These form a standard heirarchy, 
+  "Data structures")}.  These form a standard hierarchy, 
   except for "raw", in that standard operations combining 
   objects with different atomic classes will create an 
   object of the higher class.  For example, \code{TRUE + 

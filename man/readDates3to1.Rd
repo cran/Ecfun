@@ -56,12 +56,13 @@ readDates3to1(file, YMD=c('Year', 'Month', 'Day'), ...)
 cow0 <- data.frame(rec=1:3, startMonth=4:6, startDay=7:9, 
     startYear=1971:1973, endMonth1=10:12, endDay1=13:15, 
     endYear1=1974:1976, txt=letters[1:3])
-    
-write.csv(cow0, "cow0.csv", row.names=FALSE)
+
+cowFile <- tempfile('cow0')    
+write.csv(cow0, cowFile, row.names=FALSE)
 ##
 ## 2.  Read it 
 ##
-cow0. <- readDates3to1("cow0.csv")
+cow0. <- readDates3to1(cowFile)
 
 # check 
 cow0x <- data.frame(rec=1:3, txt=letters[1:3], 
@@ -72,5 +73,9 @@ cow0x <- data.frame(rec=1:3, txt=letters[1:3],
 all.equal(cow0., cow0x)
 \dontshow{)}
 
+\dontshow{
+# delete the temp file written above 
+file.remove(cowFile)
+}
 }
 \keyword{IO}

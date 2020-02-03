@@ -2,7 +2,8 @@
 
 ## Quick and dirty: {just to confirm that it is sufficient}
 
-export(Arrows, as.Date1970, asNumericChar, asNumericDF, 
+export(.onAttach, 
+        Arrows, as.Date1970, asNumericChar, asNumericDF, 
        BoxCox, 
        confint.var, confint.sd, 
        canbeNumeric, camelParse, checkNames, classIndex, 
@@ -25,27 +26,32 @@ export(Arrows, as.Date1970, asNumericChar, asNumericDF,
        plot.qqnorm2, plot.qqnorm2s, 
        pmatch2, points.qqnorm2, ptruncdist, 
        qqnorm2, qqnorm2s, qqnorm2t, qtruncdist, 
-       rasterImageAdj, read.testURLs, 
+       rasterImageAdj, 
        read.transpose, readCookPVI, readCookPVI., 
        readDates3to1, readFinancialCrisisFiles, readNIPA, 
        readUShouse, readUSsenate, readUSstateAbbreviations, 
        recode2, rgrep, rtruncdist, 
        sign, 
+       simulate.bic.glm, simulate.glm, 
        strsplit1, subNonStandardCharacters, 
        subNonStandardNames, 
-       testURLs, trimImage, 
+       trimImage, 
        UShouse.senate, USsenateClass, 
        whichAeqB)
 
 #importFrom(base, mean, coefficients)
 importFrom("grDevices", "as.raster")
-importFrom("graphics", "arrows", "legend", "lines", "par", "plot",
-             "points", "rasterImage", "text", "xyinch")
+importFrom("graphics", "arrows", "legend", "lines", 
+    "par", "plot", "points", "rasterImage", "text", 
+    "xyinch")
 importFrom("methods", "as", "is")
 importFrom("stats", "median", "qqnorm", "runif", "sd", 
-           "cov2cor")
+    "cov2cor", "model.matrix", "glm.fit", "vcov", 
+    "coef", "simulate")
 importFrom("utils", "de", "head", "read.csv", "tail")
 importFrom("xml2", 'as_list', 'read_xml')
+importFrom("mvtnorm", "rmvnorm")
+importFrom("BMA", "bic.glm")
 
 import(MASS)
 import(TeachingDemos)
@@ -68,5 +74,7 @@ S3method(plot, qqnorm2s)
 S3method(points, qqnorm2)
 S3method(confint, var)
 S3method(confint, sd)
+S3method(simulate, bic.glm)
+S3method(simulate, glm)
 
 

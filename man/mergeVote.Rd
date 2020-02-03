@@ -4,12 +4,15 @@
   Merge Roll Call Vote
 }
 \description{
-  Merge roll call vote record with a \code{\link{data.frame}} containing
-  other information.  The \code{vote} records are typically incomplete,
-  so match first on \code{houseSenate} and \code{surname}.  If this
-  match is incomplete, try using \code{givenName}.  If that fails, try
-  \code{state} and \code{district}, which may not always be present in
-  \code{vote}.
+  Merge roll call vote record with a 
+  \code{\link{data.frame}} containing other 
+  information.  The \code{vote} records are 
+  typically incomplete, so match first on 
+  \code{houseSenate} and \code{surname}.  
+  If this match is incomplete, try using 
+  \code{givenName}.  If that fails, try
+  \code{state} and \code{district}, which may 
+  not always be present in \code{vote}.
 }
 \usage{
 mergeVote(x, vote, Office="House", vote.x, check.x=TRUE)
@@ -62,7 +65,7 @@ mergeVote(x, vote, Office="House", vote.x, check.x=TRUE)
   match is found, try for \code{keyv2} in \code{keyx2} or \code{keyv.}
   in \code{keyx.}  If those fail, print an error message with the
   information from \code{vote} on all failures and ask the user to add
-  \code{state} and \code{district} informuation.
+  \code{state} and \code{district} information.
 
   5. \code{if(check.x)}, check for rows in \code{x[, vote.x]} that are
   NOT "notEligible" but are also not in \code{vote}:  Throw an error if

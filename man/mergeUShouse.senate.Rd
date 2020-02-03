@@ -36,7 +36,7 @@ mergeUShouse.senate(x, UScongress=UShouse.senate(),
 
   2.  keyy <- with(UScongress(houseSenate, state, District, sep=":"))
 
-  3.  notx <- !is.elememt(keyy, keyx)
+  3.  notx <- !is.element(keyy, keyx)
 
   4.  Y <- UScongress[notx, ]
 

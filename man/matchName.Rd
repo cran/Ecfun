@@ -36,7 +36,7 @@ matchName1(x1, data, name=data[, 1],
   \item{data}{
     a character matrix or a \code{\link{data.frame}}.  If 
     \code{surname} and \code{givenName} are character vectors of 
-    names, their length musth match the number of rows of 
+    names, their length must match the number of rows of 
     \code{data}.  
   }
   \item{Names}{

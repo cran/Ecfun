@@ -15,11 +15,13 @@ grepNonStandardCharacters(x, value=FALSE,
 }
 \arguments{
   \item{x}{
-    character vector in which it is desired to identfy elements
-    containing characters not in \code{standardCharacters}.
+    character vector in which it is desired to 
+    identify elements containing characters not 
+    in \code{standardCharacters}.
   }
   \item{value}{
-    logical:  \code{TRUE} to return the values found in \code{x},
+    logical:  
+    \code{TRUE} to return the values found in \code{x},
     \code{FALSE} to return their indices.
   }
   \item{standardCharacters}{

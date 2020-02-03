@@ -1,19 +1,27 @@
 \name{match.data.frame}
 \alias{match.data.frame}
 \title{
-  Identify the row of \code{y} best matching each row of \code{x}
+  Identify the row of \code{y} best 
+  matching each row of \code{x}
 }
 \description{
-  For each row of \code{x[, by.x]}, find the best matching row of
-  \code{y[, by.y]}, with the best match defined by \code{grep.} and
+  For each row of \code{x[, by.x]}, 
+  find the best matching row of 
+  \code{y[, by.y]}, with the best 
+  match defined by \code{grep.} and
   \code{split}.
 
-  \code{grep.} and \code{split} must either be \code{\link{missing}} or
-  have the same length as \code{by.x} and \code{by.y}.  If
-  \code{grep.[i]} and \code{split[i]} are NA, do a complete match of
-  \code{x[, by.x[i]]} and \code{y[, by.y[i]]}.  Otherwise, for each row
-  \code{j}, look for a match for \code{strsplit(x[j, by.x[i]],
-    split[i])[[1]][1]} among \code{strsplit(y[, by.y[i]], split[i])}.
+  \code{grep.} and \code{split} must 
+  either be \code{\link{missing}} or
+  have the same length as \code{by.x} 
+  and \code{by.y}.  If \code{grep.[i]} 
+  and \code{split[i]} are NA, do a 
+  complete match of \code{x[, by.x[i]]} 
+  and \code{y[, by.y[i]]}.  Otherwise, 
+  for each row \code{j}, look for a 
+  match for \code{strsplit(x[j, by.x[i]], 
+  split[i])[[1]][1]} among 
+  \code{strsplit(y[, by.y[i]], split[i])}.
   See details.
 }
 \usage{
@@ -38,7 +46,7 @@ match.data.frame(x, y, by, by.x=by, by.y=by, grep., split, sep=':')
     functions.
 
     NOTE:  These alternatives are not examined if a unique match is
-    found betweed x[, by.x[is.na(grep.) & is.na(split)]] and the
+    found between x[, by.x[is.na(grep.) & is.na(split)]] and the
     corresponding columns of \code{y}.
   }
   \item{split}{

@@ -4,8 +4,9 @@
   rasterImage adjusting to zero distortion
 }
 \description{
-  Call \code{rasterImage} to plot \code{image} from \code{(xleft,
-  ybottom)} to either \code{xright} or \code{ytop}, shrinking one 
+  Call \code{rasterImage} to plot \code{image} 
+  from \code{(xleft, ybottom)} to either 
+  \code{xright} or \code{ytop}, shrinking one 
   toward the center to avoid distortion.  
   
   \code{angle} specifies a rotation around the midpoint 
@@ -115,57 +116,75 @@ rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
 }
 \examples{
 # something to plot 
-logo.jpg <- paste(R.home(), "doc", "html", "logo.jpg",
-                  sep = .Platform$file.sep)
-if(require(jpeg)){
+#logo.jpg <- paste(R.home(), "doc", "html", "logo.jpg",
+#                  sep = .Platform$file.sep)
+RdocDir <- dir(R.home(), pattern='^doc$', full.names = TRUE)
+RhtmlDir <- dir(RdocDir, pattern='^html$', full.names=TRUE)
+JPGs <- dir(RhtmlDir, pattern='\\\\.jpg$', full.names=TRUE)
+if(length(JPGs)>1){
+  logoJPG <- paste0(.Platform$file.sep, 'logo.jpg$')
+  logo.jpg <- grep(logoJPG, JPGs, value=TRUE)
+  if(length(logo.jpg)>1)logo.jpg <- logo.jpg[1]
+  if(length(logo.jpg)<1)logo.jpg <- JPGs[1]
+} else logo.jpg <- JPGs
+if(length(logo.jpg)<1){
+  cat('logo.jpg not found.\n')
+  print(R.home())
+  print(dir(RdocDir))
+  print(dir(RhtmlDir))
+  if(!fda::CRAN())stop('logo.jpg not found')
+} else {
+# length(logo.jpg)==1 so continue:  
+  if(require(jpeg)){
 ##
 ## 1.  Shrink as required
 ##
-  Rlogo <- readJPEG(logo.jpg)
+    Rlogo <- readJPEG(logo.jpg)
   \dontshow{stopifnot(}
-  all.equal(dim(Rlogo), c(76, 100, 3))
+    all.equal(dim(Rlogo), c(76, 100, 3))
   \dontshow{)}
 
-  plot(1:2)
+    plot(1:2)
 # default
-  rasterImageAdj(Rlogo)
+    rasterImageAdj(Rlogo)
 
-  plot(1:2, type='n', asp=0.75)
+    plot(1:2, type='n', asp=0.75)
 # Tall and thin
-  rasterImage(Rlogo, 1, 1, 1.2, 2)
+    rasterImage(Rlogo, 1, 1, 1.2, 2)
 # Fix
-  rasterImageAdj(Rlogo, 1.2, 1, 1.4, 2)
+    rasterImageAdj(Rlogo, 1.2, 1, 1.4, 2)
 
 # short and wide
-  rasterImage(Rlogo, 1.4, 1, 2, 1.2)
+    rasterImage(Rlogo, 1.4, 1, 2, 1.2)
 # Fix
-  rasterImage(Rlogo, 1.4, 1.2, 2, 1.4)
+    rasterImage(Rlogo, 1.4, 1.2, 2, 1.4)
 ##
 ## 2.  rotate 
 ##
 #  2.1.  angle=90:  rasterImage left of rasterImageAdj
-  plot(0:1, 0:1, type='n', asp=1)
-  rasterImageAdj(Rlogo, .5, .5, 1, 1, 90)
-  rasterImage(Rlogo, .5, .5, 1, 1, 90)
+    plot(0:1, 0:1, type='n', asp=1)
+    rasterImageAdj(Rlogo, .5, .5, 1, 1, 90)
+    rasterImage(Rlogo, .5, .5, 1, 1, 90)
 #  2.2.  angle=180:  rasterImage left and below 
-  plot(0:1, 0:1, type='n', asp=1)
-  rasterImageAdj(Rlogo, .5, .5, 1, 1, 180)
-  rasterImage(Rlogo, .5, .5, 1, 1, 180)
+    plot(0:1, 0:1, type='n', asp=1)
+    rasterImageAdj(Rlogo, .5, .5, 1, 1, 180)
+    rasterImage(Rlogo, .5, .5, 1, 1, 180)
 #  2.3.  angle=270:  rasterImage below 
-  plot(0:1, 0:1, type='n', asp=1)
-  rasterImageAdj(Rlogo, .5, .5, 1, 1, 270)
-  rasterImage(Rlogo, .5, .5, 1, 1, 270)
+    plot(0:1, 0:1, type='n', asp=1)
+    rasterImageAdj(Rlogo, .5, .5, 1, 1, 270)
+    rasterImage(Rlogo, .5, .5, 1, 1, 270)
 ## 
 ## 3.  subset 
 ##
-dim(Rlogo)
+  dim(Rlogo)
 # 76 100 3
-Rraster <- as.raster(Rlogo)
-dim(Rraster)
+  Rraster <- as.raster(Rlogo)
+  dim(Rraster)
 # 76 100:  
 # x=1:100, left to right 
 # y=1:76, top to bottom 
-rasterImageAdj(Rlogo, 0, 0, .5, .5, xsub=40:94)
+  rasterImageAdj(Rlogo, 0, 0, .5, .5, xsub=40:94)
+}
 }
 }
 \keyword{hplot}

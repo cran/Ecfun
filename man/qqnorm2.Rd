@@ -115,18 +115,20 @@ qqnorm2(y, z, plot.it=TRUE, datax=TRUE, pch=NULL, ...)
 
   For \code{plot.qqnorm2}:  
   
-  plot1.  plot(x\$x, x\$y, type="n", ...) with "..." taking
-  precidence over x, where the same plot argument appears
-  in both.  
+  plot1.  plot(x\$x, x\$y, type="n", ...) with "..." 
+  taking precedence over x, where the same plot 
+  argument appears in both.  
   
   plot2.  if(type \%in\% c('l', 'b', 'c', 'o'))
   lines(x\$x, x\$y, ...)
 
   plot3.  if(type \%in\% c('p', 'b', 'o')): 
   if(is.null(x\$z))points(x\$x, x\$y, ...)
-  else if(is.logical(x\$z))points(x\$x, x\$y, pch=x\$pch[x\$z], ...)
-  else if(is.numeric(x\$z) && (min(z0 <- round(x\$z))>0)
-  && (max(abs(x\$z-z0))<10*.Machine\$double.eps))
+  else if(is.logical(x\$z))
+         points(x\$x, x\$y, pch=x\$pch[x\$z], ...)
+  else if(is.numeric(x\$z) && 
+     (min(z0 <- round(x\$z))>0) && 
+     (max(abs(x\$z-z0))<10*.Machine\$double.eps))
   points(x\$x, x\$y, pch=x\$pch[x\$z], ...)
   else text(x\$x, x\$y, x\$z, ...)
 
@@ -135,13 +137,15 @@ qqnorm2(y, z, plot.it=TRUE, datax=TRUE, pch=NULL, ...)
 
   lines2.  if(type \%in\% c('p', 'b', 'o'))
   if(is.null(pch))text(x\$x, x\$y, x\$z, ...)
-  else if(is.character(pch))text(x\$x, x\$y, x\$phc[x\$z], ...) 
+  else if(is.character(pch))
+      text(x\$x, x\$y, x\$pch[x\$z], ...) 
   else points(x\$x, x\$y, pch=x\$pch[x\$z], ...)
 
   For \code{points.qqnorm2}
   points1.  if(type \%in\% c('p', 'b', 'o'))
   if(is.null(pch))text(x\$x, x\$y, x\$z, ...)
-  else if(is.character(pch))text(x\$x, x\$y, x\$phc[x\$z], ...) 
+  else if(is.character(pch))
+        text(x\$x, x\$y, x\$pch[x\$z], ...) 
   else points(x\$x, x\$y, pch=x\$pch[x\$z], ...)
 
   points2.  if(!(type \%in\% c('p', 'n')))

@@ -26,7 +26,7 @@ readUSsenate(url.=
     This must have a column named "Name" giving the 
     names of all 50 states as they appear on the 
     \code{url} and another whose name includes 
-    "USPS" giving the correspoding 2-letter codes.
+    "USPS" giving the corresponding 2-letter codes.
   }
   \item{fixNonStandard}{
     function to look for and repair nonstandard names 

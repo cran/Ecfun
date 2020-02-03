@@ -54,7 +54,7 @@
         
   6.  CI <- (object*parm/Qntls)
   
-  7.  attr(CI, 'level') <- Level
+  7.  \code{attr(CI, 'level') <-} Level
   
   7.  return(CI)
 }

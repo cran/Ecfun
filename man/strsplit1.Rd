@@ -4,9 +4,10 @@
   Split the first field 
 }
 \description{
-  Split the first field from \code{x}, identified as all the 
-  characters preceeding the first unquoted occurrence of 
-  \code{split}.  
+  Split the first field from \code{x}, 
+  identified as all the characters 
+  preceding the first unquoted occurrence 
+  of \code{split}.  
 }
 \usage{
 strsplit1(x, split=',', Quote='"', ...)

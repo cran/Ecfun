@@ -4,11 +4,13 @@
   sub for nonstandard names
 }
 \description{
-  sub(nonStandardNames[, 1], nonStandardNames[, 2], x)
+  sub(nonStandardNames[, 1], 
+  nonStandardNames[, 2], x)
   
-  Accented characters common in non-English languages often 
-  get mangled in different ways by different software.  For
-  example, the "e" in "Andre" may carry an accent that 
+  Accented characters common in non-English 
+  languages often get mangled in different 
+  ways by different software.  For example, 
+  the "e" in "Andre" may carry an accent that 
   gets replaced by other characters by different software.  
   This function first converts "Andr*" with "Andr_" for 
   and character "*" not in \code{standardCharacters}.  
@@ -47,20 +49,28 @@ subNonStandardNames(x,
     corresponding elemeng of \code{nonStandardNames[, 2]}
   }
   \item{namesNotFound}{
-    character vecvtor describing how to treat substitions not found 
-    in \code{nonStandardNames[, 1]}:  
+    character vector describing how to treat 
+    substitions not found in 
+    \code{nonStandardNames[, 1]}:  
   
     \itemize{
-      \item{"attr.replacement": Return an attribute "namesNotFound" 
-        with 
-        \code{grep(replacement, subNonStandardCharacters(...))}, 
+      \item{
+        "attr.replacement": Return an 
+        attribute "namesNotFound" with 
+        \code{grep(replacement, 
+          subNonStandardCharacters(...))}, 
         if any.}
-      \item{"attr.notFound":  Return an attribute "namesNotFound"  
-        with \code{x != subNonStandardCharacters(...)}, if any.}
+      \item{"attr.notFound":  
+        Return an attribute "namesNotFound"  
+        with \code{x != subNonStandardCharacters(...)}, 
+        if any.}
       \item{"print":  Print the elements of \code{x} 
         "notFound" per either "attr.replacement" or 
         "attr.notFound", as requested.}  
-      \item{"":  Do not report any "notFound" elements of \code{x}.}
+      \item{
+        "":  Do not report any "notFound" 
+        elements of \code{x}.
+      }
     }
     
     NOTE:  x = "_" will be identified by "attr.replacement" but 
@@ -99,7 +109,7 @@ subNonStandardNames(x,
   \code{nonStandardNames} for any that match the first column.  If a 
   secondLine is found on any elements, it is returned as a "secondLine"
   attribute.  If any names with nonStandardCharacters are not found 
-  in \code{nonStandardNames[, 1]}, they are identifed in an 
+  in \code{nonStandardNames[, 1]}, they are identified in an 
   optional attribute per the \code{namesNotFound} argument.    
 }
 \author{

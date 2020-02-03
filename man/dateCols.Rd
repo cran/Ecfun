@@ -13,12 +13,14 @@ dateCols(col.names, YMD=c('Year', 'Month', 'Day'))
 }
 \arguments{
   \item{col.names}{
-    either a character vector in which to search for names matching 
-    \code{YMD} or an object with non-null \code{colnames} 
+    either a character vector in which to search 
+    for names matching \code{YMD} or an object 
+    with non-null \code{colnames} 
   }
   \item{YMD}{
-    a character vector of patterns to use in \code{\link{grep}} to 
-    identify triples of columns coding \code{YMD} in 
+    a character vector of patterns to use in 
+    \code{\link{grep}} to identify triples of 
+    columns coding \code{YMD} in 
     \code{col.names}
   }
 }
@@ -27,7 +29,7 @@ dateCols(col.names, YMD=c('Year', 'Month', 'Day'))
   \href{http://correlatesofwar.org/data-sets/COW-war}{Correlates 
   of War} project include dates coded in triples of columns with 
   names like c("StartMonth1", "StartDay1", "StartYear1", "EndMonth1", 
-  ..., "EndYear2").  This function will find all relevent date 
+  ..., "EndYear2").  This function will find all relevant date 
   triples in a character vector of column names and return a list 
   of integer vectors of length 3 with names like "Start1", "End1", 
   ..., "End2" giving the positions in \code{col.names} of the 

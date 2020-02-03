@@ -4,7 +4,8 @@
   bivariate recode
 }
 \description{
-  Recode \code{x1} and \code{x2} per the lexical \code{codes} table.
+  Recode \code{x1} and \code{x2} per the 
+  lexical \code{codes} table.
 }
 \usage{
 recode2(x1, x2, codes)
@@ -22,7 +23,8 @@ recode2(x1, x2, codes)
 \details{
   1.  If length(x1) != length(x2), complain.
 
-  2.  if(is.logical(x1)) l1 <- c(FALSE, TRUE) else l1 <- unque(x1);
+  2.  if(is.logical(x1)) l1 <- c(FALSE, TRUE) else 
+  l1 <- unique(x1);
   ditto for x2.
 
   3.  If(missing(codes)) codes <- outer(unique(x1), unique(x2))

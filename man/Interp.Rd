@@ -74,15 +74,19 @@ InterpNum(argsChk, ...)
     A number or numeric vector assumed to be between 0 and 1.  
   }
   \item{argnames}{
-    a character vector of length 3 giving args \code{name.x}, 
-    \code{name.y}, and \code{proportion} to pass to 
-    \code{\link{compareLengths}} to improve the value  of 
-    any diagnostic message in case lengths are not compatible.  
+    a character vector of length 3 giving 
+    argumentss \code{name.x}, \code{name.y}, 
+    and \code{proportion} to pass to 
+    \code{\link{compareLengths}} to improve 
+    the value  of any diagnostic message in 
+    case lengths are not compatible.  
   }
   \item{message0}{
-    A character string to be passed with \code{argnames} to 
-    \code{\link{compareLengths}} to improve the value of 
-    any diagnostic message in case lengths are not compatible.  
+    A character string to be passed with 
+    \code{argnames} to 
+    \code{\link{compareLengths}} to improve 
+    the value of any diagnostic message in 
+    case lengths are not compatible.  
   }
   \item{argsChk}{
     a list as returned by \code{interpChkArgs}
@@ -113,7 +117,7 @@ InterpNum(argsChk, ...)
   includes components "algorithm", "x", "y", "proportion", 
   "pLength1" (defined below), "raw", and "outclass".  The 
   "algorithm" component must be either "Numeric" or 
-  "Character".  That algoritm is then performed as 
+  "Character".  That algorithm is then performed as 
   discussed below using arguments "x", "y", and 
   "proportion";  all three will have the same length.  The 
   class of "x" and "y" will match the algorithm.  
@@ -138,7 +142,7 @@ InterpNum(argsChk, ...)
   
   1.  "CHARACTER" 
   
-  * 1.1.  The "CHARACTER" algorithem is used when at 
+  * 1.1.  The "CHARACTER" algorithm is used when at 
   least one of \code{x} and \code{y} is neither logical, 
   integer, numeric, complex nor raw and satisfies one 
   of the following two additional conditions:  
@@ -238,7 +242,7 @@ InterpNum(argsChk, ...)
   argument.  
   
   ** 2.3.4.  When interpolating between two objects of class 
-  raw, convert the interpoland back to class raw.  Do this 
+  raw, convert the interpolant back to class raw.  Do this 
   even when 2.3.2 or 2.3.3 applies and 
   \code{class(unclass(.))} of both \code{x} and \code{y}
   are of class raw.  

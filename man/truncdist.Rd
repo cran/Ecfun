@@ -8,9 +8,10 @@
   Truncated distribution 
 }
 \description{
-  The cumulative distribution function for a truncated 
-  distribution is \code{0} for \code{x <= truncmin},
-  \code{1} for \code{truncmax < x}, and in between is
+  The cumulative distribution function for 
+  a truncated distribution is \code{0} for 
+  \code{x <= truncmin}, \code{1} for 
+  \code{truncmax < x}, and in between is
   as follows:  
   
   \code{(pdist(x, ...) - pdist(truncmin, ...)) / 
@@ -56,7 +57,7 @@ rtruncdist(n, ..., dist='norm', truncmin=-Inf, truncmax=Inf)
   known that an observation lies between certain limits; it's just 
   not known exactly where it lies between those limits.  
   
-  By contrast, with a truncated distrubion, events below 
+  By contrast, with a truncated distribution, events below 
   \code{truncmin} and above \code{truncmax} may exist but are 
   not observed.  Thus, it's not known how many events occur  
   outside the given range, \code{truncmin} to 

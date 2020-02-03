@@ -4,10 +4,12 @@
   Match isolated quotes across records 
 }
 \description{
-  Look for unmatched quotes in a character vector.  If found, 
-  look for a matching quote starting the next characer string
-  in the vector, possibly after a blank line.  If found, 
-  merge the two strings and return the resulting shortened 
+  Look for unmatched quotes in a character 
+  vector.  If found, look for a matching 
+  quote starting the next character string
+  in the vector, possibly after a blank 
+  line.  If found, merge the two strings 
+  and return the resulting shortened 
   character vector.  
 }
 \usage{
@@ -26,7 +28,7 @@ matchQuote(x,  Quote='"', sep=' ', maxChars2append=2, ...)
   }
   \item{maxChars2append}{
     maximum number of characters in the following string to 
-    concatonate two adjacent strings (possibly separated by 
+    concatenate two adjacent strings (possibly separated by 
     a blank line) with unmatched \code{Quote}s.   
   }
   \item{\dots}{
@@ -43,7 +45,7 @@ matchQuote(x,  Quote='"', sep=' ', maxChars2append=2, ...)
   not matched, lines with zero characters, followed by lines 
   with 3 characters being a quote and a comma.  This function 
   was written to drop the blank lines and append the quote-comma 
-  line to the preceeding line so it contained matching quotes.  
+  line to the preceding line so it contained matching quotes.  
 }
 %\source{ }
 \value{
@@ -61,15 +63,15 @@ matchQuote(x,  Quote='"', sep=' ', maxChars2append=2, ...)
       and (2) contained no non-blank characters.  
     }
     \code{quoteLinesAppended}{
-      indices of the input \code{x} that were concatonated 
+      indices of the input \code{x} that were concatenated 
       with a preceeding line because the two lines contained
-      unmatched \code{Quote} characters, and concatonating 
+      unmatched \code{Quote} characters, and concatenating 
       them produced a line with all \code{Quote}s matched.  
     }
     \code{ncharsAppended}{
       an integer vector of the same length as 
-      \code{quoteLinesConcatonated} giving the number of 
-      characters in the second line concatonated onto 
+      \code{quoteLinesConcatenated} giving the number of 
+      characters in the second line concatenated onto 
       the previous line.  
     }  
   } 

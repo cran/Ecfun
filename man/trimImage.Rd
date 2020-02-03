@@ -53,8 +53,8 @@ trimImage(x, max2trim=.Machine$double.eps, na.rm=TRUE,
 
   4.  Compute indices2Keep.
 
-  5.  If(returnIndices2Keep) return (indices2Keep) else return
-  x appropriately susetted.
+  5.  If(returnIndices2Keep) return (indices2Keep) else 
+  return x appropriately subsetted.
 }
 \value{
   if(returnIndices2Keep==TRUE) return a list with 2 integer vectors to

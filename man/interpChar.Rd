@@ -54,10 +54,12 @@ interpChar(x, ...)
     A number or numeric vector assumed to be between 0 and 1.  
   }
   \item{argnames}{
-    a character vector of length 3 giving args \code{name.x}, 
-    \code{name.y}, and \code{.proportion} to pass to 
-    \code{\link{compareLengths}} to improve the value  of 
-    any diagnostic message in case lengths are not compatible.  
+    a character vector of length 3 giving 
+    argumentss \code{name.x}, \code{name.y}, 
+    and \code{.proportion} to pass to 
+    \code{\link{compareLengths}} to improve 
+    the value  of any diagnostic message in 
+    case lengths are not compatible.  
   }
   \item{message0}{
     A character string to be passed with \code{argnames} to 
@@ -109,7 +111,7 @@ interpChar(x, ...)
   
   \code{\link{classIndex}}, which is called by 
   \code{interpChar} to help decide the class of the 
-  interpoland.  
+  interpolant.  
 }
 \examples{
 ##

@@ -5,7 +5,7 @@
 }
 \description{
   Return a \code{\link{data.frame}} with columns of 
-  class "Date" replaceing all 3-column dates.  
+  class "Date" replacing all 3-column dates.  
 }
 \usage{
 Dates3to1(data, YMD=c('Year', 'Month', 'Day'))

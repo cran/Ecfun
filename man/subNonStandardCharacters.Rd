@@ -35,11 +35,13 @@ subNonStandardCharacters(x,
     that substring by \code{replacement}.
   }
   \item{standardCharacters}{
-    a character vector of acceptable characters to keep.
+    a character vector of acceptable characters 
+    to keep.
   }
   \item{replacement}{
-    a character to replace the subtring starting and ending with
-    characters not in \code{standardCharacters}.
+    a character to replace the subtring 
+    starting and ending with characters not 
+    in \code{standardCharacters}.
   }
   \item{gsubList}{
     list of lists of \code{pattern} and \code{replacement} arguments
@@ -51,8 +53,9 @@ subNonStandardCharacters(x,
   }
 }
 \details{
-  1.  for(il in 1:length(gsubList))x <- gsub(
-  gsubList[[il]][["pattern"]], gsublist[[il]][['replacement']], x)
+  1.  for(il in 1:length(gsubList))
+    x <- gsub(gsubList[[il]][["pattern"]], 
+        gsublist[[il]][['replacement']], x)
   
   2.  x <- stringi::stri_trans_general(x, "Latin-ASCII")
 
@@ -87,7 +90,7 @@ subNonStandardCharacters(x,
   with and without accents?".)  
 }
 \value{
-  a character vector with everthing between the first and last
+  a character vector with everything between the first and last
   character not in \code{standardCharacters} replaced by 
   \code{replacement}.  
 }

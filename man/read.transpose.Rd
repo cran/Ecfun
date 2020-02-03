@@ -4,15 +4,19 @@
   Read a data table in transpose form
 }
 \description{
-  Read a text (e.g., csv) file, find rows with more than 3 \code{sep}
-  characters.  Parse the initial contiguous block of those into a
-  \code{matrix}.  Add \code{attributes} \code{headers}, \code{footers},
-  and a \code{summary}.
+  Read a text (e.g., csv) file, find rows 
+  with more than 3 \code{sep} characters.  
+  Parse the initial contiguous block of 
+  those into a \code{matrix}.  Add 
+  \code{attributes} \code{headers}, 
+  \code{footers}, and a \code{summary}.
 
-  The initial application for this function is to read Table 6.16.
-  Income and employment by industry in the National Income and Product
-  Account tables published by the Bureau of Economic Analysis of the
-  United States Department of Commerce.
+  The initial application for this function 
+  is to read Table 6.16.  Income and 
+  employment by industry in the National 
+  Income and Product Account tables 
+  published by the Bureau of Economic Analysis 
+  of the United States Department of Commerce.
 }
 \usage{
 read.transpose(file, header=TRUE, sep=',',
@@ -20,14 +24,16 @@ read.transpose(file, header=TRUE, sep=',',
 }
 \arguments{
   \item{file}{
-    the name of a file from which the data are to be read.
+    the name of a file from which the data 
+    are to be read.
   }
   \item{header}{
-    Logical:  Is the second column of the identified data matrix to be
+    Logical:  Is the second column of the 
+    identified data matrix to be 
     interpreted as variable names?
   }
   \item{sep}{
-    The field space separator charactor.
+    The field space separator character.
   }
   \item{na.strings}{
     character string(s) that translate into NA
@@ -41,7 +47,7 @@ read.transpose(file, header=TRUE, sep=',',
 
   2.  Split into fields.
 
-  3.  Identifiy headers, Data, footers.
+  3.  Identify headers, Data, footers.
 
   4.  Recombine the second component of each Data row if necessary so
   all have the same number of fields.

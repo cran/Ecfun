@@ -39,7 +39,7 @@ parseCommas(x, pattern='\\\\$|,', replacement='',
   as.numeric(gsub(x, ...))
 
   The \code{\link{data.frame}} method outputs another
-  \code{\link{data.frame}} with character or factor columns connverted
+  \code{\link{data.frame}} with character or factor columns converted
   to numerics using \code{parseDollars} whenever that can be done
   without creating \code{NA}s.
 }

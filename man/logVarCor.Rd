@@ -1,7 +1,7 @@
 \name{logVarCor}
 \alias{logVarCor}
 \title{
-  Log-diagonal reprentation of a variance matrix 
+  Log-diagonal representation of a variance matrix 
 }
 \description{
   Translate a square symmetric matrix with positive 

@@ -411,26 +411,34 @@ all.equal(j.50, j.5.)
 logo.jpg <- paste(R.home(), "doc", "html", "logo.jpg",
                   sep = .Platform$file.sep)
 if(require(jpeg)){
-  Rlogo <- readJPEG(logo.jpg)
+  Rlogo <- try(readJPEG(logo.jpg))
+  if(!inherits(Rlogo, 'try-error')){
 # argument list for a call to rasterImage or rasterImageAdj   
-  RlogoLoc <- list(image=Rlogo,
-    xleft.0 = c(NZ=176.5,CH=172,US=171,  CN=177,RU= 9.5,UK= 8),
-    xleft.1 = c(NZ=176.5,CH=  9,US=-73.5,CN=125,RU= 37, UK= 2),
-    ybottom.0=c(NZ=-37,  CH=-34,US=-34,  CN=-33,RU= 48, UK=47),
-    ybottom.1=c(NZ=-37,  CH= 47,US= 46,  CN= 32,RU=55.6,UK=55),
-    xright=quote(xleft+xinch(0.6)),
-    ytop = quote(ybottom+yinch(0.6)),
-    angle.0 =0,
-    angle.1 =c(NZ=0,CH=3*360,US=5*360, CN=2*360,RU=360,UK=360)
+    RlogoLoc <- list(image=Rlogo,
+      xleft.0 = c(NZ=176.5,CH=172,US=171,  
+                  CN=177,RU= 9.5,UK= 8),
+      xleft.1 = c(NZ=176.5,CH=  9,US=-73.5,
+                  CN=125,RU= 37, UK= 2),
+      ybottom.0=c(NZ=-37,  CH=-34,US=-34,  
+                  CN=-33,RU= 48, UK=47),
+      ybottom.1=c(NZ=-37,  CH= 47,US= 46,  
+                  CN= 32,RU=55.6,UK=55),
+      xright=quote(xleft+xinch(0.6)),
+      ytop = quote(ybottom+yinch(0.6)),
+      angle.0 =0,
+      angle.1 =c(NZ=0,CH=3*360,US=5*360, 
+                 CN=2*360,RU=360,UK=360)
     )
 
-  RlogoInterp <- interpPairs(RlogoLoc, 
+    RlogoInterp <- interpPairs(RlogoLoc, 
             .proportion=rep(c(0, -1), c(2, 4)) )
 # check 
 \dontshow{stopifnot(}
-all.equal(names(RlogoInterp), 
-   c('image', 'xright', 'ytop', 'xleft', 'ybottom', 'angle'))
+  all.equal(names(RlogoInterp), 
+      c('image', 'xright', 'ytop', 
+        'xleft', 'ybottom', 'angle'))
 \dontshow{)} 
+
 # NOTE:  'xleft', and 'ybottom' were created in interpPairs, 
 # and therefore come after 'xright' and 'ytop', which were 
 # already there.  
@@ -438,18 +446,19 @@ all.equal(names(RlogoInterp),
 ##
 ## 2.10.  using envir
 ##
-  RlogoDiag <- list(x0=quote(Rlogo.$xleft), 
+    RlogoDiag <- list(x0=quote(Rlogo.$xleft), 
                   y0=quote(Rlogo.$ybottom), 
                   x1=quote(Rlogo.$xright), 
                   y1=quote(Rlogo.$ytop) ) 
 
-  RlogoD <- interpPairs(RlogoDiag, .p=1, 
-                      envir=list(Rlogo.=RlogoInterp) ) 
+    RlogoD <- interpPairs(RlogoDiag, .p=1, 
+                    envir=list(Rlogo.=RlogoInterp) ) 
 %  RlogoD. <- RlogoInterp[c('xleft', 'ybottom', 'xright', 'ytop')]
 %  names(RlogoD.) <- c('x0', 'y0', 'x1', 'y1')
 \dontshow{stopifnot(}
-all.equal(RlogoD, RlogoDiag)
+    all.equal(RlogoD, RlogoDiag)
 \dontshow{)}
+  }
 }
 ##
 ## 2.11.  assign;  no interp but should work   

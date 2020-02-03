@@ -26,7 +26,7 @@ readFinancialCrisisFiles(files, crisisType=7, ...)
     an integer (vector) between 1 and 8 indicating the type 
     of data to be retrieved:  1=independence year (not a 
     crisis but an indicator), 2=currency, 3=inflation, 4=stock 
-    market, 5=domestic soveregn debt crisis, 6=external 
+    market, 5=domestic sovereign debt crisis, 6=external 
     sovereign debt crisis, 7=banking, 8=tally.  ("Type" 1 = 
     year.)  These are all 0 or 1 indicating the presence of
     the event in the given year.  Type 8 = sum of types 2 
@@ -42,30 +42,44 @@ readFinancialCrisisFiles(files, crisisType=7, ...)
   }
 }
 \details{
-  Reinhart and Rogoff (\url{http://www.reinhartandrogoff.com})
-  provide numerous data sets analyzed in their book, "This Time 
-  Is Different:  Eight Centuries of Financial Folly".  Of 
-  interest here are data on financial crises of various types 
-  for 70 countries spanning the years 1800 - 2010, downloadable 
-  from
-  \url{http://www.reinhartandrogoff.com/data/browse-by-topic/topics/7/}.
-
-  The function \code{\link{financialCrisisFiles}} produces a 
-  list of class \code{financialCrisisFiles} describing different 
-  Excel files in very similar formats with one sheet per Country 
-  and a few extra descriptor sheets.  The data object 
-  \code{FinancialCrisisFiles} is the default output of that 
-  function.
+  Reinhart and Rogoff provided numerous data sets 
+  analyzed in their book, "This Time Is Different:  
+  Eight Centuries of Financial Folly".  Of interest 
+  here are data on financial crises of various types 
+  for 70 countries spanning the years 1800 - 2010. 
+  
+  These files were removed from the web site for the 
+  book some time between 2015-04-19 and 
+  2015-04-26.  They are still available from the 
+  Internet Archive at
+  \url{https://web.archive.org/web/20150419090824/http://www.reinhartandrogoff.com/data/browse-by-topic/topics/7/}
+  
+  Sometime between 2019-09-19 and 2020-02-02, the 
+  web site for the book itself was inactivated.  
+  For the web site as of 2019-09-19 see:  
+  \url{https://web.archive.org/web/20190919224018/http://www.reinhartandrogoff.com/}.  This includes a link to 
+  "Full Dataset to All Figures and Tables in the Book", 
+  which an interested user may wish to consult and 
+  compare with the data as of 2015-04-19, cited above.  
+  
+  The function \code{\link{financialCrisisFiles}} 
+  produces a list of class \code{financialCrisisFiles}
+  describing different Excel files in very similar 
+  formats with one sheet per Country and a few extra 
+  descriptor sheets.  The data object 
+  \code{FinancialCrisisFiles} is the default output 
+  of that function.
 
   \code{readFinancialCrisisFiles} reads the sheets for the 
   individual countries.
 }
 \source{ \url{http://www.reinhartandrogoff.com} }
 \value{
-  If length(crisisType) == 1, a \code{data.frame} is returned 
-  with the first column being \code{year}, and with one other 
-  column containing the data for that \code{crisisType} for 
-  each country.
+  If \code{length(crisisType)} == 1, a 
+  \code{data.frame} is returned with the first 
+  column being \code{year}, and with one other 
+  column containing the data for that 
+  \code{crisisType} for each country.
 
   If length(crisisType) > 1, a list is returned containing a 
   data.frame for each country.

@@ -1,0 +1,153 @@
+---
+title: "Update nuclearWeaponStates dataset"
+author: "Spencer Graves"
+date: "4/25/2019"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Update nuclearWeaponStates dataset}
+  %\VignetteKeyword{nuclear-weapon states}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\SweaveUTF8
+  \usepackage[utf8](inputenc)
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Write existing 
+
+This document describes how to add new information to the nuclearWeaponStates dataset in the Ecdat package.  
+
+The first step is to update the companion  "nuclearWeaponStates.Rd" help file.
+
+Then update the `nuclearWeaponStates` object so it matches the revised description.  
+
+One way to do this is to export the nuclearWeaponStates dataset as a csv file so you can edit it in a spreadsheet:
+
+```{r export}
+library(Ecdat)
+availInPkg <- objects(2,
+        pattern='nuclearWeaponStates')
+canWrite <- FALSE 
+if('nuclearWeaponStates' %in% availInPkg){
+  data(nuclearWeaponStates)
+  canWr <- try(write.csv(nuclearWeaponStates, 
+            'nuclearWeaponStates.csv', 
+            row.names=FALSE))
+  if(!inherits(canWr, 'try-error')){
+      canWrite <- TRUE
+  }
+} 
+getwd()
+```
+
+# Edit and read 
+
+If desired, edit the csv file just created as mentioned above. Ignore `firstTestYr` and `yearsSinceLastFirstTest`, because we compute them in this vignette from `firstTest`.  That's because we want (a) `firstTestYr` to be `firstTest` as numeric years rather than as days since 1970-01-01, and (b) `yearsSinceLastFirstTest` to be `diff(firstTestYr)`.  
+
+If you edit it externally, put it in the current working directory and read it as follows:
+
+```{r readCSV}
+library(Ecfun)
+if(canWrite){
+  nWS <- read.csv(
+    'nuclearWeaponStates.csv', 
+    stringsAsFactors = FALSE)
+  nWSdf <-
+    asNumericDF(nWS, 
+          ignore=1:2, Dates=3) 
+}
+```
+
+(The "ignore" argument in [`asNumericDF`](https://www.rdocumentation.org/packages/Ecfun/versions/0.2-0/topics/asNumericDF) forces that function to retain the data in those columns as is.  In this case, they should be of class "character".  Similarly, the "Dates" argument converts the indicated column to class "Date".)
+
+# Compute `firstTestYr` and `yearsSinceLastFirstTest` 
+
+```{r chk1}
+if(canWrite){
+  nmsNucWeapSt <- names(nWSdf)
+  if('firstTest' %in% nmsNucWeapSt){
+    firstTestYr <- lubridate::decimal_date(
+        nWSdf$firstTest) 
+    yearsSinceLastFirstTest <- c(NA, 
+      diff(firstTestYr) ) 
+  } else {
+    print(nmsNucWeapSt)
+    err <- paste("'firstTest' not in", 
+        "names(nuclearWeaponStates)")
+    stop(err)
+  }
+  
+  nuclearWeaponStates <- cbind(
+    nWSdf[, c('nation', 'ctry', 'firstTest')], 
+    firstTestYr = firstTestYr, 
+    yearsSinceLastFirstTest = 
+      yearsSinceLastFirstTest, 
+  nWSdf[, c('nuclearWeapons', 'nYieldNA', 
+      'nLowYield', 'nMidYield', 'nHighYield')]
+  )
+}
+```
+
+# number of `nuclearWeapons`
+
+Check the number of `nuclearWeapons`
+
+```{r nukes}
+if(canWrite){
+  nukes <- rowSums(nuclearWeaponStates[, 
+    c('nYieldNA', 'nLowYield', 'nMidYield',
+      'nHighYield')])
+  dnuk <- (nuclearWeaponStates[,
+      'nuclearWeapons'] - nukes)
+  if(length(oopsNuk <- which(dnuk != 0))>0){
+    cat('count errors.  bad rows =')
+    print(oopsNuk)
+  }
+}
+```
+
+# plot 
+
+```{r plot}
+if(canWrite){
+  data(nuclearWeaponStates)
+  plot(yearsSinceLastFirstTest~firstTest,
+       nuclearWeaponStates, las=1, 
+       type='h', xlab='', ylab='')
+  with(nuclearWeaponStates, 
+    text(firstTest, 
+        yearsSinceLastFirstTest, ctry))
+}
+```  
+
+... to svg 
+
+```{r svg}
+if(FALSE){
+  svg('Time2nextNuclearState.svg')
+  cex. <- 1.5
+  plot(yearsSinceLastFirstTest~firstTest,
+       nuclearWeaponStates, las=1, 
+       type='h', xlab='', ylab='',
+       cex.axis=cex.)
+  with(nuclearWeaponStates, 
+    text(firstTest, yearsSinceLastFirstTest,
+         ctry, cex=cex.))
+  dev.off()
+}
+```  
+
+# save 
+
+```{r save}
+if(canWrite){
+  cat('canWrite = TRUE')
+  save(nuclearWeaponStates, 
+       file='nuclearWeaponStates.rda')
+}
+```
+
+Then copy the *.rda file from the current working directory to "ecdat\data", and run "R CMD check" as usual.  

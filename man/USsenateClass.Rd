@@ -4,11 +4,11 @@
   Election Class given state and surname of a US Senator
 }
 \description{
-  For all indiviuals in \code{x} with \code{houseSenate} == 
-  "Senate", look up their \code{state} and \code{surname} 
-  in the reference table \code{senate} and return their 
-  \code{Class}.  For indivuals not found in \code{senate}, 
-  return \code{x[[district]]}.
+  For all individuals in \code{x} with \code{houseSenate} 
+  == "Senate", look up their \code{state} and 
+  \code{surname} in the reference table \code{senate} 
+  and return their \code{Class}.  For individuals not 
+  found in \code{senate}, return \code{x[[district]]}.
 
   Senate classes 1, 2 and 3 have their normal elections in 
   6-year cycles including 2000, 2002, and 2004 (or 2018, 
@@ -48,7 +48,7 @@ USsenateClass(x, senate=readUSsenate(),
   }
   \item{Office}{
     name of a character or factor variable \code{x} in 
-    which the members of the US Senate can be identifed by 
+    which the members of the US Senate can be identified by 
     \code{grep(senatePattern, x[, Office])}.
   }
   \item{state}{
@@ -60,7 +60,7 @@ USsenateClass(x, senate=readUSsenate(),
   \item{district}{
     name of a column of \code{x} containing the number of 
     the district in the US House.  For states with only one 
-    representataive, this may be 0.
+    representative, this may be 0.
   }
   \item{senatePattern}{
     a regular expression for identifying the senators from 
