@@ -26,35 +26,43 @@ dateCols(col.names, YMD=c('Year', 'Month', 'Day'))
 }
 \details{
   The data sets from the 
-  \href{http://correlatesofwar.org/data-sets/COW-war}{Correlates 
-  of War} project include dates coded in triples of columns with 
-  names like c("StartMonth1", "StartDay1", "StartYear1", "EndMonth1", 
-  ..., "EndYear2").  This function will find all relevant date 
-  triples in a character vector of column names and return a list 
-  of integer vectors of length 3 with names like "Start1", "End1", 
-  ..., "End2" giving the positions in \code{col.names} of the 
+  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  of War} project include dates coded in 
+  triples of columns with names like 
+  \code{c("StartMonth1", "StartDay1", 
+  "StartYear1", "EndMonth1", ..., "EndYear2")}.  
+  This function will find all relevant date 
+  triples in a character vector of column names 
+  and return a list of integer vectors of 
+  length 3 with names like 
+  \code{"Start1", "End1", ..., "End2"} giving 
+  the positions in \code{col.names} of the 
   desired date components.  
   
   Algorithm:  
   
-  1.  if(!is.null(colnames(YMD)))YMD <- colnames(YMD)
+  1.  \code{if(!is.null(colnames(YMD)))YMD <- 
+  colnames(YMD)}
   
-  2.  \code{ymd} <- \code{\link{grep}} for YMD (Year, Month, Day) 
-  in \code{col.names}.
+  2.  \code{ymd} <- \code{\link{grep}} for YMD 
+  (Year, Month, Day) in \code{col.names}.
   
-  3.  \code{groupNames} <- \code{\link{sub}} \code{pattern} with 
-  '' in \code{ymd}
+  3.  \code{groupNames} <- \code{\link{sub}} 
+  \code{pattern} with '' in \code{ymd}
   
-  4.  Throw a \code{\link{warning}} for any \code{groupNames} 
-  character string that does not appear with all three of Year, 
+  4.  Throw a \code{\link{warning}} for any 
+  \code{groupNames} character string that 
+  does not appear with all three of Year, 
   Month, and Day.  
   
-  5.  Return a list of integer vectors of length 3 for each 
-  triple found.  
+  5.  Return a list of integer vectors of 
+  length 3 for each triple found.  
 }
 \value{
-  Returns a named list of integer vectors of length 3 identifying 
-  the positions in \code{col.names} of the desired date components.  
+  Returns a named list of integer vectors 
+  of length 3 identifying the positions in 
+  \code{col.names} of the desired date 
+  components.  
 }
 \author{
   Spencer Graves
@@ -67,14 +75,17 @@ dateCols(col.names, YMD=c('Year', 'Month', 'Day'))
 ##
 ## 1.  character vector 
 ##
-colNames <- c('war', 'StartMonth1', 'StartDay1', 'StartYear1', 
-  'EndMonth1', 'EndMonth2', 'EndDay2', 'EndYear2', 'Initiator')
+colNames <- c('war', 'StartMonth1', 
+      'StartDay1', 'StartYear1', 
+      'EndMonth1', 'EndMonth2', 
+      'EndDay2', 'EndYear2', 'Initiator')
 
 colNums <- dateCols(colNames)
 # Should issue a warning:  
 # Warning message:
 # In dateCols(colNames) :
-#   number of matches for Year = 2 != number of matches for Month = 3
+#   number of matches for Year = 2 
+#   != number of matches for Month = 3
 
 # check 
 colN <- list(Start1=c(Year=4, Month=2, Day=3), 

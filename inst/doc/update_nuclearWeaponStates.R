@@ -6,26 +6,36 @@ library(Ecdat)
 availInPkg <- objects(2,
         pattern='nuclearWeaponStates')
 canWrite <- FALSE 
+(TempDir <- tempdir())
+# Write the name of TempDir so I can find it. 
+# Or set 
+# TempDir <- getwd()
+# for manual processing.
+
 if('nuclearWeaponStates' %in% availInPkg){
   data(nuclearWeaponStates)
+  TempFile <- file.path(TempDir, 
+                'nuclearWeaponStates.csv')
   canWr <- try(write.csv(nuclearWeaponStates, 
-            'nuclearWeaponStates.csv', 
-            row.names=FALSE))
+            TempFile, row.names=FALSE))
   if(!inherits(canWr, 'try-error')){
       canWrite <- TRUE
   }
 } 
 getwd()
+dir(TempDir)
 
 ## ----readCSV------------------------------------------------------------------
 library(Ecfun)
 if(canWrite){
-  nWS <- read.csv(
-    'nuclearWeaponStates.csv', 
-    stringsAsFactors = FALSE)
-  nWSdf <-
-    asNumericDF(nWS, 
-          ignore=1:2, Dates=3) 
+  nWS <- read.csv(TempFile, 
+              stringsAsFactors = FALSE)
+  igno <- c('nation', 'ctry', 'Maddison')
+  igno. <- (igno %in% names(nWS))
+  Dts <- c("firstTest", "startNucPgm")
+  Dts. <- (Dts %in% names(nWS))
+  nWSdf <-asNumericDF(nWS, 
+      ignore=igno[igno.], Dates=Dts[Dts.]) 
 }
 
 ## ----chk1---------------------------------------------------------------------
@@ -42,15 +52,19 @@ if(canWrite){
         "names(nuclearWeaponStates)")
     stop(err)
   }
-  
-  nuclearWeaponStates <- cbind(
-    nWSdf[, c('nation', 'ctry', 'firstTest')], 
-    firstTestYr = firstTestYr, 
-    yearsSinceLastFirstTest = 
-      yearsSinceLastFirstTest, 
-  nWSdf[, c('nuclearWeapons', 'nYieldNA', 
-      'nLowYield', 'nMidYield', 'nHighYield')]
-  )
+  nuclearWeaponStates <- nWSdf
+  nuclearWeaponStates$firstTestYr <- firstTestYr
+  if('startNucPgm' %in% nmsNucWeapSt){
+    startNucPgmYr <- lubridate::decimal_date(
+        nWSdf$startNucPgm) 
+    nuclearWeaponStates$startNucPgmYr <- startNucPgmYr
+  } 
+#  else {
+#    print(nmsNucWeapSt)
+#    err2 <- paste("'startNucPgm' not in", 
+#        "names(nuclearWeaponStates)")
+#    stop(err2)
+#  }
 }
 
 ## ----nukes--------------------------------------------------------------------

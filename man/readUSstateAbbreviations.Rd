@@ -41,7 +41,7 @@ readUSstateAbbreviations(url.=
 \value{
   \code{readUSstateAbbreviatons} returns a \code{data.frame} from the
   table in
-  \href{http://en.wikipedia.org/wiki/List_of_U.S._state_abbreviations}{the
+  \href{https://en.wikipedia.org/wiki/List_of_U.S._state_and_territory_abbreviations}{the
     Wikipedia article on "List of U.S. state abbreviations"}.
 }
 %\references{}

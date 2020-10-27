@@ -9,10 +9,11 @@
   Representatives.
 }
 \usage{
-readUShouse(url.="http://www.house.gov/representatives/",
-   nonvoting=c('American Samoa', 'District of Columbia',
-               'Guam', 'Northern Mariana Islands', 'Puerto Rico',
-               'Virgin Islands'),
+readUShouse(url.="https://www.house.gov/representatives/",
+   nonvoting=c('American Samoa', 
+    'District of Columbia', 'Guam', 
+    'Northern Mariana Islands', 'Puerto Rico',
+    'Virgin Islands'),
    fixNonStandard=subNonStandardNames, ...)
 }
 \arguments{

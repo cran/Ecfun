@@ -15,65 +15,85 @@
   not always be present in \code{vote}.
 }
 \usage{
-mergeVote(x, vote, Office="House", vote.x, check.x=TRUE)
+mergeVote(x, vote, Office="House", vote.x, 
+          check.x=TRUE)
 }
 \arguments{
   \item{x}{
-    a \code{\link{data.frame}} whose columns include \code{Office},
-    \code{surname}, and \code{givenName}.
+    a \code{\link{data.frame}} whose columns 
+    include \code{Office}, \code{surname}, and
+    \code{givenName}.
   }
   \item{vote}{
-    a \code{\link{data.frame}} with column names which when forced
-    \code{\link{tolower}} would match \code{surname}, \code{givenname},
-    and \code{vote}.  However, the \code{givenname} may not be
-    complete, so use it only if the \code{surname} is not sufficient.
+    a \code{\link{data.frame}} with column names
+    which when forced \code{\link{tolower}} would
+    match \code{surname}, \code{givenname},
+    and \code{vote}.  However, the 
+    \code{givenname} may not be complete, so use 
+    it only if the \code{surname} is not 
+    sufficient.
   }
   \item{Office}{
-    Either "House" or "Senate";  ignored if \code{vote} includes a column
-    \code{Office}.
+    Either "House" or "Senate";  ignored if
+    \code{vote} includes a column \code{Office}.
   }
   \item{vote.x}{
-    name of a column of \code{x} containing a vote to be updated with
-    the \code{vote} column of the \code{vote} \code{\link{data.frame}}.
-    If \code{\link{missing}} and \code{x} has a column with a name
-    matching "vote", then \code{vote.x} is that column.  If
-    \code{\link{missing}} but \code{x} has no such column, then append a
-    column to \code{x} with the name of the \code{vote} column of the
+    name of a column of \code{x} containing a vote
+    to be updated with the \code{vote} column of 
+    the \code{vote} \code{\link{data.frame}}.
+    If \code{\link{missing}} and \code{x} has a
+    column with a name matching "vote", then
+    \code{vote.x} is that column.  If 
+    \code{\link{missing}} but \code{x} has no such
+    column, then append a column to \code{x} with
+    the name of the \code{vote} column of the
     \code{vote} \code{\link{data.frame}}.
   }
   \item{check.x}{
-    logical:  If TRUE, check for rows of \code{x[, vote.x]} that are NOT
-    in \code{vote} and throw an error if found.
+    logical:  If TRUE, check for rows of 
+    \code{x[, vote.x]} that are NOT in 
+    \code{vote} and throw an error if found.
   }
 }
 \details{
-  1.  Parse \code{vote.x} to get the name of the column of \code{x} into
-  which to write the \code{vote} column of the \code{vote}
+  1.  Parse \code{vote.x} to get the name of 
+  the column of \code{x} into which to write 
+  the \code{vote} column of the \code{vote}
   \code{\link{data.frame}}.
 
-  2.  If the \code{vote} \code{\link{data.frame}} contains a column
-  \code{Office}, ignore the \code{Office} argument.  Otherwise, add the
-  argument \code{houseSenate} as a column of \code{vote}.
+  2.  If the \code{vote} \code{\link{data.frame}} 
+  contains a column \code{Office}, ignore the
+  \code{Office} argument.  Otherwise, add the
+  argument \code{houseSenate} as a column of
+  \code{vote}.
 
-  3. Create \code{keyx <- with(x, paste(Office, surname, sep=":"))},
-  \code{keyx2 <- paste(keyx, givenName, sep=":")}, \code{keyx. <-
-  paste(houseSenate, state, district, sep=":")}, and similarly
-  \code{keyv}, \code{leyv2}, and \code{keyv.} from \code{vote}.
+  3. Create \code{keyx <- with(x, paste(Office, 
+  surname, sep=":"))}, 
+  \code{keyx2 <- paste(keyx, givenName, sep=":")},
+  \code{keyx. <-
+  paste(houseSenate, state, district, sep=":")}, 
+  and similarly \code{keyv}, \code{leyv2}, and
+  \code{keyv.} from \code{vote}.
 
-  4.  Look for \code{keyv} in \code{keyx}.  When a unique match is
-  found, transfer the vote the \code{vote} column of \code{x}.  When no
-  match is found, try for \code{keyv2} in \code{keyx2} or \code{keyv.}
-  in \code{keyx.}  If those fail, print an error message with the
-  information from \code{vote} on all failures and ask the user to add
-  \code{state} and \code{district} information.
+  4.  Look for \code{keyv} in \code{keyx}.  When a
+  unique match is found, transfer the vote the
+  \code{vote} column of \code{x}.  When no
+  match is found, try for \code{keyv2} in 
+  \code{keyx2} or \code{keyv.} in \code{keyx.}  
+  If those fail, print an error message with the
+  information from \code{vote} on all failures 
+  and ask the user to add \code{state} and 
+  \code{district} information.
 
-  5. \code{if(check.x)}, check for rows in \code{x[, vote.x]} that are
-  NOT "notEligible" but are also not in \code{vote}:  Throw an error if
-  any are found.
+  5. \code{if(check.x)}, check for rows in 
+  \code{x[, vote.x]} that are NOT 
+  \code{notEligible} but are also not in 
+  \code{vote}:  Throw an error if any are found.
 }
 \value{
-  a \code{\link{data.frame}} with the same columns as \code{x} with its
-  vote column modified per the \code{vote} argument.
+  a \code{\link{data.frame}} with the same 
+  columns as \code{x} with its vote column 
+  modified per the \code{vote} argument.
 }
 \author{
   Spencer Graves

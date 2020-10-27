@@ -4,41 +4,60 @@
   banking crisis data and function to read financial crisis files
 }
 \description{
-  Read financial crisis data in files described by an object of 
-  class \code{\link{financialCrisisFiles}}.  This is designed to 
-  read Excel files describing financial crises since 1800 
-  downloaded from
+  DELETED FUNCTION TO:  
+  Read financial crisis data in files described by an
+  object of class \code{financialCrisisFiles}. 
+  This was designed to read Excel files describing
+  financial crises since 1800 downloaded from
   \url{http://www.reinhartandrogoff.com/data/browse-by-topic/topics/7/}.
 
   \code{bankingCrises} is a \code{data.frame} created by
-  \code{readFinancialCrisisFiles()} using 3 files downloaded 
-  from \url{http://www.reinhartandrogoff.com} and 1 obtained 
-  from Prof. Reinhart in January 2013.
+  \code{readFinancialCrisisFiles()} using 3 files
+  downloaded from \url{http://www.reinhartandrogoff.com}
+  and 1 obtained from Prof. Reinhart in January 2013.
+  
+  THIS FUNCTION HAS BEEN MADE INOPERATIVE, BECAUSE 
+  IT REQUIRED THE \code{gdata} PACKAGE, WHICH WAS
+  SCHEDULED TO BE REMOVED FROM CRAN.  IF THAT 
+  HAPPENED, \code{Ecfun} would also be removed, 
+  and it wasn't clear that it was worth the effort 
+  to rewrite it so it worked without \code{gdata}.  
+  If you need it please either get it from a version
+  that has it, e.g., \code{Ecfun 0.2-2} and fix it
+  or write to the \code{Ecfun} maintainer, and 
+  ask that it be fixed.  It's not clear that 
+  Reinhart and Rogoff are maintaining their 
+  data set.  If not, this function should not be 
+  needed.  
+  
+  THIS HELP PAGE WILL LIKELY BE DELETED FROM A 
+  FUTURE VERSION OF \code{Ecfun}.  2020-10-26.  
 }
 \usage{
 readFinancialCrisisFiles(files, crisisType=7, ...)
 }
 \arguments{
   \item{files}{
-    an object of class \code{\link{financialCrisisFiles}}.
+    an object of class \code{financialCrisisFiles}.
   }
   \item{crisisType}{
-    an integer (vector) between 1 and 8 indicating the type 
-    of data to be retrieved:  1=independence year (not a 
-    crisis but an indicator), 2=currency, 3=inflation, 4=stock 
-    market, 5=domestic sovereign debt crisis, 6=external 
-    sovereign debt crisis, 7=banking, 8=tally.  ("Type" 1 = 
-    year.)  These are all 0 or 1 indicating the presence of
-    the event in the given year.  Type 8 = sum of types 2 
-    through 7.
+    an integer (vector) between 1 and 8 indicating the
+    type of data to be retrieved:  1=independence year
+    (not a crisis but an indicator), 2=currency, 
+    3=inflation, 4=stock market, 5=domestic sovereign 
+    debt crisis, 6=external sovereign debt crisis, 
+    7=banking, 8=tally.  ("Type" 1 = year.)  These are 
+    all 0 or 1 indicating the presence of the event in 
+    the given year.  Type 8 = sum of types 2 through 7.
   }
   \item{\dots}{
     arguments to pass with file and sheet name to
-    \code{\link[gdata]{read.xls}} when reading a sheet of an 
-    MS Excel file.  This is assumed to be the same for all 
-    sheets of all files.  If this is not the case, the 
-    resulting \code{financialCrisisFiles} object will have to 
-    be edited manually before using it to read the data.
+    \code{\link[gdata]{read.xls}} when reading a sheet 
+    of an MS Excel file.  This is assumed to be the same
+    for all sheets of all files.  If this is not the 
+    case, the resulting \code{financialCrisisFiles} 
+    object will have to be edited manually before using 
+    it to read the data.
   }
 }
 \details{
@@ -62,7 +81,7 @@ readFinancialCrisisFiles(files, crisisType=7, ...)
   which an interested user may wish to consult and 
   compare with the data as of 2015-04-19, cited above.  
   
-  The function \code{\link{financialCrisisFiles}} 
+  The function \code{financialCrisisFiles}
   produces a list of class \code{financialCrisisFiles}
   describing different Excel files in very similar 
   formats with one sheet per Country and a few extra 
@@ -81,8 +100,9 @@ readFinancialCrisisFiles(files, crisisType=7, ...)
   column containing the data for that 
   \code{crisisType} for each country.
 
-  If length(crisisType) > 1, a list is returned containing a 
-  data.frame for each country.
+  If \code{length(crisisType)} > 1, a list is
+  returned containing a \code{data.frame} for 
+  each country.
 }
 \references{
   Carmen M. Reinhart and Kenneth S. Rogoff (2009) This Time 
@@ -90,10 +110,8 @@ readFinancialCrisisFiles(files, crisisType=7, ...)
   U. Pr.
 }
 \author{Spencer Graves}
-\seealso{
-  \code{\link[gdata]{read.xls}}
-  \code{\link{financialCrisisFiles}}
-}
+%\seealso{\code{\link[gdata]{read.xls}},
+% \code{\link{financialCrisisFiles}} }
 \examples{
 ##
 ## Recreate / update the data object BankingCrises
@@ -102,16 +120,16 @@ library(Ecdat)
 %data(FinancialCrisisFiles)
 \dontrun{
 bankingCrises <- readFinancialCrisisFiles(FinancialCrisisFiles)
-}
 
 ##
 ## Toy example using local data to check the code
-## and illustrate returning all the data not just one crisisType
+## and illustrate returning all the data not just one
+## crisisType
 ##
 Ecdat.demoFiles <- system.file('demoFiles', package='Ecdat')
 Ecdat.xls <- dir(Ecdat.demoFiles, pattern='xls$',
                  full.names=TRUE)
-if(require(gdata)){
+if(FALSE){
   tst <- financialCrisisFiles(Ecdat.xls)
 
 # optional tests if not CRAN   
@@ -138,6 +156,7 @@ all.equal(bankingCrises.tst,
    bankingCrises[1:200, c('year', 'Algeria', 'CentralAfricanRep',
                            'Taiwan', 'UK')])
 \dontshow{)}
+}
 }
 }
 }

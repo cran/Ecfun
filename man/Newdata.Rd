@@ -10,23 +10,27 @@
   \code{range(data[,x])} and all other columns 
   constant.  
 
-  If \code{\link{canbeNumeric}}(x) is TRUE, the output 
-  with has \code{x} adopting \code{n} values in the 
-  \code{\link{range}}(x) and all other numeric 
-  variables at their \code{\link{median}} and other
-  variables at their most common values.  
+  If \code{\link{canbeNumeric}}(x) is \code{TRUE}, 
+  the output has \code{x} adopting \code{n} 
+  values in the \code{\link{range}}(x) and all 
+  other numeric variables at their 
+  \code{\link{median}} and other variables at 
+  their most common values.  
 
-  If \code{\link{canbeNumeric}}(x) is FALSE, the output 
-  with has \code{x} adopting all possible values of 
-  \code{x} with all other variables at the same 
-  constant values as when \code{\link{canbeNumeric}}(x) 
-  is TRUE (and \code{n} is ignored).  If \code{x} has a 
-  \code{\link{levels}} attribute, the possible values 
-  are defined by that \code{\link{levels}} attribute.  
-  Otherwise, it is defined by \code{\link{unique}}(x).  
+  If \code{\link{canbeNumeric}}(x) is \code{FALSE}, 
+  the output has \code{x} adopting all possible
+  values of \code{x} with all other variables at 
+  the same constant values as when 
+  \code{\link{canbeNumeric}}(x) is \code{TRUE} (and
+  \code{n} is ignored).  If \code{x} has a 
+  \code{\link{levels}} attribute, the possible
+  values are defined by that \code{\link{levels}}
+  attribute.  Otherwise, it is defined by 
+  \code{\link{unique}}(x).  
 
-  This is designed to create a new \code{\link{data.frame}}
-  to be used as \code{newdata} for \code{\link{predict}}.  
+  This is designed to create a new 
+  \code{\link{data.frame}} to be used as 
+  \code{newdata} for \code{\link{predict}}.  
 }
 \usage{
 Newdata(data, x, n, na.rm=TRUE)
@@ -36,24 +40,26 @@ Newdata(data, x, n, na.rm=TRUE)
     a \code{\link{data.frame}} or matrix.  
   }
   \item{x}{
-    name of a column of \code{data}.  If \code{NA} or 
-    \code{NULL}, select all columns of \code{data}.  
+    name of a column of \code{data}.  If 
+    \code{NA} or \code{NULL}, select all columns 
+    of \code{data}.  
   }
   \item{n}{
     an \code{\link{integer}} vector indicating 
     the number of levels of \code{data[, x]} if 
     \code{canbeNumeric(datat[, x])}.  If 
-    \code{canbeNumeric(datat[, x])} is \code{FALSE}, 
-    take at most \code{n} of the most popular levels.    
+    \code{canbeNumeric(datat[, x])} is 
+    \code{FALSE}, take at most \code{n} of the 
+    most popular levels.    
     
     Default is 2 if \code{length(x)} > 1 or if 
-    \code{x} is either NA or NULL.  
+    \code{x} is either \code{NA} or \code{NULL}.  
     
-    If n = 1, use the median for 
+    If \code{n} = 1, use the median for 
     \code{canbeNumeric} and the most popular level
     otherwise.  
     
-    If n < 1, drop that variable.  
+    If \code{n} < 1, drop that variable.  
   }
   \item{na.rm}{
     \code{\link{logical}} passed to 
@@ -61,23 +67,26 @@ Newdata(data, x, n, na.rm=TRUE)
   }
 }
 \details{
-  1.  Check data, x.  
+  1.  Check \code{data, x}.  
 
-  2.  If \code{\link{canbeNumeric}}(x) is TRUE, 
-  let \code{xNew} be \code{n} values spanning 
-  \code{\link{range}}(x).  Else, let 
+  2.  If \code{\link{canbeNumeric}}(x) is 
+  \code{TRUE}, let \code{xNew} be \code{n} 
+  values spanning \code{\link{range}}(x).  Else, 
+  let 
   \code{xNew} <- \code{\link{levels}}(x).  
   
-  3.  If \code{\link{is.null}}(xNew), set it to 
+  3.  If \code{\link{is.null}}(\code{xNew}), set 
+  it to 
   \code{\link{sort}}(\code{\link{unique}}(x)).  
   
-  4.  let newDat <- data[rep(1, n), ], and 
-  replace \code{x} by xNew.  
+  4.  let \code{newDat <- data[rep(1, n), ]}, 
+  and replace \code{x} by \code{xNew}.  
 
-  5.  otherVars <- colnames(data) != x
+  5.  \code{otherVars <- colnames(data) != x}
 
-  6.  for(x2 in otherVars){replace newDat[, x2]:  
-  If \code{\link{canbeNumeric}}(x2) is TRUE, 
+  6.  \code{for(x2 in otherVars)} 
+  {replace \code{newDat[, x2]}:  
+  If \code{\link{canbeNumeric}}(x2) is \code{TRUE}, 
   use \code{\link{median}}(x2).  Otherwise, 
   use its (first) most common value.}  
 }

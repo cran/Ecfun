@@ -4,18 +4,20 @@
   Date from a number of days since the start of 1970.
 }
 \description{
-  \code{as.Date.numeric} requires orgin to be specified.  The present
-  function assumes that this origin is January 1, 1970.
+  \code{as.Date.numeric} requires \code{origin} 
+  to be specified.  The present function 
+  assumes that this origin is January 1, 1970.
 }
 \usage{
 as.Date1970(x, ...)
 }
 \arguments{
   \item{x}{
-    a numeric vector of dates in days since the start of 1970.
+    a numeric vector of dates in days since the 
+    start of 1970.
   }
   \item{\dots}{
-    optional arguments to pass to as.Date.
+    optional arguments to pass to \code{as.Date}.
   }
 }
 %\details{}

@@ -1,52 +1,57 @@
 \name{createMessage}
 \alias{createMessage}
 \title{
-  Compose a message as a single substring from a character vector 
+  Compose a message as a single substring from 
+  a character vector 
 }
 \description{
-  This is a utility function to make it easier to automatically 
-  compose informative error and warning messages without 
-  using too many characters.  
+  This is a utility function to make it easier 
+  to automatically compose informative error 
+  and warning messages without using too many 
+  characters.  
 }
 \usage{
-createMessage(x, width.cutoff=45, default='x', collapse='; ', 
-              endchars='...')
+createMessage(x, width.cutoff=45, default='x', 
+      collapse='; ', endchars='...')
 }
 \arguments{
   \item{x}{
     input for \code{\link{paste}}
   }
   \item{width.cutoff}{
-    maximum number of characters from x to return 
-    in a single string.  This differs from the \code{width.cutoff}
-    argument in \code{\link{deparse}} in that the output include
-    here considers \code{endchars}, not part of 
-    \code{\link{deparse}}.  
+    maximum number of characters from x to 
+    return in a single string.  This differs 
+    from the \code{width.cutoff} argument in 
+    \code{\link{deparse}} in that the output 
+    included here considers \code{endchars}, 
+    not part of \code{\link{deparse}}.  
   }
   \item{default}{
-    character string to return if nchar(x) = 0.  
+    character string to return if 
+    \code{nchar(x)} = 0.  
   }
   \item{collapse}{
-    \code{collapse} argument for \code{\link{paste}} 
+    \code{collapse} argument for 
+    \code{\link{paste}} 
   }
   \item{endchars}{
-    a character string to indicate that part of the 
-    input string(s) was truncated.      
+    a character string to indicate that part 
+    of the input string(s) was truncated.      
   }
 }
 \details{
-  x. <- paste(..., collapse='; ')
+  \code{x. <- paste(..., collapse='; ')
   nchx <- nchar(x.)
-  maxch <- (maxchar-nchar(endchar))
+  maxch <- (maxchar-nchar(endchars))
   if(nchx>maxch){
     x2 <- substring(x., 1, maxch)
     x. <- paste0(x2, endchar)
-  }
+  }}
 }
 %\source{ }
 \value{
-  a character string with at most \code{width.cutoff} 
-  characters.  
+  a character string with at most 
+  \code{width.cutoff} characters.  
 }
 %\references{}
 \author{Spencer Graves}

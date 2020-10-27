@@ -19,12 +19,12 @@
   particular, the class of that seat does not change.
 
   For example, 
-  \href{http://en.wikipedia.org/wiki/Jim_DeMint}{South
+  \href{https://en.wikipedia.org/wiki/Jim_DeMint}{South
     Carolina Senator Jim DeMint} resigned effective 
   January 1, 2013. 
-  \href{http://en.wikipedia.org/wiki/Nikki_Haley}{South 
+  \href{https://en.wikipedia.org/wiki/Nikki_Haley}{South 
     Carolina Governor Nikki Haley} appointed
-  \href{http://en.wikipedia.org/wiki/Tim_Scott}{Tim Scott} 
+  \href{https://en.wikipedia.org/wiki/Tim_Scott}{Tim Scott} 
   to serve until a special election in 2014.  This is a 
   Class 3 seat, which means that another election for that 
   seat would occur in 2016.

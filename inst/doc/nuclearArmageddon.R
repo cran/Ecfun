@@ -47,6 +47,8 @@ theta <- (1/lambdaHat + seq(-.016, .06, .004))
 (logLR2_th <- 2*(logLk(lambdaHat) - logLk(1/theta)))
 
 ## ----plot_u-------------------------------------------------------------------
+makePlots <- FALSE 
+
 library(grDevices)
 outType <- ''
 #outType = 'png'
@@ -67,58 +69,62 @@ logLR2_u. <- 2*(logLk(lambdaHat) - logLk(lam.))
 head(logLR2_u., 1)
 tail(logLR2_u., 1)
 
-plot(lam., logLR2_u., type='l', bty='n', log='x', 
+if(makePlots){
+  plot(lam., logLR2_u., type='l', bty='n', log='x', 
      xlab='', ylab='', las=1, axes=FALSE, lwd=2)
-axis(1, padj=-1)
-axis(2, las=1)
+  axis(1, padj=-1)
+  axis(2, las=1)
 
 # xlab = \lambda:  
 # Greek letters did not render in GIMP 2.10.8 on 2018-12-30, 
 # so don't use svg until this is fixed.  
-switch(outType, 
+  switch(outType, 
 # cex doesn't work properly with svg > GIMP 
 # Therefore, I can NOT use svg
-  svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
-  png={cex2 <- 2; mtext(expression(lambda), 1, 1.6, cex=cex2)}, 
-   {cex2 <- 1.3; mtext(expression(lambda), 1, 1.6, cex=cex2)}
-)
+    svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
+    png={cex2 <- 2; mtext(expression(lambda), 1, 
+                        1.6, cex=cex2)}, 
+    {cex2 <- 1.3; mtext(expression(lambda), 1, 
+                       1.6, cex=cex2)}
+  )
 
-lamTicks <- axTicks(1)
-thTicks <- 1/lamTicks
-axis(1, lamTicks, thTicks, line=3, padj=-1)
-switch(outType, 
+  lamTicks <- axTicks(1)
+  thTicks <- 1/lamTicks
+  axis(1, lamTicks, thTicks, line=3, padj=-1)
+  switch(outType, 
     svg=mtext('theta == 1/lambda', 1, 4.9, cex=cex2), 
     mtext(expression(theta == 1/lambda), 1, 4.9, cex=cex2)
-)
+  )
 
-abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
+  abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
        lwd=2)
-(CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
-text(lambdaHat, chisq2[1], 
+  (CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
+  text(lambdaHat, chisq2[1], 
      paste0('80% CI =\n(', 
        paste(round(CI.8), collapse=', '), ')'), 
      cex=cex2)
 
-(CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
-text(lambdaHat, chisq2[2], 
+  (CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
+  text(lambdaHat, chisq2[2], 
      paste0('95% CI =\n(', 
        paste(round(CI.95), collapse=', '), ')'), 
      cex=cex2)
-abline(v=CI.8, col='red', lty='dotted', lwd=2)
-abline(v=CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=CI.95, col='red', lty='dashed', lwd=2)
 
-(CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
-text(lambdaHat, chisq2[3], 
+  (CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
+  text(lambdaHat, chisq2[3], 
      paste0('99% CI =\n(', 
        paste(round(CI.99), collapse=', '), ')'), 
      cex=cex2)
 
-abline(v=CI.8, col='red', lty='dotted', lwd=2)
-abline(v=CI.95, col='red', lty='dashed', lwd=2)
-abline(v=CI.99, col='red', lty='dashed', lwd=2)
-if(outType != '')dev.off()
+  abline(v=CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=CI.99, col='red', lty='dashed', lwd=2)
+  if(outType != '')dev.off()
 
-par(op)
+  par(op)
+}
 
 ## ----plot_lin-----------------------------------------------------------------
 # copy the code from the last snippet 
@@ -138,61 +144,64 @@ logLR2_u. <- 2*(logLk(lambdaHat) - logLk(lam.))
 head(logLR2_u., 1)
 tail(logLR2_u., 1)
 
-plot(lam., logLR2_u., type='l', bty='n', 
+if(makePlots){
+  plot(lam., logLR2_u., type='l', bty='n', 
      xlab='', ylab='', las=1, axes=FALSE, lwd=2)
-axis(1, padj=-1)
-axis(2, las=1)
+  axis(1, padj=-1)
+  axis(2, las=1)
 
 # xlab = \lambda:  
 # Greek letters did not render in GIMP 2.10.8 on 2018-12-30, 
 # so don't use svg until this is fixed.  
-switch(outType, 
+  switch(outType, 
 # cex doesn't work properly with svg > GIMP 
 # Therefore, I can NOT use svg
-  svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
-  png={cex2 <- 2; mtext(expression(lambda), 1, 1.6, cex=cex2)}, 
-   {cex2 <- 1.3; mtext(expression(lambda), 1, 1.6, cex=cex2)}
-)
+    svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
+    png={cex2 <- 2; mtext(expression(lambda), 1, 
+                          1.6, cex=cex2)}, 
+    {cex2 <- 1.3; mtext(expression(lambda), 1, 
+                        1.6, cex=cex2)}
+  )
 
-lamTicks <- axTicks(1)
-thTicks <- 1/lamTicks
-axis(1, lamTicks, thTicks, line=3, padj=-1)
-switch(outType, 
+  lamTicks <- axTicks(1)
+  thTicks <- 1/lamTicks
+  axis(1, lamTicks, thTicks, line=3, padj=-1)
+  switch(outType, 
     svg=mtext('theta == 1/lambda', 1, 4.9, cex=cex2), 
     mtext(expression(theta == 1/lambda), 1, 4.9, cex=cex2)
-)
+  )
 
-abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
+  abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
        lwd=2)
-(CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
+  (CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
 #text(lambdaHat, chisq2[1], 
-text(400, chisq2[1], 
+  text(400, chisq2[1], 
       paste0('80% CI =\n(', 
        paste(round(CI.8), collapse=', '), ')'), 
      cex=cex2)
 
-(CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
+  (CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
 #text(lambdaHat, chisq2[2], 
-text(800, chisq2[2], 
+  text(800, chisq2[2], 
      paste0('95% CI =\n(', 
        paste(round(CI.95), collapse=', '), ')'), 
      cex=cex2)
-abline(v=CI.8, col='red', lty='dotted', lwd=2)
-abline(v=CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=CI.95, col='red', lty='dashed', lwd=2)
 
-(CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
+  (CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
 #text(lambdaHat, chisq2[3], 
-text(3000, chisq2[3],      
+  text(3000, chisq2[3],      
      paste0('99% CI =\n(', 
        paste(round(CI.99), collapse=', '), ')'), 
      cex=cex2)
 
-abline(v=CI.8, col='red', lty='dotted', lwd=2)
-abline(v=CI.95, col='red', lty='dashed', lwd=2)
-abline(v=CI.99, col='red', lty='dashed', lwd=2)
+  abline(v=CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=CI.99, col='red', lty='dashed', lwd=2)
 
-if(outType != '')dev.off()
-
+  if(outType != '')dev.off()
+}
 par(op)
 
 ## ----plot_inverse-------------------------------------------------------------
@@ -209,69 +218,74 @@ logLR2_u. <- 2*(logLk(lambdaHat) - logLk(lam.))
 head(logLR2_u., 1)
 tail(logLR2_u., 1)
 
-plot(-1/lam., logLR2_u., type='l', bty='n', 
+if(makePlots){
+  plot(-1/lam., logLR2_u., type='l', bty='n', 
      xlab='', ylab='', las=1, axes=FALSE, lwd=2)
 
-thTicks <- (-axTicks(1))
-axis(1, -thTicks, abs(1/thTicks), padj=-1)
-axis(2, las=1)
+  thTicks <- (-axTicks(1))
+  axis(1, -thTicks, abs(1/thTicks), padj=-1)
+  axis(2, las=1)
 
 # xlab = \lambda:  
 # Greek letters did not render in GIMP 2.10.8 on 2018-12-30, 
 # so don't use svg until this is fixed.  
-switch(outType, 
+  switch(outType, 
 # cex doesn't work properly with svg > GIMP 
 # Therefore, I can NOT use svg
-  svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
-  png={cex2 <- 2; mtext(expression(lambda), 1, 1.6, cex=cex2)}, 
-   {cex2 <- 1.3; mtext(expression(lambda), 1, 1.6, cex=cex2)}
-)
+    svg={cex2 <- 2; mtext('lambda', 1, 1.6, cex=cex2)}, 
+    png={cex2 <- 2; mtext(expression(lambda), 1, 
+                          1.6, cex=cex2)}, 
+    {cex2 <- 1.3; mtext(expression(lambda), 1, 
+                        1.6, cex=cex2)}
+  )
 
-axis(1, -thTicks, thTicks, line=3, padj=-1)
-switch(outType, 
+  axis(1, -thTicks, thTicks, line=3, padj=-1)
+  switch(outType, 
     svg=mtext('theta == 1/lambda', 1, 4.9, cex=cex2), 
     mtext(expression(theta == 1/lambda), 1, 4.9, cex=cex2)
-)
+  )
 
-abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
+  abline(h=chisq2, col='red', lty=c('dotted', 'dashed'), 
        lwd=2)
-(CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
+  (CI.8 <- range(lam.[logLR2_u. <= chisq2[1]]))
 #text(lambdaHat, chisq2[1], 
-text(-.02, chisq2[1], 
+  text(-.02, chisq2[1], 
       paste0('80% CI =\n(', 
        paste(round(CI.8), collapse=', '), ')'), 
      cex=cex2)
 
-(CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
+  (CI.95 <- range(lam.[logLR2_u. <= chisq2[2]]))
 #text(lambdaHat, chisq2[2], 
-text(-.04, chisq2[2], 
+  text(-.04, chisq2[2], 
      paste0('95% CI =\n(', 
        paste(round(CI.95), collapse=', '), ')'), 
      cex=cex2)
-abline(v=CI.8, col='red', lty='dotted', lwd=2)
-abline(v=CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=CI.95, col='red', lty='dashed', lwd=2)
 
-(CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
+  (CI.99 <- range(lam.[logLR2_u. <= chisq2[3]]))
 #text(lambdaHat, chisq2[3], 
-text(-.06, chisq2[3],      
+  text(-.06, chisq2[3],      
      paste0('99% CI =\n(', 
        paste(round(CI.99), collapse=', '), ')'), 
      cex=cex2)
 
-abline(v=-1/CI.8, col='red', lty='dotted', lwd=2)
-abline(v=-1/CI.95, col='red', lty='dashed', lwd=2)
-abline(v=-1/CI.99, col='red', lty='dashed', lwd=2)
+  abline(v=-1/CI.8, col='red', lty='dotted', lwd=2)
+  abline(v=-1/CI.95, col='red', lty='dashed', lwd=2)
+  abline(v=-1/CI.99, col='red', lty='dashed', lwd=2)
 
-if(outType != '')dev.off()
-
+  if(outType != '')dev.off()
+}
 par(op)
 
 ## ----simExp-------------------------------------------------------------------
 set.seed(1)
 simExp <- rexp(1000)
-qqnorm(simExp, datax=TRUE)
-qqnorm(simExp, datax=TRUE, log='x')
-qqnorm(1/simExp, datax=TRUE)
+if(makePlots){
+  qqnorm(simExp, datax=TRUE)
+  qqnorm(simExp, datax=TRUE, log='x')
+  qqnorm(1/simExp, datax=TRUE)
+}
 
 ## ----rlam---------------------------------------------------------------------
 library(invgamma)
@@ -413,50 +427,52 @@ switch(outType,
        png=png('yrs2ArmageddonQQ.png', 960, 960)
 )
 op <- par(mar=c(5, 5, 4, 5)+.1)
-with(qq7, plot(y[index], x[index], type='l', 
+
+if(makePlots){
+  with(qq7, plot(y[index], x[index], type='l', 
                log='x', las=1, bty='n', lwd=2, 
                xlab='', ylab='', 
                cex.lab=2, axes=FALSE) )
 #               xlab='years to Armageddon', 
 #               ylab='standard normal scores', 
-axis(1, cex.axis=2)
-axis(2, cex.axis=2, las=1)
-probs <- c(.001, .01, .1, .25, .5, .75, 
+  axis(1, cex.axis=2)
+  axis(2, cex.axis=2, las=1)
+  probs <- c(.001, .01, .1, .25, .5, .75, 
            .9, .99, .999)
-z <- qnorm(probs)
-if(outType==''){
-  cex.txt <- 1.5 
-  cex.ax4 <- 1.3
-} else {
-  cex.txt <- 3
-  cex.ax4 <- 2
-}
+  z <- qnorm(probs)
+  if(outType==''){
+    cex.txt <- 1.5 
+    cex.ax4 <- 1.3
+  } else {
+    cex.txt <- 3
+    cex.ax4 <- 2
+  }
 
-axis(4, z, probs, cex.axis=cex.ax4, 
+  axis(4, z, probs, cex.axis=cex.ax4, 
      las=1, line=-.5)
 
-p40 <- mean(mcArm.s<40)
-p60 <- mean(mcArm.s<60)
-z40.60 <- qnorm(c(p40, p60))
-max7 <- tail(mcArm.s, 1)
+  p40 <- mean(mcArm.s<40)
+  p60 <- mean(mcArm.s<60)
+  z40.60 <- qnorm(c(p40, p60))
+  max7 <- tail(mcArm.s, 1)
 
-lines(c(rep(40, 2), max7), 
+  lines(c(rep(40, 2), max7), 
       c(-5, rep(z40.60[1], 2)), 
       lty='dotted', lwd=2, col='red')
-lines(c(rep(60, 2), max7), 
+  lines(c(rep(60, 2), max7), 
       c(-5, rep(z40.60[2], 2)), 
       lty='dashed', lwd=2, col='purple')
 
-text(15, -5, '40', col='red', cex=cex.txt)
-text(200, -2.5, '60', col='purple', cex=cex.txt)
+  text(15, -5, '40', col='red', cex=cex.txt)
+  text(200, -2.5, '60', col='purple', cex=cex.txt)
 
-text(.2*max7, z40.60[1]-.6, 
+  text(.2*max7, z40.60[1]-.6, 
      paste0(round(100*p40), "%"), cex=cex.txt, 
      col='red')
-text(.2*max7, z40.60[2]+.6, 
+  text(.2*max7, z40.60[2]+.6, 
      paste0(round(100*p60), "%"), cex=cex.txt, 
      col='purple')
-
+}
 par(op)
 if(outType != '')dev.off()
 

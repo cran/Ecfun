@@ -10,7 +10,8 @@
   commas (thousand separators) and drop
   information after a blank (other than
   leading blanks), then coerce to numeric or
-  to factors, Dates, or POSIXct as desired.
+  to factors, \code{Dates}, or 
+  \code{POSIXct} as desired.
   
   For a \code{\link{data.frame}}, apply 
   \code{asNumericChar} to all columns and
@@ -124,17 +125,7 @@ asNumericDF(x, keep=
     integer numbers of days since 
     1899-12-31.  \href{https://support.office.com/en-us/article/Add-sum-or-subtract-dates-9818b3f7-aa67-4008-8dff-3c3b503886af?ui=en-US&rs=en-US&ad=US}{In 
     Microsoft Excel, dates are stored in
-    that format}.  Tests on 2016-08-10
-    revealed that 
-    \code{\link[gdata]{read.xls}} did not 
-    read those dates properly (using gdata
-    version 2.17.0), while 
-    \code{\link[openxlsx]{read.xlsx}}
-    read them as integers using openxlsx 
-    3.0.0. This capability will convert
-    those integers to Dates using 
-    \code{as.Date(., origin = 
-    as.Date('1899-12-31'))}.  
+    that format}.  
   }
   \item{leadingChar}{
     A regular expression passed to 
@@ -146,7 +137,7 @@ asNumericDF(x, keep=
   \item{suppressChar}{
     a regular expression passed to 
     \code{\link{gsub}} to replace all 
-    occurrances of something like "," (a 
+    occurrences of something like "," (a 
     thousands separator in the U.S.) with 
     \code{character(0)}.  
   }
@@ -166,13 +157,13 @@ For \code{asNumericChar}:
 
   1.  Replace commas by nothing
 
-  2.  strsplit on ' ' and take only the
-  first part, thereby eliminating the
+  2.  \code{strsplit} on ' ' and take only 
+  the first part, thereby eliminating the
   footnote references.
 
   3.  Replace any blanks with NAs
 
-  4.  as.numeric
+  4.  \code{as.numeric}
 
 for \code{asNumericDF}:  
 

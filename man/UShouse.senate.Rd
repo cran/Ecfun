@@ -4,18 +4,20 @@
   Create a list of members of the US House and Senate
 }
 \description{
-NOTE:  THIS FUNCTION IS CURRENTLY UNAVAILABLE: A CALL TO 
-"RCurl::getURL" THAT RETURNED INFO ON ALL MEMBERS OF THE 
-US HOUSE IN 2013 AND 2016 ONLY RETURNS 222 CHARACTERS 
-AS OF 2018-01-11.  
+NOTE:  THIS FUNCTION IS CURRENTLY UNAVAILABLE: A CALL
+TO \code{RCurl::getURL} THAT RETURNED INFO ON ALL
+MEMBERS OF THE US HOUSE IN 2013 AND 2016 ONLY RETURNS
+222 CHARACTERS AS OF 2018-01-11.  
 
-  If and when a fix for this is found, this function may again:
+  If and when a fix for this is found, this function
+  may again:
 
   Combine the output of \code{\link{readUShouse}} and
   \code{\link{readUSsenate}}.
 }
 \usage{
-UShouse.senate(house=readUShouse(), senate=readUSsenate())
+UShouse.senate(house=readUShouse(), 
+    senate=readUSsenate())
 }
 \arguments{
   \item{house, senate}{

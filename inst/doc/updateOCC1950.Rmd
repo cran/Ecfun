@@ -1,0 +1,328 @@
+---
+title: "IPUMS Occupational summary"
+author: "Spencer Graves"
+#date: "9/1/2018"
+date: "`r Sys.Date()`"
+#output: html_document
+output: rmarkdown::html_vignette
+bibliography: IPUMS-references.bib
+vignette: >
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{Accountants-Auditors-IPUMS}
+  \usepackage[UTF-8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Occupational summary from IPUMS
+
+In September 2018 I created an account with the [Integrated Public Use Microdata Series (IPUMS) data library at the University of Minnesota.](https://usa.ipums.org/usa/cite.shtml).^[@IPUMS:2020] My objective then was to understand the evolution of accounting and auditing as a percent of the US workforce over time.  In redoing this in March 2020, it seems sensible to start by summarizing the large IPUMS data extract into a smaller table of occupation codes by year and save this as `OCC1950.rda`.  Then can then analyze that much smaller dataset in a separate vignette.    
+
+# Reading and summarizing IPUMS
+
+After logging into the IPUMS website, the two primary options are "Select Data" and "My Data".  The latter shows previous selections with the following options:  
+
+* "Download" "data" and command files for SPSS, SAS, Stata, and R plus "Codebook" in "Basic" and "DDI" format for my most recent extracts.  
+* "revise" if I want to change something in one of my previous extracts.    
+* "resubmit" to repeat a previous extract to see if it has changed in case IPUMS may have been expanded since the earlier extract.  
+
+In 2018 from "Select Data", I chose "Select harmonized variables" > Person > Work.  
+
+From here, I first selected "`OCC1950` = Occupation 1950 basis" and got something useful doing that.  
+
+I tried other similar extracts as outlined in the Appendix below.  I decided the best extract for my purposes seemed to be the one I started with using `OCC1950`.  The rest of this vignette describes summarizing that into a matrix estimating the percent of the US population by year in each `OCC1950` code in March 2020.  
+
+```{r ipums}
+# The code in this snippet is a slight modification 
+# of the R code from usa_00006.R, 2020-03-18.  
+if (!require("ipumsr")){
+  msg <- paste("Reading IPUMS data into R", 
+    "requires the ipumsr package. It can be",
+    "installed using:\ninstall.packages('ipumsr')")
+  stop(msg)
+}
+
+# NOTE:  base::dir works differently  
+# within an R Markdown file than 
+# from an ordinary command prompt, 
+# at least under macOS 10.15.3 on 2020-03-18.  
+# With getwd() = the parent directory of 
+# "~/fda/vignettes", 
+# When I highlighted "dir()" and executed it
+# using <command + enter>, I got  the contents 
+# of "~/fda/vignettes".
+# When I executed "dir()" outside the *.Rmd file, 
+# I got the parent directory.  
+
+dir()
+dir(getwd())
+
+# copy and paste the following 
+# from "Accountants-IPUMS.Rmd" in R Studio 
+# into the Console below:  
+
+IPUMSdir <- 'IPUMS'
+(ddiXml <- dir(IPUMSdir, pattern="usa_00006.xml", 
+      full.names = TRUE))
+# OR execute the following inside 
+# "Accountants-IPUMS.Rmd" in R Studio:  
+if(length(ddiXml)!=1){
+#  print(ddiXml <- file.path('..', '..', 'IPUMS'))
+  print(ddiXml <- dir(pattern="usa_00006.xml",      
+      full.names = TRUE))
+# NOTE:  This worked under macOS 10.15.3 
+# with R 3.6.3 and RStudio 1.2.5033.  
+# It has not been tested on other platforms.  
+}
+```
+
+Some of the computations below are fairly long, because this dataset is so large.  This vignette is structured so nearly all the R code in this vignette will be skipped in routine package testing and would only be executed if a user arranged so a file containing the desired IPUMS data extract can be found.  We do this here by creating a variable `readAndCompute` that is `FALSE` by default and is set to `TRUE` only when the the desired data are available for manual processing.  
+
+```{r skipOnCRAN}
+readAndCompute <- FALSE
+if((length(ddiXml)==1) && (!fda::CRAN())){
+  readAndCompute <- TRUE
+  ddiDat <- read_ipums_ddi(ddiXml)
+  (readDatTime <- system.time(
+    IPUMSdata <- read_ipums_micro(ddiDat)
+  ))
+}
+```
+
+On 2020-03-19 this took roughly 40 seconds on a MacBook Pro with a 2.8 GHz quad-core Intel core i7 with 16 GB RAM.  
+
+`IPUMSdata` is an object with a huge number of rows and 8 columns:  
+
+```{r data}
+if(readAndCompute){
+  str(IPUMSdata)
+  nrow(IPUMSdata)/1e6
+}
+```
+
+`IPUMSdata` is an object of classes `tbl_df`, `tbl` and `data.frame` with over 114 million rows for `dat00001.xml`.  
+
+That's too few rows to have one row for each person in the most recent census and certainly too few to have one row for each household in all the census since 1850:  
+
+```{r tbl_year}
+if(readAndCompute){
+  print(etYr <-  system.time(
+    tbl_year <- table(IPUMSdata$YEAR)
+  ))
+  plot(tbl_year)
+  tbl_year
+}
+```
+
+The key point from the the print of `tbl_year` and this plot is that this dataset includes data from every census except 1890 plus for each year between 2000 and 2016.  
+
+Before proceeding, let's check `IPUMSdata` for missing values:  
+
+```{r IPUMSna}
+if(readAndCompute){
+  print(etNA <-  system.time(
+    nNA <- sapply(IPUMSdata, function(x)sum(is.na(x)))
+  ))
+  print(nNA)
+}
+```
+
+No missing values!  
+
+Let's look at `var_desc` for `HHWT`:  
+
+```{r HHWT}
+if(readAndCompute){
+  attributes(IPUMSdata$HHWT)
+}
+```
+
+Let's look at the distribution of `HHWT`:  
+
+```{r q_HHWT}
+if(readAndCompute){
+  print(etQ <-  system.time({
+    rngHHWT <- range(IPUMSdata$HHWT)
+    qtleHHWT <- quantile(IPUMSdata$HHWT)
+  }))
+  print(rngHHWT)
+  qtleHHWT
+}
+```
+
+Let's also examine the the attributes of `OCC1950`: 
+
+```{r OCC1950}
+if(readAndCompute){
+  print(etCodes <-  system.time(
+    OCC50codes <- attributes(IPUMSdata$OCC1950)
+  ))
+  str(OCC50codes)
+}
+```
+
+We're especially interested in "labels":  
+
+```{r OCClbls}
+if(readAndCompute){
+#  OCCcodes$labels
+  print(OCC50codes$var_desc)
+  print(head(OCC50codes$labels))
+  tail(OCC50codes$labels)
+}
+```
+
+The "labels" attribute from `OCC1950` provided a translate table giving English-language names to the numeric codes.
+
+Are all these codes used?  
+
+```{r tabOcc}
+if(readAndCompute){
+  print(etOcc1 <-  system.time(
+    Occ1 <- table(IPUMSdata$OCC1950)
+  ))
+  str(Occ1)
+}
+```
+
+Two codes are not used.  What are they?  
+
+```{r unusedOcc}
+if(readAndCompute){
+  OCC50codes$labels[!(
+    OCC50codes$labels %in% names(Occ1))]
+}
+```
+
+Let's sum `HHWT` within `YEAR` and `OCC1950`:  
+
+```{r tabYrOcc0}
+if(readAndCompute){
+  print(etOccYr <-  system.time(
+    OccYr <- tapply(IPUMSdata$HHWT, 
+        IPUMSdata[c("OCC1950", "YEAR")], sum)
+  ))
+  str(OccYr)
+}
+```
+
+This is an array of `OCC1950` by `YEAR`.  We will convert this into a matrix of the proportion of the workforce in each `OCC1950` code with two attributes: 
+
+1.  `codes` = `OCC50codes`
+2.  `workforce` = `colSums(YrOcc)`
+
+We need the `codes` to allow us to make any use of these data, and `workforce` gives us an estimate of the size of the workforce by year. 
+To confirm the latter, let's compute it:  
+
+```{r totWts0}
+if(readAndCompute){
+  (totWts <- colSums(OccYr))
+}
+```
+
+All `NA`s.  One explanation for this is no year has seen the use of all occupation codes.  For example, we should not expect to see many ""Airplane pilots and navigators" in the nineteenth century!^[[[w:Airline# The first airlines|The world's first airline company]] was German using airships, founded in 1909.]  
+
+To check this, we will `table(OCC1950", YEAR)`:  
+
+```{r tabOY}
+if(readAndCompute){
+  print(etOY <-  system.time(
+    OY <- with(IPUMSdata, table(OCC1950, YEAR))  
+  ))
+  print(str(OY))
+  sum(is.na(OccYr) - (OY==0))
+}
+```
+
+Wonderful:  This says that all `NA`s in `OccYr` should be 0:  
+
+```{r OY0}
+if(readAndCompute){
+  OccYr[is.na(OccYr)] <- 0
+}
+```
+
+Now let's repeat the sums by year, comparing with `USGDPpresidents$population.K`:    
+
+```{r totWts}
+if(readAndCompute){
+  (totWts <- colSums(OccYr))
+  library(Ecdat)
+  selGDP <- (USGDPpresidents$Year %in% names(totWts))
+  USpops <- USGDPpresidents[selGDP, ]
+  ylim <- range(totWts/1e6, USpops$population.K/1e3)
+# png('IPUMS HHWT and US Population.png')  
+  plot(names(totWts), totWts/1e6, xlab='',
+       ylab="millions", 
+       main='sum(HHWT) vs. US Population', las=1)
+  with(USpops, lines(Year, population.K/1e3))
+# dev.off()
+}
+```
+
+This plot suggests that `HHWT` attempts to weight the observations so the total matches the US population but has problems for 1970 and every year since 2000.  A simple fix is to rescale all the numbers so they match.  Let's first check by plotting the ratio:  
+
+```{r totWts2}
+if(readAndCompute){
+  tot_pop <- (totWts / (USpops$population.K*1000))
+  plot(USpops$Year, tot_pop, type='b', las=1)
+  abline(h=1, lty='dotted', col='red')
+}
+```
+
+We can make these numbers match by dividing `OccYr` by `tot_pop`:  
+
+```{r Occ1950}
+if(readAndCompute){
+  nOcc <- nrow(OccYr)
+  Occ1950 <- (OccYr / rep(tot_pop, e=nOcc))
+  (revTots <- colSums(Occ1950))
+  plot(USpops$Year, revTots/1e6, type='b', las=1)
+}
+```
+
+Great.  Now let's create `OCC1950` = proportion of population:  
+
+```{r OCC1950mat}
+if(readAndCompute){
+  OCC1950 <- (Occ1950 / rep(revTots, e=nOcc))
+  quantile(chkTots <- colSums(OCC1950))
+}
+```
+
+Let's make `rownames` = occupation names rather than the codes:  
+
+```{r OCC1950mt}
+if(readAndCompute){
+  rownames(OCC1950) <- names(Occ1)
+}
+```
+
+Let's save this:  
+
+```{r save}
+if(readAndCompute){
+  save(OCC1950, file='OCC1950.rda')
+  dir(full=TRUE)
+}
+```
+
+# Appendix:  Experiment with other variables
+
+After my initial data extraction, I tried adding `OCC` = "Occupation".  Then "Data cart:  Your data extract" said, "2 variable, 32 samples".  Then clicking "View Cart" listed 9 variables, being `YEAR`, `DATANUM`, `SERIAL`, `HHWT`, `GQ`, `PERNUM`, `PERWT`, `OCC`, and `OCC1950`. Then I clicked, "Create data extract". This allowed me to further "select data quality flags" for `GQ`, `OCC`, and `OCC1950`. 
+
+The first time I did this, I ignored the data quality flags.  The second time, I requested them. 
+
+However, with both the additional `OCC` and the data quality flags, the data set was bigger than I could read into my computer.  So I split that extract into two for seq(1850, 2000, 10) and for 2001:2016.  When I read the 2001:2016 extract, I found that I could not understand `OCC` nor the data quality flags.  I decided that the answer I already had was probably good enough, and it wasn't clear if I could learn enough to justify the work of further study of `OCC` and the data quality flags.  
+
+In any event, after each data selection, I was given an "estimated size" for the extract (5340 MB for one trial). I entered something to "Describe your extract". Then I clicked, "Submit extract".  The IPUMS web site responded saying, "Your extract request has been submitted.  You will be notified by email at (the email address I had given them) when it has been created."  Under "Data", it said, "Processing...".  
+
+After a while (47 minutes for one extract on 2018-09-03) I got an email saying my extract was ready for download.  I returned to the web site and clicked something under "Data".
+
+To help with questions about the format, etc., I studied `help(pac=ipumsr)`. I found that the `ipumsr` package included seven vignettes. One of those is titled ["Introduction to `ipumsr` - IPUMS Data in R"](http://tech.popdata.org/ipumsr/articles/ipums.html).  From that, I learned that I needed to right-click (`ctrl-click` on a Mac) on `DDI` under `Codebook` and then select "Save link as...".  Moreover, I should NOT do this in Safari.  Google Chrome worked for me for this on 2018-09-01 and Firefox worked when I repeated it with a slightly different extract on 2018-09-03.  
+
+When I repeated this 2020-03-18, I downloaded `"usa_00003.dat"` and `"use_00005.dat"` consuming 2.3 and 3.8 GB.  Codebooks are also available.  
+
+Then I followed the instructions in the "Command File" for R.  With one extract, I got, "Error: Error in `read_tokens_(data, tokenizer, col_specs, col_names, locale_`, : Evaluation error: vector memory exhausted (limit reached?)."  After that, I redid the extract to select less data to file(s) I could read.  

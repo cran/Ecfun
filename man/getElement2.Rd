@@ -1,72 +1,88 @@
 \name{getElement2}
 \alias{getElement2}
 \title{
-  Extract a named element from an object with a default
+  Extract a named element from an object with 
+  a default
 }
 \description{
-  Get element \code{name} of \code{object}.  If \code{object} does not
-  have an element \code{name}, return \code{default}.
+  Get element \code{name} of \code{object}.  
+  If \code{object} does not have an element 
+  \code{name}, return \code{default}.
 
-  If the \code{name} element of \code{object} is \code{NULL} the result
-  depends on \code{warn.NULL}:  If \code{TRUE}, issue a warning and
-  return \code{default}.  Otherwise, return \code{NULL}
+  If the \code{name} element of \code{object} 
+  is \code{NULL} the result depends on 
+  \code{warn.NULL}:  If \code{TRUE}, issue a 
+  warning and return \code{default}.  Otherwise, 
+  return \code{NULL}
 }
 \usage{
-getElement2(object, name=1, default=NA, warn.NULL=TRUE, 
-            envir=list(), returnName)
+getElement2(object, name=1, default=NA, 
+      warn.NULL=TRUE, envir=list(), returnName)
 }
 \arguments{
   \item{object}{
-    object from which to extract component \code{name}.
+    object from which to extract component 
+    \code{name}.
   }
   \item{name}{
     Name or index of the element to extract
   }
   \item{default}{
-    default value if \code{name} is not part of \code{object}.
+    default value if \code{name} is not part 
+    of \code{object}.
   }  
   \item{warn.NULL}{
-    logical to decide how to treat cases where \code{object} has a
-    component \code{name}:  If \code{TRUE}, return \code{default} with 
+    logical to decide how to treat cases where 
+    \code{object} has a component \code{name}:  
+    If \code{TRUE}, return \code{default} with 
     a warning.  Otherwise, return \code{NULL}.
   }
   \item{envir}{
-    Supplemental list beyond \code{object} in which to look for names 
-    in case \code{object[[name]]} is a language object that must be 
-    evaluated.
+    Supplemental list beyond \code{object} in 
+    which to look for names in case 
+    \code{object[[name]]} is a language object 
+    that must be evaluated.
   }
   \item{returnName}{
-    logical:  \code{TRUE} to return \code{\link{as.character}} of any 
-    \code{\link{name}} found as an element of \code{object}.  
+    logical:  \code{TRUE} to return 
+    \code{\link{as.character}} of any 
+    \code{\link{name}} found as an element of 
+    \code{object}.  
     
-    FALSE to \code{\link{eval}} any \code{\link{name}} found in 
-    the environment of  \code{object}.  
+    \code{FALSE} to \code{\link{eval}} any 
+    \code{\link{name}} found in the environment 
+    of  \code{object}.  
     
-    Default = \code{TRUE} if \code{name} == 1 or a character string 
-    matching the name of the first element of \code{object}.  
+    Default = \code{TRUE} if \code{name} == 1 or 
+    a character string matching the name of the 
+    first element of \code{object}.  
   }
 }
 \details{
-  1.  If is.numeric(name) In <- (1 <= name <= length(object)) 
+  1.  \code{If is.numeric(name) In <- 
+  (1 <= name <= length(object))} 
   
-  2.  else In <- if(name \%in\% names(object))
+  2.  \code{else In <- if(name \%in\% names(object))}
   
-  3.  El <- if(In) object[[name]] else default 
+  3.  \code{El <- if(In) object[[name]] else default} 
   
-  4.  warn.NULL? 
+  4.  \code{warn.NULL}? 
   
-  5.  if(returnName) return(as.character(El)) else 
-  return(eval(El, envir=object))
+  5.  \code{if(returnName) return(as.character(El)) 
+  else return(eval(El, envir=object))}
 }
 \value{
-  an object of the form of \code{object[[name]]};  if \code{object} does
-  not have an element or slot \code{name}, return \code{default}.
+  an object of the form of \code{object[[name]]};  
+  if \code{object} does not have an element or 
+  slot \code{name}, return \code{default}.
 }
 \author{
-  Spencer Graves with help from Marc Schwartz and Hadley Wickham
+  Spencer Graves with help from Marc Schwartz and 
+  Hadley Wickham
 }
 \seealso{
-  \code{\link{getElement}}, which also can return slots from S4 objects.  
+  \code{\link{getElement}}, which also can return 
+  slots from S4 objects.  
 }
 %\references{}
 \examples{

@@ -17,6 +17,10 @@ asNumericDF <- function(x,
 ##
   k <- ncol(x)
   Names <- colnames(x)
+  if(is.null(Names)){
+    colnames(x) <- names(X)
+    Names <- colnames(x)
+  }
 #  Function to check for Names in reference
 #  List   
   cols2names <- function(cols=ignore){

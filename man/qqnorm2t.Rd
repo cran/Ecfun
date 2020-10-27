@@ -71,8 +71,8 @@ qqnorm2t(y, x, z=NULL, data., plot.it=TRUE,
 
     By default, if \code{z} takes levels
     \code{FALSE} and \code{TRUE} (or 0 and 1), 
-    pch=c(4, 1) to plot a "x" for \code{FALSE}
-    and "o" for \code{TRUE}.
+    \code{pch=c(4, 1)} to plot a "x" for 
+    \code{FALSE} and "o" for \code{TRUE}.
 
     If \code{z} assumes integer values between 0
     and 255, by default, the symbols are chosen
@@ -102,8 +102,8 @@ qqnorm2t(y, x, z=NULL, data., plot.it=TRUE,
 
     By default, \code{pch = list(x='right',
     legend=names(qq2s[[1]][['pch']]), 
-    pch=qq2s[[1]][['pch']])}, where qq2s is
-    described below in details.
+    pch=qq2s[[1]][['pch']])}, where \code{qq2s}
+    is described below in details.
 
     Similarly, by default, \code{lines = 
     list(x='bottomright', legend=y,

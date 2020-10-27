@@ -3,115 +3,135 @@
 \alias{interpChar.list}
 \alias{interpChar.default}
 \title{
-  Interpolate between numbers or numbers of characters 
+  Interpolate between numbers or numbers of
+  characters 
 }
 \description{
-  For \code{x} and \code{y} logical, integer, numeric, 
-  Date or POSIX:  
+  For \code{x} and \code{y} logical, integer,
+  numeric, Date or POSIX:  
   
   \code{xOut <- x*(1-.proportion) + y*.proportion} 
   
   Otherwise, coerce to character and return a 
-  \code{\link{substring}} of \code{x} or \code{y} with 
-  number of characters interpolating linearly between 
-  \code{nchar(x)} and \code{nchar(y)};  see details.  
+  \code{\link{substring}} of \code{x} or \code{y} 
+  with number of characters interpolating linearly
+  between \code{nchar(x)} and \code{nchar(y)};  
+  see details.  
   
   *** NOTE:  This function is currently in flux.  
   The results may not match the documentation 
   and may change in the future.  
   
-  The current version does character interpolation on 
-  the cumulative number of characters with defaults 
-  with only one argument that may not be easy to 
-  understand and use.  Proposed:  
+  The current version does character interpolation
+  on the cumulative number of characters with
+  defaults with only one argument that may not be
+  easy to understand and use.  Proposed:  
   
   old:  interpolate on 
-  number of characters in each string with the default
-  for a missing argument being character(length(x)) 
-  [or character(length(y)) or numeric(length(x)) or ...]
+  number of characters in each string with the 
+  default for a missing argument being 
+  \code{character(length(x))} [or 
+  \code{character(length(y))} or 
+  \code{numeric(length(x))} or ...]
   
   2014-08-08: default with either x or y missing 
-  should be to set the other to the one we have, so 
-  interpChar becomes a no op -- except that 
-  values with .proportion outside ("validProportion" = 
-  [0, 1] by default) should be dropped.  
+  should be to set the other to the one we have, 
+  so \code{interpChar} becomes a no op -- except
+  that values with \code{.proportion} outside
+  (\code{validProportion} = [0, 1] by default)
+  should be dropped.  
 }
 \usage{
 interpChar(x, ...)
 \method{interpChar}{list}(x, .proportion, 
-        argnames=character(3), message0=character(0), ...)
+        argnames=character(3), 
+        message0=character(0), ...)
 \method{interpChar}{default}(x, y, .proportion, 
-        argnames=character(3), message0=character(0), ...)
+        argnames=character(3), 
+        message0=character(0), ...)
 }
 \arguments{
   \item{x}{
-    either a vector or a list.  If a list, pass the first 
-    two elements as the first two arguments of 
-    \code{interpChar.default}.  
+    either a vector or a list.  If a list, pass 
+    the first two elements as the first two
+    arguments of \code{interpChar.default}.  
   }
   \item{y}{ a vector }
   \item{.proportion}{
-    A number or numeric vector assumed to be between 0 and 1.  
+    A number or numeric vector assumed to be 
+    between 0 and 1.  
   }
   \item{argnames}{
     a character vector of length 3 giving 
-    argumentss \code{name.x}, \code{name.y}, 
+    arguments \code{name.x}, \code{name.y}, 
     and \code{.proportion} to pass to 
     \code{\link{compareLengths}} to improve 
     the value  of any diagnostic message in 
     case lengths are not compatible.  
   }
   \item{message0}{
-    A character string to be passed with \code{argnames} to 
-    \code{\link{compareLengths}} to improve the value of 
-    any diagnostic message in case lengths are not compatible.  
+    A character string to be passed with 
+    \code{argnames} to \code{\link{compareLengths}}
+    to improve the value of any diagnostic message
+    in case lengths are not compatible.  
   }
   \item{\dots}{
-    optional arguments for \code{\link{compareLengths}}  
+    optional arguments for 
+    \code{\link{compareLengths}}  
   }
 }
 \details{
-  1.  \code{x}, \code{y} and \code{.proportion} are first compared
-  for compatible lengths using \code{\link{compareLengths}}.  A 
-  warning is issued if the lengths are not compatible.  They are 
-  then all extended to the same length using \code{\link{rep}}.  
+  1.  \code{x}, \code{y} and \code{.proportion} 
+  are first compared for compatible lengths using
+  \code{\link{compareLengths}}.  A warning is 
+  issued if the lengths are not compatible.  They
+  are then all extended to the same length using
+  \code{\link{rep}}.  
   
-  2.  If \code{x} and \code{y} are both numeric, \code{interpChar} 
-  returns the standard linear interpolation (described above).  
+  2.  If \code{x} and \code{y} are both numeric,
+  \code{interpChar} returns the standard linear
+  interpolation (described above).  
   
-  3.  If \code{x}, \code{y}, and \code{.proportion} are all 
-  provided with at least one of \code{x} and \code{y} not being 
-  numeric  or logical, the algorithm does linear interpolation on 
-  the difference in the number of characters between 
-  \code{x} and \code{y}.  It returns characters from 
-  \code{y} except when \code{nchar(x)} > \code{nchar(y)}, 
-  in which case it returns characters from \code{x}.  This 
-  meets the end conditions that the number of characters 
-  matches that of \code{x} when \code{.proportion} is 0 and 
-  matches that of \code{y} when \code{.proportion} is 1.  This 
-  can be used to "erase" characters moving from one frame to 
+  3.  If \code{x}, \code{y}, and \code{.proportion}
+  are all provided with at least one of \code{x} 
+  and \code{y} not being numeric  or logical, the
+  algorithm does linear interpolation on the
+  difference in the number of characters between 
+  \code{x} and \code{y}.  It returns characters 
+  from \code{y} except when \code{nchar(x)} >
+  \code{nchar(y)}, in which case it returns
+  characters from \code{x}.  This meets the end
+  conditions that the number of characters matches
+  that of \code{x} when \code{.proportion} is 0 
+  and matches that of \code{y} when 
+  \code{.proportion} is 1.  This can be used to
+  "erase" characters moving from one frame to 
   the next in a video.  See the examples.   
   
-  4.  If either \code{x} or \code{y} is missing, it is 
-  replaced by a default vector of the same type and length;  
-  for example, if \code{y} is missing and \code{x} is numeric, 
-  \code{y} = \code{numeric(length(x))}.  (If the one supplied
-  is not numeric or logical, it is coerced to character.)  
+  4.  If either \code{x} or \code{y} is missing, 
+  it is replaced by a default vector of the same
+  type and length;  for example, if \code{y} is
+  missing and \code{x} is numeric, \code{y} =
+  \code{numeric(length(x))}.  (If the one supplied
+  is not numeric or logical, it is coerced to
+  character.)  
 }
 \value{
-  A vector:  Numeric if \code{x} and \code{y} are both numeric 
-  and character otherwise.  The length = max length of 
-  \code{x}, \code{y}, and \code{.proportion}.  
+  A vector:  Numeric if \code{x} and \code{y} are
+  both numeric and character otherwise.  The length
+  = max length of \code{x}, \code{y}, and 
+  \code{.proportion}.  
 }
 %\source{}
 %\references{}
 \author{Spencer Graves}
 \seealso{
-  \code{\link{interpPairs}}, which calls \code{interpChar}
+  \code{\link{interpPairs}}, which calls 
+  \code{interpChar}
   
   \code{\link{classIndex}}, which is called by 
-  \code{interpChar} to help decide the class of the 
-  interpolant.  
+  \code{interpChar} to help decide the class of 
+  the interpolant.  
 }
 \examples{
 ##

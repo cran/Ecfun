@@ -4,13 +4,15 @@
   Compare the lengths of two objects  
 }
 \description{
-  Issue a warning or error if the lengths of two objects are not 
-  compatible.   
+  Issue a warning or error if the lengths of two 
+  objects are not compatible.   
 }
 \usage{
 compareLengths(x, y, 
-   name.x=deparse(substitute(x), width.cutoff, nlines=1, ...), 
-   name.y=deparse(substitute(y), width.cutoff, nlines=1, ...), 
+   name.x=deparse(substitute(x), width.cutoff, 
+      nlines=1, ...), 
+   name.y=deparse(substitute(y), width.cutoff, 
+      nlines=1, ...), 
    message0='', compFun=c('NROW', 'length'), 
    action=c(compatible='', incompatible='warning'), 
    length0=c('compatible', 'incompatible', 'stop'), 
@@ -22,42 +24,47 @@ compareLengths(x, y,
   }
   \item{name.x, name.y}{
     names of x and y to use in a message.  Default = 
-    deparse(substitute(.), width.cutoff, nlines=1).  
+    \code{deparse(substitute(.), width.cutoff, nlines=1)}.  
   }
   \item{message0}{
-    character string to be included with name.x and name.y 
-    in a message.  
+    character string to be included with \code{name.x}
+    and \code{name.y} in a message.  
   }
   \item{compFun}{
     function to use in the comparison.  
   }
   \item{action}{
-    A character vector of length 2 giving the names of functions 
-    to call if the lengths are not equal but are either 
-    'compatible' or 'incompatible';  '' means no action.    
+    A character vector of length 2 giving the names 
+    of functions to call if the lengths are not 
+    equal but are either 'compatible' or 
+    'incompatible';  '' means no action.    
   }
   \item{length0}{
-    If length(x) or length(y) = 0 (but not both), treat 
+    If \code{length(x)} or \code{length(y)} = 0 
+    (but not both), treat 
     this case as specified by \code{length0}.   
   }
   \item{width.cutoff}{
     \code{width.cutoff} argument to pass to 
-    \code{\link{deparse}}.  This gives the maximum number of 
-    characters to use in a name in error and warning messages.  
+    \code{\link{deparse}}.  This gives the 
+    maximum number of characters to use in a 
+    name in error and warning messages.  
   }
   \item{\dots}{ 
     optional arguments for \code{\link{deparse}} 
   }
 }
 \details{
-  1.  If nchar(name.x) = 0 = nchar(name.y), set name.x <- 'x', 
-  name.y <- 'y', and append 'in compareLengths:' to message0 
+  1.  If \code{nchar(name.x)} = 0 = 
+  \code{nchar(name.y)}, set \code{name.x <- 'x'}, 
+  \code{name.y <- 'y'}, and append 
+  'in \code{compareLengths}:' to \code{message0} 
   for more informative messaging.  
   
-  2.  lenx <- do.call(compFun, list(x));  
-  leny <- do.call(compFun, list(y))
+  2.  \code{lenx <- do.call(compFun, list(x))};  
+  \code{leny <- do.call(compFun, list(y))}
   
-  3.  if(lenx==leny)return(c('equal', ''))
+  3.  \code{if(lenx==leny)return(c('equal', ''))}
   
   4.  Compatible?  
   
@@ -66,9 +73,10 @@ compareLengths(x, y,
   6.  "action", as indicated 
 }
 \value{
-  A character vector of length 2.  The first element is either 'equal', 
-  'compatible' or 'incompatible'.  The second element is the message 
-  composed.  
+  A character vector of length 2.  The first 
+  element is either 'equal', 'compatible' or 
+  'incompatible'.  The second element is the 
+  message composed.  
 }
 \author{
   Spencer Graves with help from Duncan Murdoch 

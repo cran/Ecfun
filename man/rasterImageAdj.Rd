@@ -10,25 +10,27 @@
   toward the center to avoid distortion.  
   
   \code{angle} specifies a rotation around the midpoint 
-  (\code{(xleft+xright)/2}, \code{(ybottom+ytop)/2}).  This is 
-  different from \code{\link{rasterImage}}, which rotates 
-  around \code{(xleft, ybottom)}.  
+  (\code{(xleft+xright)/2}, \code{(ybottom+ytop)/2}).  
+  This is different from \code{\link{rasterImage}}, 
+  which rotates around \code{(xleft, ybottom)}.  
   
   NOTE:  The code may change in the future.  The visual 
-  image with rotation looks a little off in the examples 
-  below, but the code seems correct.  If you find an example
-  where this is obviously off, please report to the 
-  maintainer -- especially if you find a fix for this.  
+  image with rotation looks a little off in the 
+  examples below, but the code seems correct.  If you 
+  find an example where this is obviously off, please 
+  report to the maintainer -- especially if you find a 
+  fix for this.  
 }
 \usage{
-rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
-     xright=par('usr')[2], ytop=par('usr')[4], angle = 0,
-     interpolate = TRUE, xsub=NULL, ysub=NULL, ...)
+rasterImageAdj(image, xleft=par('usr')[1], 
+    ybottom=par('usr')[3], xright=par('usr')[2], 
+    ytop=par('usr')[4], angle = 0, interpolate = TRUE, 
+    xsub=NULL, ysub=NULL, ...)
 }
 \arguments{
   \item{image}{
-    a \code{raster} object, or an object that can be coerced to one by
-    \code{\link{as.raster}}.
+    a \code{raster} object, or an object that can be 
+    coerced to one by \code{\link{as.raster}}.
   }
   \item{xleft}{
     a vector (or scalar) of left x positions.
@@ -43,8 +45,8 @@ rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
     a vector (or scalar) of top y positions.
   }
   \item{angle}{
-    angle of rotation in degrees, anti-clockwise about the centroid
-    of \code{image}.  
+    angle of rotation in degrees, anti-clockwise 
+    about the centroid of \code{image}.  
     
     NOTE:  \code{\link{rasterImage}} rotates around 
     (\code{xleft}, \code{ybottom}).  \code{rasterImage} 
@@ -52,8 +54,9 @@ rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
     (ybottom+ytop)/2)}.  See the examples.  
   }
   \item{interpolate}{
-    a logical vector (or scalar) indicating whether to apply linear
-    interpolation to the image when drawing.
+    a logical vector (or scalar) indicating whether to 
+    apply linear interpolation to the image when 
+    drawing.
   }
   \item{xsub, ysub}{
     subscripts to subset \code{image}  
@@ -63,39 +66,47 @@ rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
   }
 }
 \details{
-  1.  imagePixels = number of (x, y) pixels in \code{image}.  Do this
-  using dim(as.raster(image))[2:1], because the first dimension of
-  \code{image} can be either x or y depending on \code{class(image)}.
-  For example \code{link[EBImage]{Image}} returns \code{dim} with x
-  first then y and an optional third dimension for color.  A simple
-  3-dimensional array is assumed by \code{\link{rasterImage}} to have
-  the y dimension first.  \code{\link{as.raster}} puts all these in a
+  1.  \code{imagePixels} = number of (x, y) pixels in 
+  \code{image}.  Do this using 
+  \code{dim(as.raster(image))[2:1]}, because the 
+  first dimension of \code{image} can be either x or 
+  y depending on \code{class(image)}.  For example 
+  \code{link[EBImage]{Image}} returns \code{dim} with 
+  x first then y and an optional third dimension for 
+  color.  A simple 3-dimensional array is assumed by
+  \code{\link{rasterImage}} to have the y dimension 
+  first.  \code{\link{as.raster}} puts all these in a
   standard format with y first, then x.
 
-  2. imageUnits <- c(x=xright-xleft, ytop-ybottom)
+  2. \code{imageUnits <- c(x=xright-xleft, ytop-ybottom)}
 
-  3.  xyinches = (x, y) units per inch in the current plot, obtained
-  from \code{\link{xyinch}}.
+  3.  \code{xyinches} = (x, y) units per inch in the 
+  current plot, obtained from \code{\link{xyinch}}.
 
-  4.  Compute pixel density (pixels per inch) in both x and y
-  dimension:  pixelsPerInch <- imagePixels * xyinches / imageUnits.
+  4.  Compute pixel density (pixels per inch) in both 
+  x and y dimension:  \code{pixelsPerInch <- 
+  imagePixels * xyinches / imageUnits}.
 
-  5.  Compute imageUnitsAdj solving 4 for imageUnits and replacing
-  pixelsPerInch by the max pixel density:  imageUnitsAdj <- imagePixels
-  * xyinches / max(pixelsPerInch).
+  5.  Compute \code{imageUnitsAdj} solving 4 for 
+  \code{imageUnits} and replacing \code{pixelsPerInch}
+  by the max pixel density:  \code{imageUnitsAdj <-
+  imagePixels * xyinches / max(pixelsPerInch)}.
 
-  6.  (dX, dY) = imageUnitsAdj/2 = half of the (width, height) 
-  in plotting units.  
+  6.  \code{(dX, dY) = imageUnitsAdj/2} = half of the 
+  (width, height) in plotting units.  
   
-  7.  cntr = (xleft, ybottom) + (dX, dY).  
+  7.  \code{cntr = (xleft, ybottom) + (dX, dY)}.  
   
-  xleft0  = cntr[1]+sin((angle-90)*pi/180)*dX*sqrt(2); 
-  ybottom0= cntr[2]-cos((angle-90)*pi/180)*dY*sqrt(2);
+  \code{xleft0  = cntr[1]+sin((angle-90)*pi/180)*dX*sqrt(2)}; 
   
-  (xright0, ytop0) 
+  \code{ybottom0= cntr[2]-cos((angle-90)*pi/180)*dY*sqrt(2)};
+  
+  \code{(xright0, ytop0)} 
   = (upper right without rotation about lower left)
-  xright0 = xleft0+imageUnitsAdj[2] 
-  ytop0 = ybottom0+imageUnitsAdj[2]
+  
+  \code{xright0 = xleft0+imageUnitsAdj[2]}
+  
+  \code{ytop0 = ybottom0+imageUnitsAdj[2]}
 
   8.  \code{rasterImage(image, xleft0, ybottom0, 
             xright0, ytop0, angle, interpolate, ...)}
@@ -116,30 +127,13 @@ rasterImageAdj(image, xleft=par('usr')[1], ybottom=par('usr')[3],
 }
 \examples{
 # something to plot 
-#logo.jpg <- paste(R.home(), "doc", "html", "logo.jpg",
-#                  sep = .Platform$file.sep)
-RdocDir <- dir(R.home(), pattern='^doc$', full.names = TRUE)
-RhtmlDir <- dir(RdocDir, pattern='^html$', full.names=TRUE)
-JPGs <- dir(RhtmlDir, pattern='\\\\.jpg$', full.names=TRUE)
-if(length(JPGs)>1){
-  logoJPG <- paste0(.Platform$file.sep, 'logo.jpg$')
-  logo.jpg <- grep(logoJPG, JPGs, value=TRUE)
-  if(length(logo.jpg)>1)logo.jpg <- logo.jpg[1]
-  if(length(logo.jpg)<1)logo.jpg <- JPGs[1]
-} else logo.jpg <- JPGs
-if(length(logo.jpg)<1){
-  cat('logo.jpg not found.\n')
-  print(R.home())
-  print(dir(RdocDir))
-  print(dir(RhtmlDir))
-  if(!fda::CRAN())stop('logo.jpg not found')
-} else {
-# length(logo.jpg)==1 so continue:  
-  if(require(jpeg)){
+logo.jpg <- file.path(R.home('doc'), 'html', 'logo.jpg')
+if(require(jpeg)){
 ##
 ## 1.  Shrink as required
 ##
-    Rlogo <- readJPEG(logo.jpg)
+  Rlogo <- try(readJPEG(logo.jpg))
+  if(inherits(Rlogo, 'array')){  
   \dontshow{stopifnot(}
     all.equal(dim(Rlogo), c(76, 100, 3))
   \dontshow{)}

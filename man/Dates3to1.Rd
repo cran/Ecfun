@@ -17,7 +17,7 @@ Dates3to1(data, YMD=c('Year', 'Month', 'Day'))
     matching \code{YMD}.  
   }
   \item{YMD}{
-    a character vector of lenght 3 of patterns to use 
+    a character vector of length 3 of patterns to use 
     in \code{\link{grep}} to identify triples of 
     columns coding \code{YMD} in 
     \code{col.names(data)}.  
@@ -25,17 +25,20 @@ Dates3to1(data, YMD=c('Year', 'Month', 'Day'))
 }
 \details{
   The data sets from the 
-  \href{http://correlatesofwar.org/data-sets/COW-war}{Correlates 
-  of War} project include dates coded in triples of columns with 
-  names like c("StartMonth1", "StartDay1", "StartYear1", 
-  "EndMonth1", ..., "EndYear2").  This function will accept a 
-  \code{data.frame} obtained via \code{\link{read.csv}}
-  of such a file and replace each such triple with a singe 
-  column of class 'Date' combining the triple appropriately.  
+  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  of War} project include dates coded in triples of
+  columns with names like \code{c("StartMonth1",
+  "StartDay1", "StartYear1", "EndMonth1", ...,
+  "EndYear2")}.  This function will accept a 
+  \code{data.frame} obtained via 
+  \code{\link{read.csv}} of such a file and replace
+  each such triple with a singe column of class 'Date'
+  combining the triple appropriately.  
 }
 \value{
-  Return a \code{data.frame} containing the information in 
-  \code{data} reformatted as described above.  
+  Return a \code{data.frame} containing the
+  information in \code{data} reformatted as described
+  above.  
 }
 \author{
   Spencer Graves

@@ -22,9 +22,9 @@
   the plot.
 }
 \usage{
-qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
-    outnames=NULL, pch=NULL, col=c(1:4, 6), 
-    legend.=NULL, ...)
+qqnorm2s(y, z=NULL, data., plot.it=TRUE, 
+    datax=TRUE, outnames=NULL, pch=NULL, 
+    col=c(1:4, 6), legend.=NULL, ...)
 \method{plot}{qqnorm2s}(x, y, ...)
 }
 \arguments{
@@ -48,18 +48,20 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
     shorter are replicated to the length of the
     longest before computations begin.
 
-    For \code{plot.qqnorm2s}, \code{y} is ignored;
-    it is included, because the generic 
-    \code{\link{plot}} function requires it.
+    For \code{plot.qqnorm2s}, \code{y} is 
+    ignored;  it is included, because the 
+    generic \code{\link{plot}} function requires 
+    it.
   }
   \item{z}{
     A character vector giving the names of
     columns of \code{data.} to
-    indicate different plotting symbols.  \code{z} should be the same
-    length as \code{y} and must equal the number
-    of data.frames in the list \code{data.} of
-    data.frames.  If not, the shorter are
-    replicated to the length of the longer.
+    indicate different plotting symbols.  
+    \code{z} should be the same length as 
+    \code{y} and must equal the number of 
+    \code{data.frame}s in the list \code{data.} 
+    of \code{data.frames}.  If not, the shorter 
+    are replicated to the length of the longer.
   }
   \item{data.}{
     a \code{\link{data.frame}} or a list of 
@@ -71,7 +73,7 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
   }
   \item{datax}{
     The \code{datax} argument of 
-    \code{\link{qqnorm}}:  If TRUE, the
+    \code{\link{qqnorm}}:  If \code{TRUE}, the
     data are displayed on the horizontal rather
     than the vertical axis.  (The default value
     for \code{datax} is the opposite of that for
@@ -83,14 +85,14 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
     \code{qqnorm2s} function.
   }
   \item{pch}{
-    a named vector of the plotting symbols to be
-    used with names corresponding to the levels
-    of \code{z}.
+    a named vector of the plotting symbols to 
+    be used with names corresponding to the 
+    levels of \code{z}.
 
     By default, if \code{z} takes levels
     \code{FALSE} and \code{TRUE} (or 0 and 1), 
-    pch=c(4, 1) to plot a "x" for \code{FALSE}
-    and "o" for \code{TRUE}.
+    \code{pch}=c(4, 1) to plot a "x" for 
+    \code{FALSE} and "o" for \code{TRUE}.
 
     If \code{z} assumes integer values between 0
     and 255, by default, the symbols are chosen
@@ -118,13 +120,14 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
   \item{legend.}{
     A list with components \code{pch} and
     \code{col} providing information for
-    \code{\link{legend}} to identify the plotting
-    symbols (\code{pch}) and colors (\code{col}).
+    \code{\link{legend}} to identify the 
+    plotting symbols (\code{pch}) and colors
+    (\code{col}).
 
     By default, \code{pch = list(x='right',
     legend=names(qq2s[[1]][['pch']]), 
-    pch=qq2s[[1]][['pch']])}, where qq2s is
-    described below in details.
+    pch=qq2s[[1]][['pch']])}, where \code{qq2s} 
+    is described below in details.
 
     Similarly, by default, \code{lines = 
     list(x='bottomright', legend=y,
@@ -133,8 +136,8 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
   \item{\dots}{
     Optional arguments.
 
-    For \code{plot.qqnorm2s}, they are passed to 
-    \code{plot}.
+    For \code{plot.qqnorm2s}, they are passed 
+    to \code{plot}.
 
     For \code{qqnorm2s}, they are passed to 
     \code{\link{qqnorm2}} and to 
@@ -144,16 +147,16 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
 \details{
   For \code{qqnorm2s}:
 
-  1.  Create qq2s = a list of objects of class
-  \code{qqnorm2}
+  1.  Create \code{qq2s} = a list of objects 
+  of class \code{qqnorm2}
 
   2.  Add \code{legend.} to \code{qq2s}.
 
-  3.  class(qq2s) <- 'qqnorm2s'
+  3.  \code{class(qq2s) <- 'qqnorm2s'}
 
-  4.  if(plot.it)plot(qq2s, ...)
+  4.  \code{if(plot.it)plot(qq2s, ...)}
 
-  5.  Silently return(qq2s).
+  5.  Silently \code{return(qq2s)}.
 
   For \code{plot.qqnorm2s}, create a plot with
   one line for each variable named in \code{y}.
@@ -162,8 +165,8 @@ qqnorm2s(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
   \code{qqnorm2s} returns a named list with
   components of class \code{qqnorm2} with names 
   = \code{y} with each component having an
-  additional component \code{col} plus one called
-  "legend.".
+  additional component \code{col} plus one 
+  called "\code{legend.}".
 }
 \author{
   Spencer Graves

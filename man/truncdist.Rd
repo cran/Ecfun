@@ -15,16 +15,21 @@
   as follows:  
   
   \code{(pdist(x, ...) - pdist(truncmin, ...)) / 
-          (pdist(truncmax, ...) - pdist(truncmin, ...))}
+     (pdist(truncmax, ...) - pdist(truncmin, ...))}
         
-  The density, quantile, and random number generation 
-  functions are similarly defined from this.  
+  The density, quantile, and random number 
+  generation functions are similarly defined 
+  from this.  
 }
 \usage{
-dtruncdist(x, ..., dist='norm', truncmin=-Inf, truncmax=Inf) 
-ptruncdist(q, ..., dist='norm', truncmin=-Inf, truncmax=Inf) 
-qtruncdist(p, ..., dist='norm', truncmin=-Inf, truncmax=Inf) 
-rtruncdist(n, ..., dist='norm', truncmin=-Inf, truncmax=Inf) 
+dtruncdist(x, ..., dist='norm', truncmin=-Inf, 
+            truncmax=Inf) 
+ptruncdist(q, ..., dist='norm', truncmin=-Inf, 
+            truncmax=Inf) 
+qtruncdist(p, ..., dist='norm', truncmin=-Inf, 
+            truncmax=Inf) 
+rtruncdist(n, ..., dist='norm', truncmin=-Inf, 
+            truncmax=Inf) 
 }
 \arguments{
   \item{x, q}{ 
@@ -34,77 +39,89 @@ rtruncdist(n, ..., dist='norm', truncmin=-Inf, truncmax=Inf)
     numeric vector of probabilities  
   }
   \item{n}{
-    number of observations. If \code{length(n) > 1}, the 
-    length is taken to be the number required.
+    number of observations. If \code{length(n)} 
+    > 1, the length is taken to be the number 
+    required.
   }
   \item{\dots}{
-    other arguments to be passed to the corresponding 
-    function for the indicated \code{dist}
+    other arguments to be passed to the 
+    corresponding function for the indicated 
+    \code{dist}
   }
   \item{dist}{
-    Standard \code{R} name for the family of functions
-    for the desired distribution.  By default, this is 
-    "norm", so the corresponding function for 
-    \code{dtruncdist} is \code{dnorm}, the corresponding 
-    function for \code{ptrunctist} is \code{pnorm}, etc.  
+    Standard \code{R} name for the family of 
+    functions for the desired distribution.  By 
+    default, this is \code{norm}, so the 
+    corresponding function for \code{dtruncdist} 
+    is \code{dnorm}, the corresponding function 
+    for \code{ptrunctist} is \code{pnorm}, etc.  
   }
   \item{truncmin, truncmax}{
-    lower and upper truncation points, respectively.  
+    lower and upper truncation points, 
+    respectively.  
   }
 }
 \details{
-  NOTE:  Truncation is different from "censoring", where it's 
-  known that an observation lies between certain limits; it's just 
-  not known exactly where it lies between those limits.  
+  NOTE:  Truncation is different from 
+  "censoring", where it's known that an 
+  observation lies between certain limits; it's just 
+  not known exactly where it lies between those 
+  limits.  
   
-  By contrast, with a truncated distribution, events below 
-  \code{truncmin} and above \code{truncmax} may exist but are 
-  not observed.  Thus, it's not known how many events occur  
-  outside the given range, \code{truncmin} to 
-  \code{truncmax}, if any.  Given data believed to come from 
-  a truncated distribution, estimating the parameters provide 
-  a means of estimating the number of unobserved events, 
-  assuming a particular form for their distribution.  
+  By contrast, with a truncated distribution, events 
+  below \code{truncmin} and above \code{truncmax} 
+  may exist but are not observed.  Thus, it's not 
+  known how many events occur  outside the given 
+  range, \code{truncmin} to \code{truncmax}, if any.  
+  Given data believed to come from a truncated 
+  distribution, estimating the parameters provide 
+  a means of estimating the number of unobserved 
+  events, assuming a particular form for their 
+  distribution.  
   
   1.  Setup
   
-  dots <- list(...)
+  \code{dots <- list(...)}
 
-  2.  For \code{dtruncdist}, return 0 for all \code{x} outside
-  \code{truncmin} and \code{truncmax}.  For all others, 
-  compute as follows:  
+  2.  For \code{dtruncdist}, return 0 for all 
+  \code{x} outside \code{truncmin} and 
+  \code{truncmax}.  For all others, compute as 
+  follows:  
   
-  dots$x <- truncmin
+  \code{dots$x <- truncmin
   ddist <- paste0('d', dist)
   pdist <- paste0('p', dist)
   p.min <- do.call(pdist, dots)
   dots$x <- truncmax
   p.max <- do.call(pdist, dots)
   dots$x <- x
-  dx <- do.call(ddist, dots)
+  dx <- do.call(ddist, dots)}
   
-  return(dx / (p.max-p.min))
+  \code{return(dx / (p.max-p.min))}
   
-  NOTE:  Adjustments must be made if 'log' appears in 
-  \code{names(dots)}
+  NOTE:  Adjustments must be made if 'log' 
+  appears in \code{names(dots)}
   
-  3.  The computations for \code{ptruncdist} are similar.  
+  3.  The computations for \code{ptruncdist} 
+  are similar.  
   
-  4.  The computations for \code{qtruncdist} are 
-  complementary.  
+  4.  The computations for \code{qtruncdist} 
+  are complementary.  
   
   5.  For \code{rtruncdist}, use 
   \code{qtruncdist(runif(n), ...)}.  
 }
 \value{
-  \code{dtruncdist} gives the density, \code{ptruncdist}
-  gives the distribution function, \code{qtruncdist} gives 
-  the quantile function, and \code{rtruncdist} generates 
-  random deviates. 
+  \code{dtruncdist} gives the density, 
+  \code{ptruncdist} gives the distribution 
+  function, \code{qtruncdist} gives the 
+  quantile function, and \code{rtruncdist} 
+  generates random deviates. 
   
-  The length of the result is determined by \code{n} for 
-  \code{rtruncdist} and is the maximum of the lengths of 
-  the numerical arguments for the other functions. 
+  The length of the result is determined by 
+  \code{n} for \code{rtruncdist} and is the 
+  maximum of the lengths of the numerical 
+  arguments for the other functions. 
 }
 %\source{}
 %\references{}
@@ -216,7 +233,8 @@ all.equal(qx, qnorm(seq(0, 1, .2)))
 \dontshow{)}
 
 #  3.2.  Normal truncated outside (0, 1)
-qx01 <- qtruncdist(seq(0, 1, .2), truncmin=0, truncmax=1)
+qx01 <- qtruncdist(seq(0, 1, .2), 
+            truncmin=0, truncmax=1)
 
 # check 
 pxmin <- pnorm(0)
@@ -227,7 +245,8 @@ qx01. <- qnorm(unp)
 all.equal(qx01, qx01.)
 \dontshow{)}
 
-#  3.3.  lognormal meanlog=log(100), sdlog=2, truncmin=500
+#  3.3.  lognormal meanlog=log(100), 
+#             sdlog=2, truncmin=500
 qlx10 <- qtruncdist(seq(0, 1, .2), log(100), 2, 
                    dist='lnorm', truncmin=500)
                   
@@ -241,8 +260,9 @@ all.equal(qlx10, qlx10.)
 \dontshow{)}
 
 #  3.4.  previous example with log probabilities 
-qlx10l <- qtruncdist(log(seq(0, 1, .2)), log(100), 2, 
-                   log.p=TRUE, dist='lnorm', truncmin=500)
+qlx10l <- qtruncdist(log(seq(0, 1, .2)), 
+      log(100), 2, log.p=TRUE, dist='lnorm',
+      truncmin=500)
 
 # check 
 \dontshow{stopifnot(}

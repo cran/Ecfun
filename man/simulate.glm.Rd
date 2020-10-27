@@ -9,15 +9,16 @@
   \code{coef(object)} and variance 
   \code{vcov(object)}. 
 
-NOTES: The \strong{stats} package has a 
-\code{\link[stats]{simulate}} method for "\code{lm}" 
-objects which is used for \code{\link{lm}} and 
-\code{\link{glm}} objects.  It differs from the 
-current \code{simulate.glm} function in two 
-fundamental and important ways:  
+  NOTES: The \strong{stats} package has a 
+  \code{\link[stats]{simulate}} method for 
+  "\code{lm}" objects which is used for 
+  \code{\link{lm}} and \code{\link{glm}} objects. 
+  It differs from the current \code{simulate.glm}
+  function in two fundamental and important ways:  
 
   \enumerate{
-    \item{\code{stats::\link[stats]{simulate}}
+    \item{
+      \code{stats::\link[stats]{simulate}}
       returns simulated data consistent with the 
       model fit assuming the estimated model 
       parameters are true and exact, i.e., 
@@ -77,11 +78,11 @@ fundamental and important ways:
     \itemize{
       \item{coef}{
         Simulated coefficents using 
-        \code{mvtnorm::\link[mvtnorm]{rmvnorm}(nsim, 
+        \code{mvtnorm::\link[mvtnorm]{rmvnorm}(nsim,
         coef(object), vcov(object))}.  
       }
       \item{link}{
-        The default \code{type='link'} is on the 
+        The default \code{type}='link' is on the 
         scale of the linear predictors using 
         \code{\link[mvtnorm]{rmvnorm}} applied  
         to randomly selected components of the 
@@ -100,61 +101,71 @@ fundamental and important ways:
     }
   }
   \item{...}{
-    further arguments passed to or from other methods.
+    further arguments passed to or from other
+    methods.
   }
 }
 \details{
-  1.  Save current \code{seed} and optionally set it using
-  code copied from \code{stats:::simulate.lm}.  
+  1.  Save current \code{seed} and optionally set 
+  it using code copied from 
+  \code{stats:::simulate.lm}.  
   
-  2.  \code{if(is.null(newdata))newdata} gets the data used 
-  in the call to \code{\link{glm}}.
+  2.  \code{if(is.null(newdata))newdata} gets the
+  data used in the call to \code{\link{glm}}.
   
   3.  \code{newMat <- model.matrix(~., newdata)}
 
-  4.  \code{simCoef <- mvtnorm::rmvnorm(nsim, coef(object), 
-  vcov(object))}
+  4.  \code{simCoef <- mvtnorm::rmvnorm(nsim, 
+  coef(object), vcov(object))}
   
   5.  \code{sims <- tcrossprod(newMat, simCoef)}
   
-  6.  If \code{length(type)} == 1:  return a \code{\link{data.frame}} 
-  with one column for each desired simulation, consistent with the 
-  behavior of the generic \code{\link{simulate}} applied to objects 
-  of class \code{lm} or \code{glm}.  Otherwise, return a list of 
+  6.  If \code{length(type)} == 1:  return a
+  \code{\link{data.frame}} with one column for 
+  each desired simulation, consistent with the 
+  behavior of the generic \code{\link{simulate}}
+  applied to objects of class \code{lm} or 
+  \code{glm}.  Otherwise, return a list of 
   \code{\link{data.frame}}s of the desired types.  
 }
 \value{
-  Returns either a \code{\link{data.frame}} or a list of 
-   \code{\link{data.frame}}s depending on 'type':  
+  Returns either a \code{\link{data.frame}} or a
+  list of  \code{\link{data.frame}}s depending 
+  on 'type':  
    
-  \item{coef}{a \code{\link{data.frame}} with 
-    \code{nsim} columns giving simulated parameters generated
-    using \code{mvtnorm::\link[mvtnorm]{rmvnorm}(nsim, 
+  \item{\code{coef}}{a \code{\link{data.frame}} 
+    with \code{nsim} columns giving simulated
+    parameters generated using 
+    \code{mvtnorm::\link[mvtnorm]{rmvnorm}(nsim, 
     coef(object), vcov(object))}.  
   }
-  \item{link}{
-    a \code{\link{data.frame}} with \code{nsim} columns 
-    of \code{nobs} values each giving the simulations on the 
-    \code{link} scale by applying each set of simulated 
-    coefficients to \code{newdata} (or to the training 
-    set of \code{newdata} is not supplied).  
+  \item{\code{link}}{
+    a \code{\link{data.frame}} with \code{nsim} 
+    columns of \code{nobs} values each giving 
+    the simulations on the \code{link} scale by
+    applying each set of simulated coefficients 
+    to \code{newdata} (or to the training set of
+    \code{newdata} is not supplied).  
   }
   \item{response}{
-    a \code{\link{data.frame}} with \code{nsim} columns 
-    of \code{nobs} values each giving the simulations on the 
-    \code{response} scale, being \code{linkinv} of the 
-    simulations on the \code{link} scale.  
+    a \code{\link{data.frame}} with \code{nsim}
+    columns of \code{nobs} values each giving the
+    simulations on the \code{response} scale, 
+    being \code{linkinv} of the simulations on 
+    the \code{link} scale.  
   }
-  \item{for length(type)>1}{
-    a list with simulations on the desired scales.  
+  \item{for \code{length(type)>1}}{
+    a list with simulations on the desired 
+    scales.  
   }
   
   The value also has an attribute "\code{seed}". 
-  If argument \code{seed} is NULL, the attribute os the 
-  value of \code{\link{.Random.seed}} before the 
-  simulation started.  Otherwise it is the value of 
-  the argument with a "kind" attribute with value 
-  \code{as.list(RNGkind())}.  
+  If argument \code{seed} is \code{NULL}, the
+  attribute is the value of 
+  \code{\link{.Random.seed}} before the 
+  simulation started.  Otherwise it is the value 
+  of the argument with a \code{kind} attribute 
+  with value \code{as.list(RNGkind())}.  
   
   NOTE:  This function currently may not work
   with a model fit that involves a multivariate 

@@ -10,9 +10,10 @@
   This does two things:  
   
   \enumerate{
-    \item Computes a \code{.proportion} interpolation 
-    between \code{pairs} by passing each pair with 
-    \code{.proportion} to \code{\link{interpChar}}.   
+    \item Computes a \code{.proportion} 
+    interpolation between \code{pairs} by passing
+    each pair with \code{.proportion} to 
+    \code{\link{interpChar}}.  
     \code{\link{interpChar}} does standard linear 
     interpolation with numerics and interpolates 
     based on the number of characters with 
@@ -21,17 +22,18 @@
     \item Discards rows of interpolants for which 
     \code{.proportion} is outside 
     \code{validProportion}.  If \code{object} is 
-    a \code{list}, corresponding rows of other vectors
-    of the same length are also discarded.  
+    a \code{list}, corresponding rows of other
+    vectors of the same length are also discarded.  
     
-    NOTE:  There are currently discrepancies between 
-    the documentation and the code over defaults when 
-    one but not both elements of a pair are provided.  
-    The code returns an answer.  If that's not 
-    acceptable, provide the other half of the pair.  
-    After some experience is gathered, the question 
-    of defaults will be revisited and the code or the 
-    documentation will change.  
+    NOTE:  There are currently discrepancies 
+    between the documentation and the code over
+    defaults when one but not both elements of a
+    pair are provided.  The code returns an answer.
+    If that's not acceptable, provide the other 
+    half of the pair.  After some experience is
+    gathered, the question of defaults will be
+    revisited and the code or the documentation 
+    will change.  
   }  
 }
 \usage{
@@ -40,44 +42,49 @@ interpPairs(object, ...)
     nFrames=1, iFrame=nFrames, 
     endFrames=round(0.2*nFrames), 
     envir = parent.frame(), 
-    pairs=c('1'='\\\\.0$', '2'='\\\\.1$', replace0='', 
-                replace1='.2', replace2='.3'),     
+    pairs=c('1'='\\\\.0$', '2'='\\\\.1$', 
+        replace0='', replace1='.2', 
+        replace2='.3'),     
     validProportion=0:1, message0=character(0), ...)
 \method{interpPairs}{function}(object, 
     nFrames=1, iFrame=nFrames, 
     endFrames=round(0.2*nFrames), 
     envir = parent.frame(), 
-    pairs=c('1'='\\\\.0$', '2'='\\\\.1$', replace0='', 
-                replace1='.2', replace2='.3'),     
+    pairs=c('1'='\\\\.0$', '2'='\\\\.1$', 
+    replace0='', replace1='.2', replace2='.3'),     
     validProportion=0:1, message0=character(0), ...)
 \method{interpPairs}{list}(object, 
     .proportion, envir=list(), 
-        pairs=c('1'='\\\\.0$', '2'='\\\\.1$', replace0='', 
-                replace1='.2', replace2='.3'),     
-        validProportion=0:1, message0=character(0), ...)
+        pairs=c('1'='\\\\.0$', '2'='\\\\.1$',
+        replace0='', replace1='.2', 
+        replace2='.3'), validProportion=0:1,
+        message0=character(0), ...)
 }
 \arguments{
   \item{object}{
     A \code{\link{call}}, \code{\link{function}}, 
-    \code{list} or \code{data.frame} with names possibly
-    matching \code{pairs[1:2]}.  
+    \code{list} or \code{data.frame} with names
+    possibly matching \code{pairs[1:2]}.  
     
-    When names matching both of \code{pairs[1:2]}, they are 
-    converted to potentially common names using 
-    \code{sub(pairs[i], pairs[3], ...)}.  When matches are 
-    found among the potentially common names, they are     
-    passed with \code{.proportion} to 
-    \code{\link{interpChar}} to compute an interpolation.  
-    The matches are removed and replaced with the 
-    interpolant, shortened by excluding any rows for which 
-    \code{.proportion} is outside \code{validProportion}.  
+    When names matching both of \code{pairs[1:2]},
+    they are converted to potentially common names
+    using \code{sub(pairs[i], pairs[3], ...)}.  
+    When matches are found among the potentially
+    common names, they are passed with 
+    \code{.proportion} to \code{\link{interpChar}}
+    to compute an interpolation.  The matches are
+    removed and replaced with the interpolant,
+    shortened by excluding any rows for which 
+    \code{.proportion} is outside 
+    \code{validProportion}.  
 
-    Elements with "common names" that do not have a match 
-    are replaced by elements with the common names that 
-    have been shortened by omitting rows with 
-    \code{.proportion} outside \code{validProportion}.  
-    Thus, if \code{x.0} is found without \code{x.1}, 
-    \code{x.0} is removed and replaced by \code{x}.  
+    Elements with "common names" that do not have 
+    a match are replaced by elements with the 
+    common names that have been shortened by
+    omitting rows with \code{.proportion} outside
+    \code{validProportion}.  Thus, if \code{x.0} 
+    is found without \code{x.1}, \code{x.0} is
+    removed and replaced by \code{x}.  
   }
   \item{nFrames}{
     number of distinct plots to create.
@@ -85,104 +92,124 @@ interpPairs(object, ...)
 %    \code{\link{nFramesDefault}}.  
   }
   \item{iFrame}{
-    integer giving the index of the single frame to create.  Default =
-    nFrames.
+    integer giving the index of the single frame 
+    to create.  Default = \code{nFrames}.
     
-    An error is thrown if both \code{iFrame} and \code{.proportion}
-    are not \code{NULL}.  
+    An error is thrown if both \code{iFrame} and
+    \code{.proportion} are not \code{NULL}.  
   }  
   \item{endFrames}{
     Number of frames to hold constant at the end.
   }  
   \item{.proportion}{
-    a numeric vector assumed to lie between 0 and 1 specifying how far
-    to go from suffixes[1] to suffixes[2].  For example, if \code{x.0}
-    and \code{x.1} are found and are numeric, \code{x} = \code{x.0 + 
-    .proportion * (x.1 - x.0)}.  Rows of \code{x} and any other element 
-    of \code{object} of the same length are dropped for any 
-    \code{.proportion} outside \code{validProportion}.
+    a numeric vector assumed to lie between 0 and 
+    1 specifying how far to go from 
+    \code{suffixes[1]} to \code{suffixes[2]}.  
+    For example, if \code{x.0} and \code{x.1} are
+    found and are numeric, \code{x} = 
+    \code{x.0 + .proportion * (x.1 - x.0)}.  
+    Rows of \code{x} and any other element 
+    of \code{object} of the same length are dropped
+    for any \code{.proportion} outside 
+    \code{validProportion}.
     
-    An error is thrown if both \code{iFrame} and \code{.proportion}
-    are not \code{NULL}.  
+    An error is thrown if both \code{iFrame} and
+    \code{.proportion} are not \code{NULL}.  
   }
   \item{envir}{
-    environment / list to use with code{object}, which can optionally 
-    provide other variables to compute what gets plotted;  see the 
-    example below using this argument.  
+    environment / list to use with code{object},
+    which can optionally provide other variables to
+    compute what gets plotted;  see the example
+    below using this argument.  
   }
   \item{pairs}{
-    a character vector of two regular expressions to identify 
-    elements of \code{object} between which to interpolate and 
-    three replacements.  
+    a character vector of two regular expressions 
+    to identify elements of \code{object} between
+    which to interpolate and three replacements.  
     
-    (1) The first of the three replacements is used in 
-    \code{\link{sub}} to convert each \code{pairs[1:2]} name 
-    found to the desired name of the interpolate.  Common names 
-    found are then passed with \code{.proportion} to 
+    (1) The first of the three replacements is used
+    in \code{\link{sub}} to convert each 
+    \code{pairs[1:2]} name found to the desired 
+    name of the interpolate.  Common names found 
+    are then passed with \code{.proportion} to 
     \code{\link{interpChar}}, which does the actual 
     interpolation. 
     
     (2, 3) \code{interpPairs} also calls 
-    \code{checkNames(object, avoid = pairs[c(1, 3, 2, 5)])}.  
-    This confirms that \code{object} has \code{\link{names}}, 
-    and all such names are unique.  If \code{object} does not 
-    have names or has some duplicate names, the 
-    \code{\link{make.names}} is called to fix that problem, 
-    and any new names that match \code{pairs[1:2]} are modified 
-    using \code{\link{sub}} to avoid creating a new match.  
-    If the modification still matches \code{pairs[1:2]}, it 
-    generates an error.      
+    \code{checkNames(object, avoid = 
+    pairs[c(1, 3, 2, 5)])}.  
+    This confirms that \code{object} has 
+    \code{\link{names}}, and all such names are
+    unique.  If \code{object} does not have names 
+    or has some duplicate names, the 
+    \code{\link{make.names}} is called to fix 
+    that problem, and any new names that match
+    \code{pairs[1:2]} are modified using 
+    \code{\link{sub}} to avoid creating a new match.  
+    If the modification still matches 
+    \code{pairs[1:2]}, it generates an error.      
   }
   \item{validProportion}{
-    Range of values of \code{.proportion} to retain, as noted with the
-    discussion of the \code{object} argument.
+    Range of values of \code{.proportion} to 
+    retain, as noted with the discussion of the
+    \code{object} argument.
   }
   \item{message0}{
-    a character string passed to \code{\link{interpChar}} 
-    to improve the value of diagnostic messages  
+    a character string passed to 
+    \code{\link{interpChar}} to improve the value 
+    of diagnostic messages  
   }
-  \item{\dots}{ optional arguments for \code{\link{sub}} }
+  \item{\dots}{ optional arguments for 
+  \code{\link{sub}} }
 }
 \details{
   *** FUNCTION *** 
     
-  First \code{interpPairs.function} looks for arguments 
-  \code{firstFrame}, \code{lastFrame}, and \code{Keep}.  If 
-  any of these are found, they are stored locally and removed
-  from the function.  If \code{iFrame} is provided, it is 
-  used with with these arguments plus \code{nFrames} and 
-  \code{endFrames} to compute \code{.proportion}.  
+  First \code{interpPairs.function} looks for
+  arguments \code{firstFrame}, \code{lastFrame}, 
+  and \code{Keep}.  If any of these are found, 
+  they are stored locally and removed from the
+  function.  If \code{iFrame} is provided, it is 
+  used with with these arguments plus 
+  \code{nFrames} and \code{endFrames} to compute
+  \code{.proportion}.  
   
-  If \code{.proportion} is outside \code{validProportion}, 
-  \code{interpPairs} does nothing, returning 
-  \code{enquote(NULL)}.  
+  If \code{.proportion} is outside 
+  \code{validProportion}, \code{interpPairs} does
+  nothing, returning \code{enquote(NULL)}.  
   
-  If \code{any(.proportion)} is inside \code{validProportion}, 
-  \code{interpPairs.function} next uses \code{\link{grep}} to 
-  look for arguments with names matching \code{pairs[1:2]}.  
-  If any are found, they are passed with \code{.proportion} 
-  to \code{\link{interpChar}}.  The result is stored in 
-  the modified \code{object} with the common name obtained 
-  from \code{sub(pairs[i], pairs[3], ...)}, \code{i} = 1, 2.  
+  If \code{any(.proportion)} is inside 
+  \code{validProportion}, 
+  \code{interpPairs.function} next uses 
+  \code{\link{grep}} to look for arguments with
+  names matching \code{pairs[1:2]}.  If any are
+  found, they are passed with \code{.proportion} 
+  to \code{\link{interpChar}}.  The result is 
+  stored in the modified \code{object} with the
+  common name obtained from 
+  \code{sub(pairs[i], pairs[3], ...)}, \code{i} = 
+  1, 2.  
 
   The result is then evaluated and then returned.  
   
   
   *** LIST *** 
 
-  1.  ALL.OUT:  if(none(0<=.proportion<=1))return 
-  'no.op' = list(fun='return', value=NULL) 
+  1.  \code{ALL.OUT:  
+  if(none(0<=.proportion<=1))}return 
+  \code{'no.op' = list(fun='return', value=NULL)} 
   
-  2.  FIND PAIRS:  Find names matching \code{pairs[1:2]} 
-  using \code{\link{grep}}.  For example, names like 
-  \code{x.0} match the default \code{pairs[1]}, 
-  and names like \code{x.1} match the default 
-  \code{pairs[1]}.  
+  2.  \code{FIND PAIRS}:  Find names matching
+  \code{pairs[1:2]} using \code{\link{grep}}.  
+  For example, names like \code{x.0} match the
+  default \code{pairs[1]}, and names like 
+  \code{x.1} match the default \code{pairs[1]}.  
 
-  3.  MATCH PAIRS:  Use \code{sub(pairs[i], pairs[3], 
-  ...)} for i = 1:2, to translate each name matching 
+  3.  \code{MATCH PAIRS}:  Use 
+  \code{sub(pairs[i], pairs[3], ...)} for 
+  i = 1:2, to translate each name matching 
   \code{pairs[1:2]} into something else for 
-  matching.  For example, he default \code{pairs} 
+  matching.  For example, the default \code{pairs} 
   thus translates, e.g., \code{x.0} and 
   \code{x.1} both into \code{x}.  In the output, 
   \code{x.0} and \code{x.1} are dropped, replaced 
@@ -194,44 +221,51 @@ interpPairs(object, ...)
   \code{\link{data.frame}} with the same number of 
   rows as \code{x} or \code{.proportion}.  
   
-  4.  Add component \code{.proportion} to \code{envir} 
-  to make it available to \code{\link{eval}} any 
-  \code{language} component of \code{object} in the next 
-  step.  
+  4.  Add component \code{.proportion} to 
+  \code{envir} to make it available to 
+  \code{\link{eval}} any \code{language} component
+  of \code{object} in the next step.  
   
-  5.  Loop over all elements of \code{object} to create 
-  \code{outList}, evaluating any expressions and 
-  computing the desired interpolation using 
-  \code{\link{interpChar}}.  Computing \code{xleft} 
-  in this way allows \code{xright} to be specified 
-  later as \code{quote(xleft + xinch(0.6))}, for 
-  example.  This can be used with a call to 
+  5.  Loop over all elements of \code{object} to 
+  create \code{outList}, evaluating any 
+  expressions and computing the desired 
+  interpolation using \code{\link{interpChar}}. 
+  Computing \code{xleft} in this way allows
+  \code{xright} to be specified later as 
+  \code{quote(xleft + xinch(0.6))}, for example. 
+  This can be used with a call to 
   \code{\link{rasterImageAdj}}.  
   
-  6.  Let \code{N} = the maximum number of rows of elements 
-  of \code{outList} created by interpolation in the previous 
-  step.  If \code{.proportion} is longer, set \code{N} = 
+  6.  Let \code{N} = the maximum number of rows of
+  elements of \code{outList} created by 
+  interpolation in the previous step.  If 
+  \code{.proportion} is longer, set \code{N} = 
   \code{length(.proportion)}.  Find all vectors and 
-  \code{\link{data.frame}}s in \code{outList} with \code{N} 
-  rows and delete any rows for which \code{.proportion} is 
-  outside \code{validProportion}.  
+  \code{\link{data.frame}}s in \code{outList} with
+  \code{N} rows and delete any rows for which 
+  \code{.proportion} is outside 
+  \code{validProportion}.  
 
-  7.  Delete the raw pairs found in steps 1-3, retaining the 
-  element with the target name computed in steps 4 and 5 
-  above.  For other elements of \code{object} modified in the 
-  previous step, retain the shortened form.  Otherwise, 
-  retain the original, unevaluated element.    
+  7.  Delete the raw pairs found in steps 1-3,
+  retaining the element with the target name
+  computed in steps 4 and 5 above.  For other
+  elements of \code{object} modified in the 
+  previous step, retain the shortened form. 
+  Otherwise, retain the original, unevaluated
+  element.    
 }
 \value{
-  a \code{list} with elements containing the interpolation results.
+  a \code{list} with elements containing the 
+  interpolation results.
 }
 \author{
   Spencer Graves
 }
 \seealso{
-  \code{\link{interpChar}} for details on interpolation.  
-  \code{\link{compareLengths}} for how lengths are checked and 
-  messages composed and written.  
+  \code{\link{interpChar}} for details on 
+  interpolation.  
+  \code{\link{compareLengths}} for how lengths 
+  are checked and messages composed and written.  
 %  \code{\link{Animate1.list}}, which uses \code{interpPairs}.  
   \code{\link{enquote}}
 }

@@ -4,15 +4,17 @@
   read.csv with Dates in 3 columns 
 }
 \description{
-  \code{\link{read.csv}}, converting 3-column dates into 
-  vectors of class 'Date'.  
+  \code{\link{read.csv}}, converting 3-column dates 
+  into vectors of class \code{Date}.  
 }
 \usage{
-readDates3to1(file, YMD=c('Year', 'Month', 'Day'), ...)
+readDates3to1(file, YMD=c('Year', 'Month', 'Day'), 
+                ...)
 }
 \arguments{
   \item{file}{
-    the name of a file from which the data are to be read.
+    the name of a file from which the data are to 
+    be read.
   }
   \item{YMD}{
     Character vector of length 3 passed to 
@@ -24,23 +26,27 @@ readDates3to1(file, YMD=c('Year', 'Month', 'Day'), ...)
 }
 \details{
   Some files (e.g., from the 
-  \href{http://correlatesofwar.org/data-sets/COW-war}{Correlates 
-  of War} project) have dates specified in three separate 
-  columns with names like "startMonth1", "startDay1", 
-  "startYear1", "endMonth1", ..., "endYear2".  This function 
-  looks for such triples and replaces each found with a single 
-  column with a name like, "start1", "end1", ..., "end2".  
+  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  of War} project) have dates specified in 
+  three separate columns with names like 
+  \code{startMonth1}, \code{startDay1}, 
+  \code{startYear1}, \code{endMonth1}, ..., 
+  \code{endYear2}.  This function looks for 
+  such triples and replaces each found with 
+  a single column with a name like, 
+  \code{start1}, \code{end1}, ..., \code{end2}.  
 
   ALGORITHM
 
-  1.  dat <- read.csv(file, ...)
+  1.  \code{dat <- read.csv(file, ...)}
 
-  2.  Dates3to1(dat, YMD)
+  2.  \code{Dates3to1(dat, YMD)}
 }
 %\source{}
 \value{
-  a \code{\link{data.frame}} with 3-column dates replace by 
-  single-column vectors of class "Date"
+  a \code{\link{data.frame}} with 3-column 
+  dates replace by single-column vectors of class 
+  \code{Date}.  
 }
 %\references{}
 \author{Spencer Graves}
@@ -53,8 +59,9 @@ readDates3to1(file, YMD=c('Year', 'Month', 'Day'), ...)
 ##
 ## 1.  Write a file to be read
 ##
-cow0 <- data.frame(rec=1:3, startMonth=4:6, startDay=7:9, 
-    startYear=1971:1973, endMonth1=10:12, endDay1=13:15, 
+cow0 <- data.frame(rec=1:3, startMonth=4:6, 
+    startDay=7:9, startYear=1971:1973, 
+    endMonth1=10:12, endDay1=13:15, 
     endYear1=1974:1976, txt=letters[1:3])
 
 cowFile <- tempfile('cow0')    

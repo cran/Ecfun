@@ -6,20 +6,22 @@
 \description{
   Identify the presumed surname in a character 
   string assumed to represent a name and return 
-  the result in a character matrix with "surname" 
-  followed by "givenName".  If only one name is 
-  provided (without punctuation), it is assumed 
-  to be the givenName;  see Wikipedia, 
+  the result in a character matrix with 
+  \code{surname} followed by \code{givenName}.  
+  If only one name is provided (without 
+  punctuation), it is assumed to be the 
+  \code{givenName};  see Wikipedia, 
   \href{https://en.wikipedia.org/wiki/Given_name}{"Given name"} 
   and \href{https://en.wikipedia.org/wiki/Surname}{"Surname"}.  
 }
 \usage{
-parseName(x, surnameFirst=(median(regexpr(',', x))>0),
-          suffix=c('Jr.', 'I', 'II', 'III', 'IV', 
+parseName(x, 
+    surnameFirst=(median(regexpr(',', x))>0),
+    suffix=c('Jr.', 'I', 'II', 'III', 'IV', 
               'Sr.', 'Dr.', 'Jr', 'Sr'),
-          fixNonStandard=subNonStandardNames, 
-          removeSecondLine=TRUE, 
-          namesNotFound="attr.replacement", ...)
+    fixNonStandard=subNonStandardNames, 
+    removeSecondLine=TRUE, 
+    namesNotFound="attr.replacement", ...)
 }
 \arguments{
   \item{x}{
@@ -52,12 +54,12 @@ parseName(x, surnameFirst=(median(regexpr(',', x))>0),
   \item{removeSecondLine}{
     logical:  If TRUE, delete anything 
     following "\\n" and return it as
-    an attribute "secondLine".  
+    an attribute \code{secondLine}.  
   }
   \item{namesNotFound}{
     character vector passed to 
     \code{subNonStandardNames} and used 
-    to compute any "namesNotFound" 
+    to compute any \code{namesNotFound} 
     attribute of the object returned 
     by \code{parseName}.  
   }
@@ -76,7 +78,7 @@ parseName(x, surnameFirst=(median(regexpr(',', x))>0),
   like Jr. or III;  remove and call the 
   rest x2.
 
-  3.  split <- strsplit(x2, " ")
+  3.  \code{split <- strsplit(x2, " ")}
 
   4.  Take the last as the surname.
 
@@ -95,15 +97,15 @@ parseName(x, surnameFirst=(median(regexpr(',', x))>0),
   as the surname, which is incorrect.
 
   6.  Recompose the rest with any suffix as 
-  the givenName.
+  the \code{givenName}.
 }
 \value{
   a character matrix with two columns:  
-  surname and givenName.  
+  surname and \code{givenName}.  
   
-  This matrix also has a "namesNotFound" 
-  attribute if one is returned by 
-  \code{subNonStandardNames}.  
+  This matrix also has a 
+  \code{namesNotFound} attribute if one is 
+  returned by \code{subNonStandardNames}.  
 }
 \author{
   Spencer Graves

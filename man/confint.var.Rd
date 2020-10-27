@@ -16,8 +16,8 @@
 }
 \arguments{
   \item{object}{
-    a numeric vector possibly with a "df" or 
-    "df.residuals" attribute assumed to 
+    a numeric vector possibly with a \code{df} 
+    or \code{df.residuals} attribute assumed to 
     represent a sample variance, possibly 
     computed as root mean square of residuals
     from a model.  
@@ -38,21 +38,21 @@
   an error.  
   
   2.  If \code{parm} is missing, look for an 
-  attribute of \code{object} starting with "df".  
-  If present, use that for \code{parm}.  If
-  \code{parm} is absent or not numeric, throw 
-  an error.  
+  attribute of \code{object} starting with 
+  \code{df}.  If present, use that for 
+  \code{parm}.  If \code{parm} is absent or 
+  not numeric, throw an error.  
   
   3.  replicate \code{object}, \code{parm}, and 
   \code{level} to the same length.  Issue a warning 
   if the longest is not a multiple of the others.  
   
-  4.  alph2 <- (1-level)/2 
+  4.  \code{alph2 <- (1-level)/2} 
   
-  5.  Qntls <- cbind(lower=qchisq(alph2, parm, lower=FALSE), 
-        upper=qchisq(alph2, parm)) 
+  5.  \code{Qntls <- cbind(lower=qchisq(alph2, parm, 
+  lower=FALSE), upper=qchisq(alph2, parm))} 
         
-  6.  CI <- (object*parm/Qntls)
+  6.  \code{CI <- (object*parm/Qntls)}
   
   7.  \code{attr(CI, 'level') <-} Level
   

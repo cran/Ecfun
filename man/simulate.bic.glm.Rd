@@ -1,23 +1,26 @@
 \name{simulate.bic.glm}
 \alias{simulate.bic.glm}
 \title{
-  A "simulate" method for a BMA::bic.glm object
+  A "simulate" method for a \code{BMA::bic.glm}
+  object
 }
 \description{
   Simulate predictions for \code{newdata} for a
   model of class \code{\link[BMA]{bic.glm}}.  
 
-NOTES: The \strong{stats} package has a 
-\code{\link[stats]{simulate}} method for "\code{lm}" 
-objects which is used for \code{\link{lm}} and 
-\code{\link{glm}} objects.  This 
-\code{simulate.bic.glm} function differs from 
-the \code{stats::\link[stats]{simulate}} function 
-in the same two fundamental and important ways as 
-the \code{simulate.glm} function:  
+  NOTES: The \strong{stats} package has a 
+  \code{\link[stats]{simulate}} method for 
+  "\code{lm}" objects which is used for 
+  \code{\link{lm}} and \code{\link{glm}} 
+  objects.  This \code{simulate.bic.glm} 
+  function differs from the 
+  \code{stats::\link[stats]{simulate}} function 
+  in the same two fundamental and important ways 
+  as the \code{simulate.glm} function:  
 
   \enumerate{
-    \item{\code{stats::\link[stats]{simulate}}
+    \item{
+      \code{stats::\link[stats]{simulate}}
       returns simulated data consistent with the 
       model fit assuming the estimated model 
       parameters are true and exact, i.e., 
@@ -106,23 +109,27 @@ the \code{simulate.glm} function:
     }
   }
   \item{...}{
-    further arguments passed to or from other methods.
+    further arguments passed to or from other
+    methods.
   }
 }
 \details{
-  1.  Save current \code{seed} and optionally set it using
-  code copied from \code{stats:::simulate.lm}.  
+  1.  Save current \code{seed} and optionally set 
+  it using code copied from 
+  \code{stats:::simulate.lm}.  
   
   2.  \code{postprob <- object[['postprob']]; 
   x <- object[['x']]; y <- object[['y']]; 
   mle <- object[['mle']]; 
   linkinv <- object[['linkinv']]}.
   
-  3.  \code{cl <- as.list(object[['call']]);  wt <- cl[['wt']]; 
+  3.  \code{cl <- as.list(object[['call']]);  
+  wt <- cl[['wt']]; 
   fam <- cl[['glm.family']]}
 
-  4.  \code{if(is.null(newdata))newdata <- x else ensure that 
-  all levels of factors of newdata match x.}
+  4.  \code{if(is.null(newdata))newdata <- x} 
+  else ensure that all levels of factors of 
+  \code{newdata} match \code{x}.
   
   5.  \code{xMat <- model.matrix(~., x);  
   newMat <- model.matrix(~., newdata)}
@@ -132,62 +139,67 @@ the \code{simulate.glm} function:
   
   7.  \code{sims <- matrix(NA, nobs, nsim)}
   
-  8.  \code{rmdl <- sample(1:nComponents, nsims, TRUE, 
-  postprob)}
+  8.  \code{rmdl <- sample(1:nComponents, nsims,
+  TRUE, postprob)}
   
   9.  \code{for(Comp in 1:nComponents)
   nsimComp <- sum(rmdl==Comp); 
-  refitComp <- glm.fit(xMat[, mle[Comp,]!=0], y, wt,
-  mle[Comp, mle[Comp,]!=0], family=fam); 
-  simCoef <- mvtnorm::rmvnorm(nsimComp, coef(refitComp), 
-  vcov(rfitComp)); 
-  sims[rmdl==Comp, ] <- tcrossprod(newMat[, mle[Comp,]!=0], 
-  simCoef)}
+  refitComp <- glm.fit(xMat[, mle[Comp,]!=0], y, 
+    wt, mle[Comp, mle[Comp,]!=0], family=fam); 
+  simCoef <- mvtnorm::rmvnorm(nsimComp, coef
+    (refitComp), vcov(rfitComp)); 
+  sims[rmdl==Comp, ] <- tcrossprod(newMat[, 
+    mle[Comp,]!=0], simCoef)}
   
-  10.  If \code{length(type)} == 1:  return a \code{\link{data.frame}} 
-  with one column for each desired simulation, consistent with the 
-  behavior of the generic \code{\link{simulate}} applied to objects 
-  of class \code{lm} or \code{glm}.  Otherwise, return a list of 
+  10.  If \code{length(type)} == 1:  return a
+  \code{\link{data.frame}} with one column for 
+  each desired simulation, consistent with the 
+  behavior of the generic \code{\link{simulate}}
+  applied to objects of class \code{lm} or 
+  \code{glm}.  Otherwise, return a list of 
   \code{\link{data.frame}}s of the desired types.  
 }
 \value{
-  Returns either a \code{\link{data.frame}} or a list of 
-  \code{\link{data.frame}}s depending on 'type':  
+  Returns either a \code{\link{data.frame}} or a
+  list of \code{\link{data.frame}}s depending on
+  'type':  
   
-  \item{coef}{
+  \item{\code{coef}}{
     a \code{\link{data.frame}} with \code{nsim} 
     columns and one row for each variable in the max
     model.  Values are non-zero for variables in the 
     model in the BMA mixture selected for that 
     simulation.  The non-zero values are generated 
-    using \code{mvtnorm::\link[mvtnorm]{rmvnorm}} with  
-    mean = \code{\link{coef}} and covariance matrix 
-    = \code{\link{vcov}} of the model fit to the 
-    subset of variables in that component model.  
+    using \code{mvtnorm::\link[mvtnorm]{rmvnorm}}
+    with  mean = \code{\link{coef}} and covariance 
+    matrix = \code{\link{vcov}} of the model fit 
+    to the subset of variables in that component
+    model.  
   }
-  \item{link}{
-    a \code{\link{data.frame}} with \code{nsim} columns 
-    of \code{nobs} values each giving the simulations on 
-    the \code{link} scale for each row in \code{newdata}
-    (or the training set if \code{newdata} is not 
-    provided).  
+  \item{\code{link}}{
+    a \code{\link{data.frame}} with \code{nsim} 
+    columns of \code{nobs} values each giving the
+    simulations on the \code{link} scale for each
+    row in \code{newdata} (or the training set if
+    \code{newdata} is not provided).  
   }
-  \item{response}{
-    a \code{\link{data.frame}} with \code{nsim} columns 
-    of \code{nobs} values each giving the simulations on 
-    the \code{response} scale, being \code{linkinv} of 
-    the simulations on the \code{link} scale.  
+  \item{\code{response}}{
+    a \code{\link{data.frame}} with \code{nsim}
+    columns of \code{nobs} values each giving the
+    simulations on the \code{response} scale, 
+    being \code{linkinv} of the simulations on 
+    the \code{link} scale.  
   }
-  \item{for length(type)>1}{
+  \item{for \code{length(type)}>1}{
     a list with simulations on the desired scales.  
   }
   
   The value also has an attribute "\code{seed}". 
-  If argument \code{seed} is NULL, the attribute os the 
-  value of \code{\link{.Random.seed}} before the 
-  simulation started.  Otherwise it is the value of 
-  the argument with a "kind" attribute with value 
-  \code{as.list(RNGkind())}.  
+  If argument \code{seed} is NULL, the attribute 
+  is the value of \code{\link{.Random.seed}} 
+  before the simulation started.  Otherwise it 
+  is the value of the argument with a "kind"
+  attribute with value \code{as.list(RNGkind())}.  
   
   NOTE:  This function currently may not work
   with a model fit that involves a multivariate 

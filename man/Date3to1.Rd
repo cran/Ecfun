@@ -4,45 +4,51 @@
   Convert three YMD vectors to a Date 
 }
 \description{
-  Given a \code{\link{data.frame}} with 3 columns, assume 
-  they represent Year, Month and Day and return a vector 
-  of class "Date".  
+  Given a \code{\link{data.frame}} with 3 columns, 
+  assume they represent Year, Month and Day and 
+  return a vector of class \code{Date}.  
 }
 \usage{
 Date3to1(data, default='Start')
 }
 \arguments{
   \item{data}{
-    a \code{\link{data.frame}} with 3 columns assumed to 
-    represent Year, Month and Day.    
+    a \code{\link{data.frame}} with 3 columns 
+    assumed to represent Year, Month and Day.    
   }
   \item{default}{
-    A character string to indicate how missing months and 
-    days should be treated.  If the first letter is "S" 
-    or "s", the default month will be 1 and the default 
-    day will be 1.  Otherwise, "End" is assumed, for 
-    which the default month will be 12 and the default 
+    A character string to indicate how missing 
+    months and days should be treated.  If the 
+    first letter is "S" or "s", the default 
+    month will be 1 and the default day will be 
+    1.  Otherwise, "End" is assumed, for which 
+    the default month will be 12 and the default 
     day will be the last day of the month.  
     
-    NOTE:  Any number outside the range of 1 to the 
-    last day of the month is considered missing and 
-    its subscript is noted in the optional attribute 
-    "missing".  
+    NOTE:  Any number outside the range of 1 to 
+    the last day of the month is considered 
+    missing and its subscript is noted in the 
+    optional attribute "missing".  
   }
 }
 \details{
   The data sets from the 
-  \href{http://correlatesofwar.org/data-sets/COW-war}{Correlates 
-  of War} project include dates coded in triples of columns with 
-  names like c("StartMonth1", "StartDay1", "StartYear1", 
-  "EndMonth1", ..., "EndYear2").  This function will accept one 
-  triple and translate it into a vector of class "Date". 
+  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  of War} project include dates coded in triples 
+  of columns with names like 
+  
+  \code{c("StartMonth1", "StartDay1", "StartYear1",
+  "EndMonth1", ..., "EndYear2")}.  
+  
+  This function will accept one triple and
+  translate it into a vector of class \code{Date}. 
 }
 \value{
-  Returns an object of class "Date" with an optional 
-  attribute "missing" giving the indices of any elements 
-  with missing months or days, for which a default month
-  or day was supplied.  
+  Returns an object of class \code{Date} with an 
+  optional attribute \code{missing} giving the 
+  indices of any elements with missing months or 
+  days, for which a default month or day was 
+  supplied.  
 }
 \author{
   Spencer Graves

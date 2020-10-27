@@ -4,14 +4,17 @@
   ping a Uniform resource locator (URL)
 }
 \description{
-  ***NOTE:  THIS IS A PRELIMINARY VERSION OF THIS FUNCTION;
-  ***NOTE:  IT MAY BE CHANGED OR REMOVED IN A FUTURE RELEASE.
+  ***NOTE:  THIS IS A PRELIMINARY VERSION OF 
+  THIS FUNCTION;
+  ***NOTE:  IT MAY BE CHANGED OR REMOVED IN 
+  A FUTURE RELEASE.
 
-  ping a Uniform resource locator (URL) or Internet Protocol (IP)
-  address.
+  ping a Uniform resource locator (URL) or 
+  Internet Protocol (IP) address.
 
-  NOTE:  Some Internet Service Providers (ISPs) play games with "ping".
-  That makes the results of \code{Ping} unreliable.
+  NOTE:  Some Internet Service Providers (ISPs) 
+  play games with "ping".  That makes the results 
+  of \code{Ping} unreliable.
 }
 \usage{
 Ping(url, pingArgs='', warn=NA,
@@ -19,54 +22,62 @@ Ping(url, pingArgs='', warn=NA,
 }
 \arguments{
   \item{url}{
-    a character string of a URL or IP address to ping.  If \code{url} is
-    a vector of length greater than 1, only the first component is
+    a character string of a URL or IP address to
+    ping.  If \code{url} is a vector of length
+    greater than 1, only the first component is
     used.
   }
   \item{pingArgs}{
-    arguments to pass to the \code{ping} command of typical operating
-    systems via
+    arguments to pass to the \code{ping} command 
+    of typical operating systems via
 
-    pingResult <- system(paste('ping', pingArgs, url), intern=TRUE, ...)
+    \code{pingResult <- system(paste('ping',
+        pingArgs, url), intern=TRUE, ...)}
   }
   \item{warn}{
-    value for \code{options('warn')} during the call to
-    \code{\link{system}}.  \code{NA} to not change
-    \code{options('warn')} during this call.
+    value for \code{options('warn')} during the 
+    call to \code{\link{system}}.  \code{NA} to 
+    not change \code{options('warn')} during 
+    this call.
   }
   \item{show.output.on.console}{
     argument for \code{\link{system}}.
   }
 }
 \details{
-  1.  urlSplit0 <- strsplit(url, '://')[[1]]
+  1.  \code{urlSplit0 <- strsplit(url, '://')[[1]]}
 
-  2.  urlS0 <- urlSplit0[min(2, length(urlSplit0))]
+  2.  \code{urlS0 <- urlSplit0[min(2, 
+  length(urlSplit0))]}
 
-  3.  host <- strsplit(urlS0, '/')[[1]][1]
+  3.  \code{host <- strsplit(urlS0, '/')[[1]][1]}
 
-  4.  pingCmd <- paste('ping', pingArgs, host)
+  4.  \code{pingCmd <- paste('ping', pingArgs, 
+  host)}
 
-  5.  system(pingCmd, intern=TRUE, ...)
+  5.  \code{system(pingCmd, intern=TRUE, ...)}
 }
 \value{
   list with the following components:
 
   \item{rawResults}{
-    character vector of the raw results from the ping command
+    character vector of the raw results from 
+    the ping command
   }
   \item{rawNumbers}{
     numeric vector of the times measured
   }
   \item{counts}{
-    numeric vector of numbers of packets sent, received, and lost
+    numeric vector of numbers of packets 
+    sent, received, and lost
   }
   \item{p.lost}{
     proportion lost = lost / sent
   }
   \item{stats}{
-    numeric vector of min, avg (mean), max, and mdev
-    (standard deviation) of the measured round trip times
+    numeric vector of \code{min, avg (mean), max,
+    and mdev} (standard deviation) of the 
+    measured round trip times
   }
 }
 \author{
@@ -85,7 +96,7 @@ Ping(url, pingArgs='', warn=NA,
 ##
 ## good
 ##
-(google <- Ping('http://google.com/ping works on host not pages'))
+(google <- Ping('https://google.com/ping works on host not pages'))
 
 \dontshow{stopifnot(}
 with(google, (counts[1]>0) && (counts[3]<1))

@@ -7,33 +7,35 @@
   Find which pattern matches x.  
 }
 \usage{
-rgrep(pattern, x, ignore.case = FALSE, perl = FALSE, 
-  value = FALSE, fixed = FALSE, useBytes = FALSE, 
-  invert = FALSE)
+rgrep(pattern, x, ignore.case = FALSE, 
+  perl = FALSE, value = FALSE, fixed = FALSE,
+  useBytes = FALSE, invert = FALSE)
 }
 \arguments{
   \item{pattern}{
-    a \code{\link{character}} vector of regular expressions 
-    to be matched to \code{x}
+    a \code{\link{character}} vector of regular
+    expressions to be matched to \code{x}
   }
   \item{x}{
-    a \code{\link{character}} string or vector for which a 
-    matching regular expression is desired.  
+    a \code{\link{character}} string or vector 
+    for which a matching regular expression is
+    desired.  
   }
-  \item{ignore.case, perl, value, fixed, useBytes, invert}{
-    as for \code{\link{grep}}   
+  \item{ignore.case, perl, value, fixed, useBytes,
+    invert}{
+      as for \code{\link{grep}}   
   }
 }
 \details{
-  1.  np <- length(pattern)
+  1.  \code{np <- length(pattern)}
   
-  2.  g. <- rep(NA, np)
+  2.  \code{g. <- rep(NA, np)}
   
-  3.  for(i in seq(length=np)){
+  3.  \code{for(i in seq(length=np)){
     g.[i] <- (length(grep(pattern[i], x))>0) 
-  }
+  }}
   
-  4.  return(which(g.))
+  4.  \code{return(which(g.))}
 }
 \value{
   an \code{\link{integer}} vector of indices 

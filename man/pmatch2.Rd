@@ -4,13 +4,14 @@
   Value matching or partial matching
 }
 \description{
-  \code{pmatch2} returns a list of the positions of matches or 
-  partial matches of \code{x} in \code{table}.  
-  
-  This does sloppy matching to find "Peter" to match "Pete" 
-  only if "Pete" is not in \code{table}, and we want 
-  "John Peter" if neither "Pete" nor "Peter" are in 
+  \code{pmatch2} returns a list of the positions 
+  of matches or partial matches of \code{x} in
   \code{table}.  
+  
+  This does sloppy matching to find "Peter" to match
+  "Pete" only if "Pete" is not in \code{table}, and
+  we want "John Peter" if neither "Pete" nor "Peter"
+  are in \code{table}.  
 }
 \usage{
 pmatch2(x, table)
@@ -24,23 +25,26 @@ pmatch2(x, table)
   }
 }
 \details{
-  1.  nx <- length(x); out <- vector(nx, "list"); 
-  names(out) <- x
+  1.  \code{nx <- length(x); 
+  out <- vector(nx, "list"); 
+  names(out) <- x}
   
-  2.  for(ix in seq(length=nx)):  
   
-  3.  xi <- which(x[ix] \%in\% table)
+  2.  \code{for(ix in seq(length=nx))}:  
+  3.  \code{xi <- which(x[ix] \%in\% table)}
   
-  4.  if(length(xi)<1)
-  xi <- grep(paste0('^', x[ix]), table).  
+  4.  \code{if(length(xi)<1)
+  xi <- grep(paste0('^', x[ix]), table)}.  
   
-  5.  if(length(xi)<1)xi <- grep(x[ix], table).  
+  5.  \code{if(length(xi)<1)xi <- 
+  grep(x[ix], table)}.  
   
-  6.  out[[ix]] <- xi 
+  6.  \code{out[[ix]] <- xi} 
 }
 \value{
-  A list of integer vectors indicating the positions in 
-  \code{table} matching each element of \code{x}
+  A list of integer vectors indicating the 
+  positions in \code{table} matching each element 
+  of \code{x}
 }
 \author{
   Spencer Graves

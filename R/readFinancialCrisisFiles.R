@@ -1,4 +1,13 @@
-readFinancialCrisisFiles <- function(files, crisisType=7, ...){
+readFinancialCrisisFiles <- function(files, crisisType=7, 
+                                     ...){
+## ** 
+## ** FUNCTION IS DELETED, BECAUSE IT USED gdata,
+## ** WHICH WAS SCHEDULED TO BE DELTED FROM CRAN
+## ** WITH ALL PACKAGES THAT USED IT -- 
+## ** AND IT WASN'T CLEAR THAT ANYONE USED IT 
+## ** WHICH SUGGESTED IT WAS NOT WORTH THE EFFORT 
+## ** TO TRY TO FIX IT.  
+  return(data.frame(year=0, crisisType=0))
 ##
 ## 1.  check
 ##
@@ -11,8 +20,8 @@ readFinancialCrisisFiles <- function(files, crisisType=7, ...){
 #
 #  I get the same note without these lines but with
 #  files=FinancialCrisisFiles in the function definition
-  if(is.character(files))
-      files <- financialCrisisFiles(files)
+#  if(is.character(files))
+#      files <- financialCrisisFiles(files)
 #
   if(!inherits(files, 'financialCrisisFiles'))
       stop('argument files is not of class financialCrisisFiles')
@@ -55,7 +64,8 @@ readFinancialCrisisFiles <- function(files, crisisType=7, ...){
           dots$xls <- fileNames[i]
           cat(iNames[j], '')
           dots$sheet <- iNames[j]
-          jCtry <- do.call(gdata::read.xls, dots)
+#          jCtry <- do.call(gdata::read.xls, dots)
+          jCtry <- NA
           row0 <- (which(jCtry=='1800')-1)
           if(length(row0)!=1)
               stop('data for 1800 not found in sheet ', iNames[j])
