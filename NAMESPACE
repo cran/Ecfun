@@ -3,7 +3,8 @@ export(.onAttach,
        BoxCox, 
        confint.var, confint.sd, 
        canbeNumeric, camelParse, checkNames, classIndex, 
-       compareLengths, countByYear, countsByYear, 
+       compareLengths, compareOverlap, 
+       countByYear, countsByYear, 
        createMessage, createX2matchY, 
        dateCols, Date3to1, Dates3to1, 
        dtruncdist, 
@@ -20,7 +21,8 @@ export(.onAttach,
        parseCommas, parseDollars, 
        parseName, 
        plot.qqnorm2, plot.qqnorm2s, 
-       pmatch2, points.qqnorm2, ptruncdist, 
+       pmatch2, pmatchIC, 
+       points.qqnorm2, ptruncdist, 
        qqnorm2, qqnorm2s, qqnorm2t, qtruncdist, 
        rasterImageAdj, 
        read.transpose, readCookPVI, readCookPVI., 
@@ -52,6 +54,7 @@ importFrom("BMA", "bic.glm")
 import(MASS)
 import(TeachingDemos)
 import(fda)
+import(rvest)
 import(jpeg)
 
 #import(DierckxSpline)

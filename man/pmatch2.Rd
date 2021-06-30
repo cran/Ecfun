@@ -8,10 +8,11 @@
   of matches or partial matches of \code{x} in
   \code{table}.  
   
-  This does sloppy matching to find "Peter" to match
-  "Pete" only if "Pete" is not in \code{table}, and
-  we want "John Peter" if neither "Pete" nor "Peter"
-  are in \code{table}.  
+  This does sloppy matching to find "Peter" 
+  to match "Pete" only if "Pete" is not in
+  \code{table}, and we want "John Peter" if 
+  neither "Pete" nor "Peter" are in 
+  \code{table}.  
 }
 \usage{
 pmatch2(x, table)

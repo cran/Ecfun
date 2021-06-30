@@ -1,3 +1,8 @@
+2021-06-29
+Ecfun 0.2-4 
+
+Deleted all `read*` functions and functions that called them be default, because they no longer worked, and the demand for them did not seem to justify the work of fixing them.  Most of these were written to scrape information from specific websites.  They are all still available in the CRAN archives in case anyone cares to resurrect them.  
+
 2020-09-13 
 Ecfun 0.2-4 
 
