@@ -1,7 +1,7 @@
 ---
 title: "Updating USGDPpresidents"
 author: "Spencer Graves"
-date: "4/6/2019"
+date: "2022-02-22"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Updating USGDPpresidents}
@@ -11,15 +11,19 @@ vignette: >
   \usepackage[utf8](inputenc)
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Purpose of this document 
 
-This document describes the process for updating [`USGDPpresidents Ecdat`](https://www.rdocumentation.org/packages/Ecdat/versions/0.3-1/topics/USGDPpresidents).  
+This document describes the process for updating [`Ecdat::USGDPpresidents`](https://www.rdocumentation.org/packages/Ecdat/versions/0.3-1/topics/USGDPpresidents).  
 
-## Is there new data?  
+## Set working directory 
+
+First decide the directory in which we want to work and copy this vignette (`*.Rmd` file) into that directory.  (`RStudio` does not allow `setwd` inside code chunks to work as one might naively expect.  Therefore, it's best NOT to try to change the working directory but instead to copy this vignette into the desired working directory.)  
+
+## Are there new data?  
 
 Start by checking the span of years in `USGDPpresidents`:  
 
@@ -28,25 +32,31 @@ library(Ecdat)
 (rngYrs <- range(USGDPpresidents$Year))
 ```
 
-Next download "GDP - US" and "CPI - US" from [Measuring Worth](https://www.measuringworth.com/).  On 2019-04-06 this produced two csv files, which I downloaded and copied into the working directory:   
+Next download "GDP - US" and "CPI - US" from [Measuring Worth](https://www.measuringworth.com/).  On 2022-02-16 this produced two csv files, which I downloaded and copied into a directory in which we wish to work.  
 
 ```{r csv}
 getwd()
 (csv2 <- dir(pattern='\\.csv$'))
-if(length(csv2)==2){
+(CPIcsvs <- grep('^USCPI', csv2, value=TRUE))
+(CPIcsv <- tail(CPIcsvs, 1))
+
+(GDPcsvs <- grep('^USGDP', csv2, value=TRUE))
+(GDPcsv <- tail(GDPcsvs, 1))
+
+if((length(CPIcsv)==1) & (length(GDPcsv)==1)){
   Update0 <- TRUE
 } else Update0 <- FALSE
 ```
 
-The following assumes there are only 2 csv files in the working directory at this time, with the CPI being the first (in lexicographical order).  If this is not correct, something needs to change for the following to work properly.
+We must verify by visual inspection that `CPIcsv` and `GDPcsv` are both of length 1 and are the files we want.  
 
-Read these two files:  
+Read them:  
 
 ```{r read.csv}
 Update <- FALSE
 if(Update0){
-  str(USCPI <- read.csv(csv2[1], skip=2))
-  str(USGDP. <- read.csv(csv2[2], skip=1))
+  str(USCPI <- read.csv(CPIcsv, skip=2))
+  str(USGDP. <- read.csv(GDPcsv, skip=1))
   library(Ecfun)
   USGDP <- asNumericDF(USGDP.)
   print(rngCPIyrs <- range(USCPI$Year) )
@@ -102,7 +112,7 @@ CPI?
 
 ```{r CPIref}
 if(Update){
-  readLines(csv2[1], n=4)
+  readLines(CPIcsv, n=4)
 }
 ```
 
@@ -158,17 +168,26 @@ Compare the index year of `Real.GDP.per.capita` with that in `USGDPpresidents.Rd
 
 Next:  executive:  
 
+NOTE:  THIS MAY NEED TO BE CHANGED MANUALLY HERE BEFORE EXECUTING, BECAUSE IT IS NOT IN `USGDP`...
+BOTH: 
+** WHO WAS PRESIDENT SINCE THE PREVIOUS VERSION?
+** WAS THAT PERSON NOT IN THE PREVIOUS VERSION?  
+
 ```{r executive}
 if(Update){
   exec <- as.character(USGDPp2$executive)
-  exec[is.na(exec)] <- c('Obama', 'Trump', 'Trump')
+  exec[is.na(exec)] <- c('Trump', 'Trump', 'Biden')
   lvlexec <- c(levels(USGDPp2$executive), 
-               'Trump')
+               'Biden')
   USGDPp2$executive <- ordered(exec, lvlexec)
 }
 ```  
 
 Similarly:  war
+
+NOTE:  IF THERE HAS BEEN A MAJOR WAR SINCE THE LAST VERSION, 
+THEN THIS TEXT NEEDS TO BE CHANGED, 
+BECAUSE IT ASSUMES THERE HAS NOT BEEN A MAJOR WAR.  
 
 ```{r war}
 if(Update){
@@ -181,6 +200,10 @@ if(Update){
 
 Next:  `battleDeaths` and `battleDeathsPMP`:  
 
+NOTE:  `battleDeaths` ARE ONLY BATTLE DEATHS
+IN MAJOR WARS as defined in `help(USGDPpresidents)`.  
+Otherwise, they are 0.  
+
 ```{r battleDeaths}
 if(Update){
   USGDPp2$battleDeaths[iNew] <- 0 
@@ -190,7 +213,7 @@ if(Update){
 }
 ```
 
-Keynes?
+Keynes (per `help(USGDPpresidents)`):
 
 ```{r Keynes}
 if(Update){
@@ -209,26 +232,173 @@ are available as a monthly series from
 the [Current Population Survey of the Bureau 
 of Labor Statistics](https://www.bls.gov/cps/).  
 Download the most recent years as an Excel 
-file, compute row averages, and manually 
-transfer the numbers for the most recent years 
-here:  
+file, compute row averages, and transfer the 
+numbers for the most recent years here.  
 
+NOTE:  When I did that on 2022-02-22 I found 
+minor discrepancies in earlier years.  Pushing 
+this further I found that I could download data 
+back to 1948.  The average unemployment per this
+BLS computation for 1948 and 1947 were 3.75 and 
+6.05 percent, respectively, vs. 0.038 and 0.059
+in the previous version of `USGDPpresidents` for
+those years.  I therefore decided to read that 
+`*.xlsx` file and replace all those numbers.
+
+```{r xlsx}
+if(Update){
+  (xls <- dir(pattern='\\.xlsx$'))
+  (BLSxls <- grep('^Series', xls, value=TRUE))
+}
+```
+
+```{r readBLS}
+library(readxl)
+if(Update){
+  str(BLS <- read_excel(BLSxls, skip=11))
+}
+```
+
+Compute the average unemployment here, so I don't have to do this separately.  
+
+```{r AnnUnemp}
+if(Update){
+  UNEMP <- as.matrix(BLS[2:13])
+  str(unemp <- apply(UNEMP, 1, mean))
+}
+```
+
+Store these `unemp` numbers   
+  
 ```{r unemp}
 if(Update){
-  USGDPp2$unemployment[iNew] <- c(4.875, 
-                    4.35, 3.89166666666667)
+  selU4GDP <- (USGDPp2$Year %in% BLS$Year)
+  selBLS <- (BLS$Year %in% USGDPp2$Year)
+  USGDPp2[selU4GDP, 'unemployment'] <- 
+          unemp[selBLS]
+#  USGDPp2$unemployment[iNew] <- c(4.875, 
+#                    4.35, 3.89166666666667)
   USGDPp2$unempSource[iNew] <- USGDPp2$unempSource[
     iNew[1]-1]
   tail(USGDPp2)
 }
 ```
 
+## `fedReceipts`, `fedOutlays`
+
+We get `fedReceipts` and `fedOutlays` from two different sources.  Let's start with the historical data first.  
+
+We manually copied the historical data from series Y 335 and 336 in [United States Census Bureau (1975) Bicentennial Edition: Historical Statistics of the United States, Colonial Times to 1970, Part 2.  Chapter Y. Government](https://www.census.gov/library/publications/1975/compendia/hist_stats_colonial-1970.html) into a LibreOffice `*.ods` file.  We need to read that once and add it to `USGDPp`:  
+
+```{r ods, eval=FALSE}
+if(Update){
+  (odsFile <- dir(pattern='\\.ods'))
+  (odsF <- grep('^hstat', odsFile, value=TRUE))
+}
+```
+
+```{r readods, eval=FALSE}
+if(Update){
+  library(readODS)
+  str(hstat <- read_ods(odsF, sheet='Receipts', skip=2))
+}
+```
+
+```{r sortOld, eval=FALSE}
+if(Update){
+  Hstat <- hstat[!is.na(hstat$Year), 1:3]
+  oOld <- order(Hstat$Year)
+  head(Hst <- Hstat[oOld, ])
+}
+```
+
+Add as new variables to `USGDPp2`: 
+
+```{r addNewVars, eval=FALSE}
+if(Update){
+  USGDPp2$fedReceipts <- NA 
+  USGDPp2$fedOutlays <- NA
+  selGDP4Hst <- (USGDPp2$Year %in% Hst$Year)
+  USGDPp2[selGDP4Hst, c("fedReceipts", "fedOutlays")] <- 
+      (Hst[2:3] / 1000)
+  USGDPp2[c('Year', 'fedReceipts', 'fedOutlays')]
+}
+```
+
+New let's add the new data.  
+
+```{r BudgetFile}
+if(Update){
+  (BudgetFiles <- grep('^BUDGET', xls, value=TRUE))
+  (BudgetF2_1 <- grep('2-1', BudgetFiles, value=TRUE))
+  (BudgetFile <- tail(BudgetF2_1, 1))
+}
+```
+
+```{r readBudget}
+if(Update){
+  str(Budget <- read_excel(BudgetFile, skip=3))
+}
+```
+
+```{r drop2}
+if(Update){
+  library(Ecfun)
+  str(Budg <- asNumericDF(Budget[-(1:2), 1:3]))
+}
+```
+
+```{r updateBudget}
+if(Update){
+  selGDP4budg <- (USGDPp2$Year %in% Budg[, 1])
+  selBudg <- (Budg[, 1] %in% USGDPp2$Year)
+  USGDPp2[selGDP4budg, 
+    c('fedReceipts', 'fedOutlays')] <- Budg[selBudg, 2:3]
+}
+```
+
+Finally:  `fedOutlays_pGDP`
+
+```{r fedOutlays_pGDP}
+if(Update){
+  sum(i1843 <- (USGDP$Year==1843))
+  GDPnom <- (USGDP$Nominal.GDP..million.of.Dollars.
+          / (1+i1843))
+  plot(USGDP$Year, GDPnom, type='l', log='y')
+  abline(v=1843)
+
+  fedOp <- (USGDPp2$fedOutlays[selGDP] / GDPnom)
+  plot(USGDP$Year, fedOp, type='l', log='y')
+
+  USGDPp2$fedOutlays_pGDP <- NA
+  USGDPp2$fedOutlays_pGDP[selGDP] <- fedOp
+}
+```
+
+## Plot US federal outlays 
+
+```{r USGDPpresNew}
+if(Update){
+  USGDPpresidents <- USGDPp2
+
+  sel <- !is.na(USGDPpresidents$fedOutlays_pGDP)
+  plot(100*fedOutlays_pGDP~Year, 
+     USGDPpresidents[sel,], type='l', log='y', 
+     xlab='', ylab='US federal outlays, % of GDP')
+  abline(h=2:3)
+  war <- (USGDPpresidents$war !='')
+  abline(v=USGDPpresidents$Year[war], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+```
 ## Done:  Save
 
 ```{r save}
 if(Update){
-  USGDPpresidents <- USGDPp2
   save(USGDPpresidents, file='USGDPpresidents.rda')
+  getwd()
 }
 ```
 

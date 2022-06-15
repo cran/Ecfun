@@ -298,5 +298,16 @@ nF. <- asNumericDF(fakeF1, orderBy=1:2)
 \dontshow{stopifnot(}
 all.equal(nF., nF1c[2:1,])
 \dontshow{)}
+
+##
+## 6.  Will it work for a tibble?  
+##
+if(require(tibble)){
+  nF1t <- asNumericDF(as_tibble(fakeF1))
+\dontshow{stopifnot(}
+  all.equal(nF1, nF1t)
+\dontshow{)}
+}
+
 }
 \keyword{manip}

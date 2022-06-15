@@ -7,7 +7,7 @@ All `read*` functions in this package have been removed, because it wasn't clear
 
 # 2021-05-20
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/sbgraves237/Ecfun/workflows/R-CMD-check/badge.svg)](https://github.com/sbgraves237/Ecfun/actions)
+[![`R-CMD-check`](https://github.com/sbgraves237/Ecfun/workflows/R-CMD-check/badge.svg)](https://github.com/sbgraves237/Ecfun/actions)
 <!-- badges: end -->
 
 # 2020-01-23

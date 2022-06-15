@@ -66,7 +66,7 @@ S_k = \sum_{i=1}^k{T_i}.
 The exponential distribution is the simplest lifetime distribution.  It is widely used for applications like this and seems reasonable in this context.  
 
 [For setting math in RMarkdown, we are following 
-[Cosma Shalizi (2016) "Using R Markdown for Class Reports"](http://www.stat.cmu.edu/~cshalizi/rmarkdown/#math-in-r-markdown).]
+[Cosma Shalizi (2016) "Using R Markdown for Class Reports"](https://www.stat.cmu.edu/~cshalizi/rmarkdown/#math-in-r-markdown).]
 
 We code this as follows:  
 
@@ -415,7 +415,7 @@ L(u | \mathbf{T}) = \exp[−S_k e^{-u} - (k-1)u].
 With an improper prior locally uniform in $u = \log(\lambda)$, we get the following:  
 
 \[
-P(a < \lambda \leq b | \mathbf{T}) \propto \int_{\log(a)}^{\log(b)}{\exp[-S_k e^{-u}] e^{-(k-1)u}du}
+P(a < \lambda \leq b | \mathbf{T}) \propto \int_{\log(a)}^{\log(b)}{\exp[-S_k e^{-u}] e^{-(k-1)u} du}
 \]
 
 Let's transform this back by replacing $u$ with $\lambda = e^u$:  

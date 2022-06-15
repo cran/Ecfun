@@ -144,7 +144,7 @@ asNumericDF <- function(x,
     w0 <- options(warn=-1)
 #    cat(colnames(x)[n], ":")
 #    print(x[,n])
-    xn <- asNumericChar(x[, n], 
+    xn <- asNumericChar(x[, n, drop=TRUE], 
       leadingChar=leadingChar, 
       suppressChar=suppressChar, 
           pctChar=pctChar)

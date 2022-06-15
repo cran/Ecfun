@@ -1,4 +1,4 @@
-## ----setup, include=FALSE-----------------------------------------------------
+## ----setup, include=FALSE, echo=FALSE-----------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
 ## ----yrSpan-------------------------------------------------------------------
@@ -8,15 +8,21 @@ library(Ecdat)
 ## ----csv----------------------------------------------------------------------
 getwd()
 (csv2 <- dir(pattern='\\.csv$'))
-if(length(csv2)==2){
+(CPIcsvs <- grep('^USCPI', csv2, value=TRUE))
+(CPIcsv <- tail(CPIcsvs, 1))
+
+(GDPcsvs <- grep('^USGDP', csv2, value=TRUE))
+(GDPcsv <- tail(GDPcsvs, 1))
+
+if((length(CPIcsv)==1) & (length(GDPcsv)==1)){
   Update0 <- TRUE
 } else Update0 <- FALSE
 
 ## ----read.csv-----------------------------------------------------------------
 Update <- FALSE
 if(Update0){
-  str(USCPI <- read.csv(csv2[1], skip=2))
-  str(USGDP. <- read.csv(csv2[2], skip=1))
+  str(USCPI <- read.csv(CPIcsv, skip=2))
+  str(USGDP. <- read.csv(GDPcsv, skip=1))
   library(Ecfun)
   USGDP <- asNumericDF(USGDP.)
   print(rngCPIyrs <- range(USCPI$Year) )
@@ -56,7 +62,7 @@ if(Update){
 
 ## ----CPIref-------------------------------------------------------------------
 if(Update){
-  readLines(csv2[1], n=4)
+  readLines(CPIcsv, n=4)
 }
 
 ## ----GDPdeflator--------------------------------------------------------------
@@ -97,9 +103,9 @@ if(Update){
 ## ----executive----------------------------------------------------------------
 if(Update){
   exec <- as.character(USGDPp2$executive)
-  exec[is.na(exec)] <- c('Obama', 'Trump', 'Trump')
+  exec[is.na(exec)] <- c('Trump', 'Trump', 'Biden')
   lvlexec <- c(levels(USGDPp2$executive), 
-               'Trump')
+               'Biden')
   USGDPp2$executive <- ordered(exec, lvlexec)
 }
 
@@ -124,18 +130,126 @@ if(Update){
   USGDPp2$Keynes[iNew] <- 0 
 }
 
+## ----xlsx---------------------------------------------------------------------
+if(Update){
+  (xls <- dir(pattern='\\.xlsx$'))
+  (BLSxls <- grep('^Series', xls, value=TRUE))
+}
+
+## ----readBLS------------------------------------------------------------------
+library(readxl)
+if(Update){
+  str(BLS <- read_excel(BLSxls, skip=11))
+}
+
+## ----AnnUnemp-----------------------------------------------------------------
+if(Update){
+  UNEMP <- as.matrix(BLS[2:13])
+  str(unemp <- apply(UNEMP, 1, mean))
+}
+
 ## ----unemp--------------------------------------------------------------------
 if(Update){
-  USGDPp2$unemployment[iNew] <- c(4.875, 
-                    4.35, 3.89166666666667)
+  selU4GDP <- (USGDPp2$Year %in% BLS$Year)
+  selBLS <- (BLS$Year %in% USGDPp2$Year)
+  USGDPp2[selU4GDP, 'unemployment'] <- 
+          unemp[selBLS]
+#  USGDPp2$unemployment[iNew] <- c(4.875, 
+#                    4.35, 3.89166666666667)
   USGDPp2$unempSource[iNew] <- USGDPp2$unempSource[
     iNew[1]-1]
   tail(USGDPp2)
 }
 
-## ----save---------------------------------------------------------------------
+## ----ods, eval=FALSE----------------------------------------------------------
+#  if(Update){
+#    (odsFile <- dir(pattern='\\.ods'))
+#    (odsF <- grep('^hstat', odsFile, value=TRUE))
+#  }
+
+## ----readods, eval=FALSE------------------------------------------------------
+#  if(Update){
+#    library(readODS)
+#    str(hstat <- read_ods(odsF, sheet='Receipts', skip=2))
+#  }
+
+## ----sortOld, eval=FALSE------------------------------------------------------
+#  if(Update){
+#    Hstat <- hstat[!is.na(hstat$Year), 1:3]
+#    oOld <- order(Hstat$Year)
+#    head(Hst <- Hstat[oOld, ])
+#  }
+
+## ----addNewVars, eval=FALSE---------------------------------------------------
+#  if(Update){
+#    USGDPp2$fedReceipts <- NA
+#    USGDPp2$fedOutlays <- NA
+#    selGDP4Hst <- (USGDPp2$Year %in% Hst$Year)
+#    USGDPp2[selGDP4Hst, c("fedReceipts", "fedOutlays")] <-
+#        (Hst[2:3] / 1000)
+#    USGDPp2[c('Year', 'fedReceipts', 'fedOutlays')]
+#  }
+
+## ----BudgetFile---------------------------------------------------------------
+if(Update){
+  (BudgetFiles <- grep('^BUDGET', xls, value=TRUE))
+  (BudgetF2_1 <- grep('2-1', BudgetFiles, value=TRUE))
+  (BudgetFile <- tail(BudgetF2_1, 1))
+}
+
+## ----readBudget---------------------------------------------------------------
+if(Update){
+  str(Budget <- read_excel(BudgetFile, skip=3))
+}
+
+## ----drop2--------------------------------------------------------------------
+if(Update){
+  library(Ecfun)
+  str(Budg <- asNumericDF(Budget[-(1:2), 1:3]))
+}
+
+## ----updateBudget-------------------------------------------------------------
+if(Update){
+  selGDP4budg <- (USGDPp2$Year %in% Budg[, 1])
+  selBudg <- (Budg[, 1] %in% USGDPp2$Year)
+  USGDPp2[selGDP4budg, 
+    c('fedReceipts', 'fedOutlays')] <- Budg[selBudg, 2:3]
+}
+
+## ----fedOutlays_pGDP----------------------------------------------------------
+if(Update){
+  sum(i1843 <- (USGDP$Year==1843))
+  GDPnom <- (USGDP$Nominal.GDP..million.of.Dollars.
+          / (1+i1843))
+  plot(USGDP$Year, GDPnom, type='l', log='y')
+  abline(v=1843)
+
+  fedOp <- (USGDPp2$fedOutlays[selGDP] / GDPnom)
+  plot(USGDP$Year, fedOp, type='l', log='y')
+
+  USGDPp2$fedOutlays_pGDP <- NA
+  USGDPp2$fedOutlays_pGDP[selGDP] <- fedOp
+}
+
+## ----USGDPpresNew-------------------------------------------------------------
 if(Update){
   USGDPpresidents <- USGDPp2
+
+  sel <- !is.na(USGDPpresidents$fedOutlays_pGDP)
+  plot(100*fedOutlays_pGDP~Year, 
+     USGDPpresidents[sel,], type='l', log='y', 
+     xlab='', ylab='US federal outlays, % of GDP')
+  abline(h=2:3)
+  war <- (USGDPpresidents$war !='')
+  abline(v=USGDPpresidents$Year[war], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+
+## ----save---------------------------------------------------------------------
+if(Update){
   save(USGDPpresidents, file='USGDPpresidents.rda')
+  getwd()
 }
 

@@ -6,6 +6,17 @@ asNumericChar <- function(x,
 ## 1.  Convert factors to character
 ## 
 #  print(x)
+  dimx <- dim(x)
+  if(!is.null(dimx)){
+    if(length(dimx)<2){
+      x <- unlist(x)
+    } else if(sum(dimx>1)>1){
+      stop('x is not a vector; class(x) =', class(x))
+    } else {
+      x <- unlist(x)
+    }
+  }
+#  
   if(length(x)<1)return(x)
   if(all(is.na(x)))return(x)
   X <- x
@@ -22,6 +33,8 @@ asNumericChar <- function(x,
 #  cat(length(dol), ' $ found: ', 
 #      paste(dol, collapse=', '), '\n')
   x[dol] <- sub(leadingChar, '', x[dol])
+  x[!is.na(x)] <- tis::stripBlanks(x[
+    !is.na(x)])
 ##
 ## 2.  find percent
 ##  

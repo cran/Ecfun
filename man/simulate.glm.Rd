@@ -154,7 +154,7 @@
     being \code{linkinv} of the simulations on 
     the \code{link} scale.  
   }
-  \item{for \code{length(type)>1}}{
+  \item{if length(type)>1}{
     a list with simulations on the desired 
     scales.  
   }

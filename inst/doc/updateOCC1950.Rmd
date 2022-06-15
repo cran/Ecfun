@@ -321,7 +321,7 @@ In any event, after each data selection, I was given an "estimated size" for the
 
 After a while (47 minutes for one extract on 2018-09-03) I got an email saying my extract was ready for download.  I returned to the web site and clicked something under "Data".
 
-To help with questions about the format, etc., I studied `help(pac=ipumsr)`. I found that the `ipumsr` package included seven vignettes. One of those is titled ["Introduction to `ipumsr` - IPUMS Data in R"](http://tech.popdata.org/ipumsr/articles/ipums.html).  From that, I learned that I needed to right-click (`ctrl-click` on a Mac) on `DDI` under `Codebook` and then select "Save link as...".  Moreover, I should NOT do this in Safari.  Google Chrome worked for me for this on 2018-09-01 and Firefox worked when I repeated it with a slightly different extract on 2018-09-03.  
+To help with questions about the format, etc., I studied `help(pac=ipumsr)`. I found that the `ipumsr` package included seven vignettes. One of those is titled ["Introduction to `ipumsr` - IPUMS Data in R"](https://tech.popdata.org/ipumsr/articles/ipums.html).  From that, I learned that I needed to right-click (`ctrl-click` on a Mac) on `DDI` under `Codebook` and then select "Save link as...".  Moreover, I should NOT do this in Safari.  Google Chrome worked for me for this on 2018-09-01 and Firefox worked when I repeated it with a slightly different extract on 2018-09-03.  
 
 When I repeated this 2020-03-18, I downloaded `"usa_00003.dat"` and `"use_00005.dat"` consuming 2.3 and 3.8 GB.  Codebooks are also available.  
 
