@@ -1,6 +1,6 @@
 Package: Ecfun
-Version: 0.2-6
-Date: 2022-06-13
+Version: 0.3-0
+Date: 2022-07-21
 Title: Functions for 'Ecdat'
 Author: Spencer Graves <spencer.graves@effectivedefense.org>
 Maintainer: Spencer Graves <spencer.graves@effectivedefense.org>
@@ -20,6 +20,6 @@ License: GPL (>= 2)
 Language: en-us
 URL: https://www.r-project.org
 NeedsCompilation: no
-Packaged: 2022-06-14 20:21:51 UTC; sg
+Packaged: 2022-07-21 17:34:14 UTC; sg
 Repository: CRAN
-Date/Publication: 2022-06-15 08:30:19 UTC
+Date/Publication: 2022-07-21 23:10:02 UTC

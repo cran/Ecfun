@@ -12,11 +12,12 @@
   \code{footers}, and a \code{summary}.
 
   The initial application for this function 
-  is to read Table 6.16.  Income and 
-  employment by industry in the National 
-  Income and Product Account tables 
+  is to read "Table 6.16.  Income and 
+  employment by industry" in the National 
+  Income and Product Account (NIPA) tables 
   published by the Bureau of Economic Analysis 
-  of the United States Department of Commerce.
+  (BEA) of the United States Department of 
+  Commerce.
 }
 \usage{
 read.transpose(file, header=TRUE, sep=',',
@@ -72,25 +73,28 @@ read.transpose(file, header=TRUE, sep=',',
 \references{
   \href{https://www.bea.gov}{
     Table 6.16.  Income and employment by industry 
-    in the National Income and Product Account
-    tables published by the Bureau of Economic
-    Analysis of the United States Department of
-    Commerce.  To get this table from 
-    \code{www.bea.gov}, under 
-    "U.S. Economic Accounts", first select 
-    "Corporate Profits" under "National".  Then 
-    next to "Interactive Tables", select, 
-    "National Income and Product Accounts Tables". 
-    From there, select "Begin using the data...". 
-    Under "Section 6 - income and employment by
-    industry", select each of the tables starting
-    "Table 6.16".  As of February 2013, there were 
+    in the National Income and Product Account 
+    (NIPA) tables published by the Bureau of Economic
+    Analysis (BEA) of the United States Department 
+    of Commerce.}  As of February 2013, there were 
     4 such tables available:  Table 6.16A, 6.16B, 
     6.16C and 6.16D.  Each of the last three are
     available in annual and quarterly summaries. 
     The \code{USFinanceIndustry} data combined the
     first 4 rows of the 4 annual summary tables.
-  }
+    
+    NOTE:  The structure of the BEA web site 
+    seems to have changes between 2013 and 2022.  
+    As of 2022-07-01 it does not seem easy to 
+    find these tables at the BEA website.  
+    
+    Line 5 in the sample tables saved in 2013 
+    contained "a non-breaking space in Latin-1", 
+    which was not a valid code in UTF-8 and 
+    was rejected by a development version of R.
+    Since it wasn't easy to update those tables, 
+    the "non-breaking spaces" were replaced 
+    with " ".  
 }
 \author{Spencer Graves}
 \seealso{

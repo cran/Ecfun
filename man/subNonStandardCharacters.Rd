@@ -160,8 +160,8 @@ all.equal(Name2, Name2.)
 ##
 ## 2.  Example from iconv
 ##
-icx <- c("Ekstr\\xf8m", "J\\xf6reskog", 
-         "bi\\xdfchen Z\\xfcrcher")
+icx <- c("Ekstr\\u{f8}m", "J\\u{f6}reskog", 
+         "bi\\u{df}chen Z\\u{fc}rcher")
 icx2 <- subNonStandardCharacters(icx)
 
 # check 
