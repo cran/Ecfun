@@ -1,3 +1,6 @@
+# Ecfun 0.3-1 (2022-10-04)
+* Fixed error with R-devel.  
+
 # Ecfun 0.3-0 (2022-07-21)
 "cran-comments.html" added to `.Rbuildignore`.  
 

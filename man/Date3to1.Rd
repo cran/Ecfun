@@ -33,7 +33,7 @@ Date3to1(data, default='Start')
 }
 \details{
   The data sets from the 
-  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  \href{https://correlatesofwar.org/data-sets/COW-war/}{Correlates 
   of War} project include dates coded in triples 
   of columns with names like 
   

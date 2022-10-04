@@ -26,7 +26,7 @@ readDates3to1(file, YMD=c('Year', 'Month', 'Day'),
 }
 \details{
   Some files (e.g., from the 
-  \href{https://correlatesofwar.org/data-sets/COW-war}{Correlates 
+  \href{https://correlatesofwar.org/data-sets/COW-war/}{Correlates 
   of War} project) have dates specified in 
   three separate columns with names like 
   \code{startMonth1}, \code{startDay1}, 

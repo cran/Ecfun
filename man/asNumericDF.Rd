@@ -215,36 +215,34 @@ for \code{asNumericDF}:
 ## 1.  an example 
 ##
 xDate <- as.Date('1970-01-01')+c(0, 365)
-xPOSIX <- as.POSIXct(xDate)+c(1, 99)
+(xPOSIX <- as.POSIXct(xDate)+c(1, 99))
 xMSdate <- as.Date(1, 
     as.Date('1899-12-31'))+1:2
-fakeF1 <- data.frame(yr=c('1948', 
+(fakeF1 <- data.frame(yr=c('1948', 
             '1947 (1)'),
       q1=c(' 1,234 ', ''), duh=rep(NA, 2), 
       dol=c('$1,234', ''), 
       pct=c('1\%', '2\%'), 
       xDate=as.character(xDate, 
-        format='\%m-\%d-\%Y'), 
+        format='\%Y-\%m-\%d'), 
       xPOSIX=as.character(xPOSIX, 
-        format='\%m-\%d-\%Y \%H:\%M:\%S'), 
+        format='\%Y-\%m-\%d \%H:\%M:\%S'), 
       xMSdate=2:3, junk=c('this is',
-          'junk'))
+          'junk')))
             
-# This converts the last 3 columns to NAs and drops them:   
+# This converts the last 3 columns to NAs and drops them:
 
 str(nF1.1 <- asNumericChar(fakeF1$yr))
 str(nF1.2 <- asNumericChar(fakeF1$q1))
 str(nF1.3 <- asNumericChar(fakeF1$duh))
+(nF1.4 <- asNumericChar('1969-12-31 18:00:01',
+                        class.='POSIXct'))
 
-nF1 <- asNumericDF(fakeF1)
-nF2 <- asNumericDF(fakeF1, Dates=6, 
+(nF1 <- asNumericDF(fakeF1))
+(nF2 <- asNumericDF(fakeF1, Dates=6, 
     MSdate='xMSdate', 
     ignore=c('junk', 'xPOSIX'), 
-    format.='\%m-\%d-\%Y')
-nF3 <- asNumericDF(nF2, POSIX='xPOSIX', 
-    ignore=c(5,7:8), 
-    format.='\%m-\%d-\%Y \%H:\%M:\%S')
-            
+    format.='\%Y-\%m-\%d'))
 # check 
 nF1. <- data.frame(yr=
         asNumericChar(fakeF1$yr),
@@ -261,15 +259,6 @@ all.equal(nF1, nF1.)
 \dontshow{)}
 \dontshow{stopifnot(}
 all.equal(nF1., nF1c)
-\dontshow{)}
-
-nF3c <- data.frame(yr=1948:1947, 
-      q1=c(1234, NA), dol=c(1234, NA), 
-      pct=c(.01, .02), xDate=xDate, 
-      xPOSIX=xPOSIX, xMSdate=xMSdate, 
-      junk=fakeF1$junk)
-\dontshow{stopifnot(}
-all.equal(nF3, nF3c)
 \dontshow{)}
 
 ## 

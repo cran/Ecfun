@@ -406,16 +406,16 @@ between major nuclear crises.</p>
 <h2>Times of major nuclear crises</h2>
 <pre class="r"><code>str(eventDates &lt;- c(as.Date(
   c(&#39;1962-10-16&#39;, &#39;1983-09-26&#39;)), Sys.Date()))</code></pre>
-<pre><code>##  Date[1:3], format: &quot;1962-10-16&quot; &quot;1983-09-26&quot; &quot;2022-07-21&quot;</code></pre>
+<pre><code>##  Date[1:3], format: &quot;1962-10-16&quot; &quot;1983-09-26&quot; &quot;2022-10-04&quot;</code></pre>
 <pre class="r"><code>(daysBetween &lt;- difftime(tail(eventDates, -1), 
         head(eventDates, -1), units=&#39;days&#39;))</code></pre>
 <pre><code>## Time differences in days
-## [1]  7650 14178</code></pre>
+## [1]  7650 14253</code></pre>
 <pre class="r"><code>(yearsBetween &lt;- as.numeric(daysBetween)/365.24)</code></pre>
-<pre><code>## [1] 20.94513 38.81831</code></pre>
+<pre><code>## [1] 20.94513 39.02366</code></pre>
 <pre class="r"><code>names(yearsBetween) &lt;- c(&#39;observed&#39;, &#39;censored&#39;)
 str(yearsBetween)</code></pre>
-<pre><code>##  Named num [1:2] 20.9 38.8
+<pre><code>##  Named num [1:2] 20.9 39
 ##  - attr(*, &quot;names&quot;)= chr [1:2] &quot;observed&quot; &quot;censored&quot;</code></pre>
 </div>
 <div id="likelihood-of-times-between-major-nuclear-crises" class="section level2">
@@ -472,7 +472,7 @@ following:</p>
 <p>This is commonly read “lambda hat”. We code it as follows:</p>
 <pre class="r"><code>(lambdaHat &lt;- (sum(yearsBetween) / 
                  (length(yearsBetween)-1)))</code></pre>
-<pre><code>## [1] 59.76344</code></pre>
+<pre><code>## [1] 59.96879</code></pre>
 <p>From <a href="https://en.wikipedia.org/wiki/Wilks%27_theorem">Wilks’
 theorem</a>, we know that 2*log(likelihood ratio) is approximately <a href="https://en.wikipedia.org/wiki/Chi-squared_distribution">Chi-squared</a>
 with degrees of freedom equal to the number of parameters estimated,
@@ -494,10 +494,10 @@ neighborhood of the MLE. For this, we will focus on the region that is
 closer than <code>chisq2/2</code> of the maximum:</p>
 <pre class="r"><code>lambda &lt;- lambdaHat+seq(-50, 1000, 50)
 (logLR2 &lt;- 2*(logLk(lambdaHat) - logLk(lambda)))</code></pre>
-<pre><code>##  [1] 6.6187902 0.0000000 0.3048166 0.7147493 1.0809901 1.3988919 1.6766946
-##  [8] 1.9223426 2.1420690 2.3406106 2.5215805 2.6877713 2.8413756 2.9841407
-## [15] 3.1174790 3.2425471 3.3603032 3.4715492 3.5769633 3.6771232 3.7725256
-## [22] 3.8636001</code></pre>
+<pre><code>##  [1] 6.4425796 0.0000000 0.3033958 0.7120651 1.0774855 1.3948285 1.6722291
+##  [8] 1.9175750 2.1370666 2.3354204 2.5162367 2.6822998 2.8357962 2.9784688
+## [15] 3.1117272 3.2367254 3.3544198 3.4656111 3.5709762 3.6710921 3.7664547
+## [22] 3.8574930</code></pre>
 <p>After several attempts at adjusting the parameters for the <a href="https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/seq"><code>seq</code></a>
 function while including 0 in the sequence, I gave up trying to get a
 range with 0 inside and just over <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/Chisquare"><code>qchisq(0.99, 1)</code></a>
@@ -507,16 +507,16 @@ second of 22 evenly-spaced points on the <span class="math inline">\(\lambda\)</
 <code>22nd</code> point is not close to the target 6.63. Let’s try <span class="math inline">\(u = \log(\lambda)\)</span>:</p>
 <pre class="r"><code>l_lam &lt;- log(lambdaHat)+seq(-2, 6, 1)
 (logLR2_u &lt;- 2*(logLk(lambdaHat) - logLk(exp(l_lam))))</code></pre>
-<pre><code>## [1]  8.7781122  1.4365637  0.0000000  0.7357589  2.2706706  4.0995741  6.0366313
-## [8]  8.0134759 10.0049575</code></pre>
+<pre><code>## [1] 8.778112e+00 1.436564e+00 1.776357e-15 7.357589e-01 2.270671e+00
+## [6] 4.099574e+00 6.036631e+00 8.013476e+00 1.000496e+01</code></pre>
 <p>This seems more sensible, though still somewhat skewed, with the MLE
 as the third of 9 evenly-spaced points on the <span class="math inline">\(u\)</span> scale. What about <span class="math inline">\(\theta = 1/\lambda\)</span>?</p>
 <pre class="r"><code>theta &lt;- (1/lambdaHat + seq(-.016, .06, .004))
 (logLR2_th &lt;- 2*(logLk(lambdaHat) - logLk(1/theta)))</code></pre>
-<pre><code>##  [1] 4.34450197 1.09143451 0.34437239 0.06827762 0.00000000 0.04941154
-##  [7] 0.17468992 0.35297757 0.57040712 0.81792867 1.08930819 1.38006833
-## [13] 1.68688467 2.00722103 2.33909840 2.68094279 3.03148177 3.38967204
-## [19] 3.75464746 4.12568117</code></pre>
+<pre><code>##  [1] 4.49393515 1.10400689 0.34739218 0.06879487 0.00000000 0.04972892
+##  [7] 0.17575389 0.35503789 0.57362191 0.82240436 1.09511984 1.38727082
+## [13] 1.69551940 2.01731995 2.35068669 2.69404068 3.04610572 3.40583563
+## [19] 3.77236205 4.14495631</code></pre>
 <p>This looks worse: With <span class="math inline">\(\hat\theta =
 1/\hat\lambda = 0.0178\)</span>, it seems infeasible to get a sequence
 of only a few equally-spaced positive numbers that include 0 and still
@@ -832,9 +832,9 @@ rlambda2 &lt;- function(n, sumTimes=lambdaHat){
 simLam &lt;- rlambda2(1e4)
 quantile(simLam)</code></pre>
 <pre><code>##           0%          25%          50%          75%         100% 
-## 5.712221e+00 4.366595e+01 8.798438e+01 2.083023e+02 2.560870e+05</code></pre>
+## 5.731848e+00 4.381598e+01 8.828669e+01 2.090180e+02 2.569669e+05</code></pre>
 <pre class="r"><code>mean(simLam)</code></pre>
-<pre><code>## [1] 466.3438</code></pre>
+<pre><code>## [1] 467.9461</code></pre>
 <p>This distribution is obviously highly skewed as expected, with a mode
 (MLE) at 56 years and a mean estimated here at 439</p>
 </div>
@@ -961,12 +961,12 @@ to <code>N</code> = 1e7.</p>
 
 set.seed(1)
 (mcArm1 &lt;- mcArmageddon(10))</code></pre>
-<pre><code>## meanTime =  475.178 
-##         0%        25%        50%        75%       100% 
-##   18.58126  215.39297  247.49620  610.19850 1908.91835 
-## et =  0.003 0 0.002 0 0</code></pre>
-<pre><code>##  [1]  248.45244  206.75419  246.53996  241.30933 1908.91835  366.44578
-##  [7]  799.29053   24.03907   18.58126  691.44940
+<pre><code>## meanTime =  476.8107 
+##        0%       25%       50%       75%      100% 
+##   18.6451  216.1331  248.3466  612.2951 1915.4773 
+## et =  0.002 0 0.002 0 0</code></pre>
+<pre><code>##  [1]  249.30611  207.46459  247.38706  242.13846 1915.47731  367.70487
+##  [7]  802.03685   24.12167   18.64510  693.82519
 ## attr(,&quot;Qbar&quot;)
 ## [1] 0.4652404
 ## attr(,&quot;quantileQ&quot;)
@@ -979,14 +979,14 @@ set.seed(1)
 ##  1.0  1.0  2.5  3.0  9.0 
 ## attr(,&quot;elapsed.time&quot;)
 ##    user  system elapsed 
-##   0.003   0.000   0.002</code></pre>
+##   0.002   0.000   0.002</code></pre>
 <p>This all looks sensible. Let’s try larger sample sizes:</p>
 <pre class="r"><code>set.seed(2)
 mcArm2 &lt;- mcArmageddon(100)</code></pre>
-<pre><code>## meanTime =  1307.332 
-##         0%        25%        50%        75%       100% 
-##    20.8480   124.9861   258.4113   720.5219 47041.1964 
-## et =  0.001 0 0.001 0 0</code></pre>
+<pre><code>## meanTime =  1311.824 
+##          0%         25%         50%         75%        100% 
+##    20.91963   125.41555   259.29923   722.99757 47202.82782 
+## et =  0.002 0 0.001 0 0</code></pre>
 <pre class="r"><code>attributes(mcArm2)</code></pre>
 <pre><code>## $Qbar
 ## [1] 0.4447869
@@ -1004,13 +1004,13 @@ mcArm2 &lt;- mcArmageddon(100)</code></pre>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##   0.001   0.000   0.001</code></pre>
+##   0.002   0.000   0.001</code></pre>
 <pre class="r"><code>set.seed(3)
 mcArm3 &lt;- mcArmageddon(1000)</code></pre>
-<pre><code>## meanTime =  871.4632 
+<pre><code>## meanTime =  874.4575 
 ##           0%          25%          50%          75%         100% 
-## 9.321803e+00 8.795987e+01 2.493820e+02 7.061278e+02 1.147996e+05 
-## et =  0.006 0 0.007 0 0</code></pre>
+## 9.353832e+00 8.826210e+01 2.502389e+02 7.085540e+02 1.151940e+05 
+## et =  0.007 0 0.007 0 0</code></pre>
 <pre class="r"><code>attributes(mcArm3)</code></pre>
 <pre><code>## $Qbar
 ## [1] 0.4454203
@@ -1028,14 +1028,14 @@ mcArm3 &lt;- mcArmageddon(1000)</code></pre>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##   0.006   0.000   0.007</code></pre>
+##   0.007   0.000   0.007</code></pre>
 <p><code>N</code> = 1000 still takes only 0.009 seconds.</p>
 <pre class="r"><code>set.seed(4)
 mcArm4 &lt;- mcArmageddon(1e4)</code></pre>
-<pre><code>## meanTime =  1497.302 
+<pre><code>## meanTime =  1502.447 
 ##           0%          25%          50%          75%         100% 
-## 7.016788e+00 8.227608e+01 2.360273e+02 6.639268e+02 1.864252e+06 
-## et =  0.065 0.008 0.073 0 0</code></pre>
+## 7.040897e+00 8.255878e+01 2.368383e+02 6.662081e+02 1.870657e+06 
+## et =  0.062 0.007 0.068 0 0</code></pre>
 <pre class="r"><code>attributes(mcArm4)</code></pre>
 <pre><code>## $Qbar
 ## [1] 0.4486821
@@ -1053,15 +1053,15 @@ mcArm4 &lt;- mcArmageddon(1e4)</code></pre>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##   0.065   0.008   0.073</code></pre>
+##   0.062   0.007   0.068</code></pre>
 <p>The time was still only 0.074 seconds, so let’s try
 <code>N=1e5</code>:</p>
 <pre class="r"><code>set.seed(5)
 mcArm5 &lt;- mcArmageddon(1e5)</code></pre>
-<pre><code>## meanTime =  2509.714 
+<pre><code>## meanTime =  2518.337 
 ##           0%          25%          50%          75%         100% 
-## 5.150619e+00 8.542762e+01 2.323479e+02 6.680659e+02 7.967535e+07 
-## et =  0.603 0.019 0.627 0 0</code></pre>
+## 5.168317e+00 8.572114e+01 2.331463e+02 6.703613e+02 7.994911e+07 
+## et =  0.58 0.017 0.598 0 0</code></pre>
 <pre class="r"><code>attributes(mcArm5)</code></pre>
 <pre><code>## $Qbar
 ## [1] 0.447376
@@ -1079,16 +1079,16 @@ mcArm5 &lt;- mcArmageddon(1e5)</code></pre>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##   0.603   0.019   0.627</code></pre>
+##   0.580   0.017   0.598</code></pre>
 <p>The time was still only 0.535 – well under 10 times
 <code>N= 1e4</code>.</p>
 <p>What about a million?</p>
 <pre class="r"><code>set.seed(6)
 mcArm6 &lt;- mcArmageddon(1e6)</code></pre>
-<pre><code>## meanTime =  3688.566 
+<pre><code>## meanTime =  3701.24 
 ##           0%          25%          50%          75%         100% 
-## 4.746749e+00 8.555011e+01 2.328713e+02 6.639319e+02 1.394689e+09 
-## et =  5.909 0.162 6.122 0 0</code></pre>
+## 4.763058e+00 8.584405e+01 2.336714e+02 6.662132e+02 1.399481e+09 
+## et =  5.706 0.138 5.858 0 0</code></pre>
 <pre class="r"><code>attributes(mcArm6)</code></pre>
 <pre><code>## $Qbar
 ## [1] 0.44865
@@ -1106,7 +1106,7 @@ mcArm6 &lt;- mcArmageddon(1e6)</code></pre>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##   5.909   0.162   6.122</code></pre>
+##   5.706   0.138   5.858</code></pre>
 <p>This too just over 5 seconds.</p>
 <p>For the Wikiversity article on “Time to extinction of civilization”,
 we’d like the percentages of these times that are less than 40 and 60
@@ -1115,14 +1115,14 @@ currently alive today and the time remaining in the twenty-first century
 as of this writing, as well as the quantiles of one in a million and one
 in a thousand chances:</p>
 <pre class="r"><code>mean(mcArm6)</code></pre>
-<pre><code>## [1] 3688.566</code></pre>
+<pre><code>## [1] 3701.24</code></pre>
 <pre class="r"><code>mean(mcArm6&lt;40)</code></pre>
-<pre><code>## [1] 0.102252</code></pre>
+<pre><code>## [1] 0.101704</code></pre>
 <pre class="r"><code>mean(mcArm6&lt;60)</code></pre>
-<pre><code>## [1] 0.174609</code></pre>
+<pre><code>## [1] 0.173912</code></pre>
 <pre class="r"><code>quantile(mcArm6, c(1e-6, 1e-3))</code></pre>
 <pre><code>##  0.0001%     0.1% 
-## 4.853120 9.750453</code></pre>
+## 4.869796 9.783955</code></pre>
 <p>Let’s see if we can generate 1e7 random times in, hopefully, just
 over 50 seconds:</p>
 <pre class="r"><code>if(!fda::CRAN()){
@@ -1134,10 +1134,10 @@ over 50 seconds:</p>
   print(mean(mcArm7))
   print(quantile(mcArm7, c(1e-6, 1e-3)))
 }</code></pre>
-<pre><code>## meanTime =  2955.947 
+<pre><code>## meanTime =  2966.104 
 ##           0%          25%          50%          75%         100% 
-## 3.930114e+00 8.546806e+01 2.326395e+02 6.654248e+02 2.137740e+09 
-## et =  57.926 2.45 60.886 0 0 
+## 3.943617e+00 8.576172e+01 2.334388e+02 6.677112e+02 2.145085e+09 
+## et =  55.187 2.136 57.47 0 0 
 ## $Qbar
 ## [1] 0.4486429
 ## 
@@ -1154,11 +1154,11 @@ over 50 seconds:</p>
 ## 
 ## $elapsed.time
 ##    user  system elapsed 
-##  57.926   2.450  60.886 
+##  55.187   2.136  57.470 
 ## 
-## [1] 2955.947
+## [1] 2966.104
 ##  0.0001%     0.1% 
-## 4.740794 9.780416</code></pre>
+## 4.757083 9.814021</code></pre>
 <p>Let’s make a normal probability plot of <code>log(mcArm7)</code>.
 With this many points, the standard <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/qqnorm"><code>qqnorm</code></a>
 function can take a long time creating the plot. Let’s start by sorting
@@ -1170,13 +1170,13 @@ the points as a separate step:</p>
 mcArm.s &lt;- sort(mcArm.)
 quantile(mcArm.s)</code></pre>
 <pre><code>##           0%          25%          50%          75%         100% 
-## 3.930114e+00 8.546806e+01 2.326395e+02 6.654248e+02 2.137740e+09</code></pre>
+## 3.943617e+00 8.576172e+01 2.334388e+02 6.677112e+02 2.145085e+09</code></pre>
 <p>Next, let’s call <code>qqnorm</code> without plotting:</p>
 <pre class="r"><code>str(qq7 &lt;-as.data.frame(qqnorm(mcArm.s,
                           plot.it=FALSE)))</code></pre>
 <pre><code>## &#39;data.frame&#39;:    10000000 obs. of  2 variables:
 ##  $ x: num  -5.33 -5.12 -5.03 -4.96 -4.91 ...
-##  $ y: num  3.93 4.16 4.48 4.49 4.57 ...</code></pre>
+##  $ y: num  3.94 4.18 4.5 4.51 4.58 ...</code></pre>
 <p>Let’s cut the data down to the first and last 10 plus 9 of the next
 90 from each end plus 1 percent of the rest:</p>
 <pre class="r"><code>N. &lt;- length(mcArm.s)
