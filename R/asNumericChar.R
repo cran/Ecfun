@@ -127,7 +127,7 @@ asNumericChar <- function(x,
             'Failed to convert POSIX ', 
              'x[1] = ', x[1], ', ...')
           stop(msgP)
-        } else return(pp)
+        } 
       } else {
         pp <- try(as.POSIXct(x, 
                     format=format.))
@@ -136,8 +136,11 @@ asNumericChar <- function(x,
             'Failed to convert POSIX ', 
             'x[1] = ', x[1], ', ...')
           stop(msgP)
-        } else return(pp)
+        } 
       }
+      if(nchar(attr(pp, 'tzone'))<1)
+            attr(pp, 'tzone') <- 'UTC'
+      return(pp)
     }
   }
 ##

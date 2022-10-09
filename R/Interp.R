@@ -177,8 +177,12 @@ InterpNum <- function(argsChk, ...){
   if(argsChk$raw){
     xout <- as.raw(xout)
   }
-  if(!is.na(argsChk$outClass)){
-    oC <- argsChk$outClass
+  oC <- argsChk$outClass
+  if(length(oC)==0){
+    print(argsChk)
+    stop('length(argsChk$outclass) == 0')
+  }
+  if(!is.na(oC[1])){
     oC$.Data <- xout
     xout <- do.call(structure, oC)
   }

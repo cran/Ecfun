@@ -455,7 +455,7 @@ all.equal(log0, 1.2)
 ##
 ## 8.  Date
 ##
-Jan1.1980 <- as.Date('1980-01-01')
+(Jan1.1980 <- as.Date('1980-01-01'))
 
 Jan1.1972i <- Interp(0, Jan1.1980, .2)
 # check 
@@ -468,11 +468,11 @@ all.equal(Jan1.1972, round(Jan1.1972i))
 ##
 ## 9.  POSIXct 
 ##
-Jan1.1980c <- as.POSIXct(Jan1.1980)
+(Jan1.1980c <- as.POSIXct(Jan1.1980))
 
-Jan1.1972ci <- Interp(0, Jan1.1980c, .2)
+(Jan1.1972ci <- Interp(0, Jan1.1980c, .2))
 # check 
-Jan1.1972ct <- as.POSIXct(Jan1.1972)
+(Jan1.1972ct <- as.POSIXct(Jan1.1972))
 
 \dontshow{stopifnot(}
 abs(difftime(Jan1.1972ct, Jan1.1972ci, 

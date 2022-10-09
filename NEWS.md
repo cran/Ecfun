@@ -1,3 +1,6 @@
+# Ecfun 0.3-1 (2022-10-06)
+* Fixed error with R-devel.  
+
 # Ecfun 0.3-1 (2022-10-04)
 * Fixed error with R-devel.  
 
