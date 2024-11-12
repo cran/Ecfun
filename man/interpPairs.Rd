@@ -117,7 +117,7 @@ interpPairs(object, ...)
     \code{.proportion} are not \code{NULL}.  
   }
   \item{envir}{
-    environment / list to use with code{object},
+    environment / list to use with \code{object},
     which can optionally provide other variables to
     compute what gets plotted;  see the example
     below using this argument.  

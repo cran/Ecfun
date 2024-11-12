@@ -68,6 +68,11 @@ qqnorm2s <- function(y, z=NULL, data., plot.it=TRUE, datax=TRUE,
         if(y[i] %in% namesi){
             yi <- y[i]
         } else yi <- grep(y[i], namesi)
+        if(length(yi)<1){
+          msg <- paste0('Variable ', y[i], ' not found in ', 
+              'names(data.) = ', namesi)
+          stop(msg)
+        }
         oi <- order(data.[[i]][, yi])
         Dots$y <- data.[[i]][oi, yi]
         if(kz>0){

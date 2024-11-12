@@ -162,33 +162,33 @@ if(Update){
 }
 
 ## ----ods, eval=FALSE----------------------------------------------------------
-#  if(Update){
-#    (odsFile <- dir(pattern='\\.ods'))
-#    (odsF <- grep('^hstat', odsFile, value=TRUE))
-#  }
+# if(Update){
+#   (odsFile <- dir(pattern='\\.ods'))
+#   (odsF <- grep('^hstat', odsFile, value=TRUE))
+# }
 
 ## ----readods, eval=FALSE------------------------------------------------------
-#  if(Update){
-#    library(readODS)
-#    str(hstat <- read_ods(odsF, sheet='Receipts', skip=2))
-#  }
+# if(Update){
+#   library(readODS)
+#   str(hstat <- read_ods(odsF, sheet='Receipts', skip=2))
+# }
 
 ## ----sortOld, eval=FALSE------------------------------------------------------
-#  if(Update){
-#    Hstat <- hstat[!is.na(hstat$Year), 1:3]
-#    oOld <- order(Hstat$Year)
-#    head(Hst <- Hstat[oOld, ])
-#  }
+# if(Update){
+#   Hstat <- hstat[!is.na(hstat$Year), 1:3]
+#   oOld <- order(Hstat$Year)
+#   head(Hst <- Hstat[oOld, ])
+# }
 
 ## ----addNewVars, eval=FALSE---------------------------------------------------
-#  if(Update){
-#    USGDPp2$fedReceipts <- NA
-#    USGDPp2$fedOutlays <- NA
-#    selGDP4Hst <- (USGDPp2$Year %in% Hst$Year)
-#    USGDPp2[selGDP4Hst, c("fedReceipts", "fedOutlays")] <-
-#        (Hst[2:3] / 1000)
-#    USGDPp2[c('Year', 'fedReceipts', 'fedOutlays')]
-#  }
+# if(Update){
+#   USGDPp2$fedReceipts <- NA
+#   USGDPp2$fedOutlays <- NA
+#   selGDP4Hst <- (USGDPp2$Year %in% Hst$Year)
+#   USGDPp2[selGDP4Hst, c("fedReceipts", "fedOutlays")] <-
+#       (Hst[2:3] / 1000)
+#   USGDPp2[c('Year', 'fedReceipts', 'fedOutlays')]
+# }
 
 ## ----BudgetFile---------------------------------------------------------------
 if(Update){

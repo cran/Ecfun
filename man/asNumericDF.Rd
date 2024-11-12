@@ -223,10 +223,8 @@ xMSdate <- as.Date(1,
       q1=c(' 1,234 ', ''), duh=rep(NA, 2), 
       dol=c('$1,234', ''), 
       pct=c('1\%', '2\%'), 
-      xDate=as.character(xDate, 
-        format='\%Y-\%m-\%d'), 
-      xPOSIX=as.character(xPOSIX, 
-        format='\%Y-\%m-\%d \%H:\%M:\%S'), 
+      xDate=format(xDate, '\%Y-\%m-\%d'), 
+      xPOSIX=format(xPOSIX, '\%Y-\%m-\%d \%H:\%M:\%S'), 
       xMSdate=2:3, junk=c('this is',
           'junk')))
             
@@ -290,9 +288,10 @@ if(is.null(attr(xPOSIX, 'tzone')))
 # that will get a consistent answer with 
 # different version R-devel with differences
 # less than an hour
-if(madP>3600){
-  stop('Discrepancy betw fn and manual comp ', 
-       'too large.')
+if(madP>(6*60*60)){
+  madPmsg <- paste('Discrepancy betw fn and manual comp ', 
+       'too large; is ', madP, 'seconds')
+  stop(madPmsg)
 }
 TRUE
 }

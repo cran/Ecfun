@@ -8,6 +8,7 @@ export(.onAttach,
        createMessage, createX2matchY, 
        dateCols, Date3to1, Dates3to1, 
        dtruncdist, 
+       findCountry, 
        getElement2, grepNonStandardCharacters, 
        index2class, Interp, 
        interpChar, InterpChar, InterpChkArgs, InterpNum, 
@@ -27,6 +28,7 @@ export(.onAttach,
        rasterImageAdj, 
        read.transpose, readCookPVI, readCookPVI., 
        readDates3to1, readNIPA, 
+       readDW_NOMINATE, 
        readUShouse, readUSsenate, readUSstateAbbreviations, 
        recode2, rgrep, rtruncdist, 
        sign, 
@@ -43,6 +45,7 @@ importFrom("graphics", "arrows", "legend", "lines",
     "par", "plot", "points", "rasterImage", "text", 
     "xyinch")
 importFrom("methods", "as", "is")
+importFrom('readr', 'read_csv')
 importFrom("stats", "median", "qqnorm", "runif", "sd", 
     "cov2cor", "model.matrix", "glm.fit", "vcov", 
     "coef", "simulate")
@@ -52,7 +55,6 @@ importFrom("mvtnorm", "rmvnorm")
 importFrom("BMA", "bic.glm")
 
 import(MASS)
-import(TeachingDemos)
 import(fda)
 import(rvest)
 import(jpeg)

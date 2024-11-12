@@ -262,7 +262,7 @@
   same length as \code{y} with the following 
   optional attributes:  
   
-  \itemize{
+  \describe{
     \item{\code{lambda}}{
       the value of \code{lambda} 
       used in the transformation

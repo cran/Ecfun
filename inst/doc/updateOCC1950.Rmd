@@ -9,7 +9,7 @@ bibliography: IPUMS-references.bib
 vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{Accountants-Auditors-IPUMS}
-  \usepackage[UTF-8]{inputenc}
+  %\usepackage[UTF-8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}

@@ -4,11 +4,11 @@ author: "Spencer Graves"
 date: "4/25/2019"
 output: html_document
 vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Update nuclearWeaponStates dataset}
   %\VignetteKeyword{nuclear-weapon states}
-  %\VignetteEngine{knitr::rmarkdown}
   %\SweaveUTF8
-  \usepackage[utf8](inputenc)
+  %\usepackage[utf8]{inputenc}
 
 ---
 

@@ -85,10 +85,10 @@ Newdata(data, x, n, na.rm=TRUE)
   5.  \code{otherVars <- colnames(data) != x}
 
   6.  \code{for(x2 in otherVars)} 
-  {replace \code{newDat[, x2]}:  
+  replace \code{newDat[, x2]}:  
   If \code{\link{canbeNumeric}}(x2) is \code{TRUE}, 
   use \code{\link{median}}(x2).  Otherwise, 
-  use its (first) most common value.}  
+  use its (first) most common value.  
 }
 \value{
   A \code{\link{data.frame}} with \code{n}

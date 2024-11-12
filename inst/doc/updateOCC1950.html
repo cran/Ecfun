@@ -1,240 +1,174 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>Occupational summary from IPUMS</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
-
-<!-- Styles for R syntax highlighter -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>IPUMS Occupational summary</title>
 <style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
-</style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+/**
+ * Prism.s theme ported from highlight.js's xcode style
+ */
+pre code {
+  padding: 1em;
 }
-
+.token.comment {
+  color: #007400;
+}
+.token.punctuation {
+  color: #999;
+}
+.token.tag,
+.token.selector {
+  color: #aa0d91;
+}
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #1c00cf;
+}
+.token.property,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #c41a16;
+}
+.token.inserted {
+  background-color: #ccffd8;
+}
+.token.deleted {
+  background-color: #ffebe9;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #9a6e3a;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #836c28;
+}
+.token.function,
+.token.class-name {
+  color: #DD4A68;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #5c2699;
+}
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+</style>
+<style type="text/css">
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
 }
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 pre code {
-   display: block; padding: 0.5em;
+  display: block;
+  overflow-x: auto;
 }
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+table {
+  margin: auto;
+  border-top: 1px solid #666;
 }
-
-table, td, th {
-  border: none;
-}
-
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
 }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<h1>Occupational summary from IPUMS</h1>
-
-<p>In September 2018 I created an account with the <a href="https://usa.ipums.org/usa/cite.shtml">Integrated Public Use Microdata Series (IPUMS) data library at the University of Minnesota.</a>.<sup>[@IPUMS:2020]</sup> My objective then was to understand the evolution of accounting and auditing as a percent of the US workforce over time.  In redoing this in March 2020, it seems sensible to start by summarizing the large IPUMS data extract into a smaller table of occupation codes by year and save this as <code>OCC1950.rda</code>.  Then can then analyze that much smaller dataset in a separate vignette.    </p>
-
-<h1>Reading and summarizing IPUMS</h1>
-
-<p>After logging into the IPUMS website, the two primary options are &ldquo;Select Data&rdquo; and &ldquo;My Data&rdquo;.  The latter shows previous selections with the following options:  </p>
-
+<div class="frontmatter">
+<div class="title"><h1>IPUMS Occupational summary</h1></div>
+<div class="author"><h2>Spencer Graves</h2></div>
+<div class="date"><h3>2024-11-12</h3></div>
+</div>
+<div class="body">
+<h1 id="occupational-summary-from-ipums">Occupational summary from IPUMS</h1>
+<p>In September 2018 I created an account with the <a href="https://usa.ipums.org/usa/cite.shtml">Integrated Public Use Microdata Series (IPUMS) data library at the University of Minnesota.</a>.^[@IPUMS:2020] My objective then was to understand the evolution of accounting and auditing as a percent of the US workforce over time.  In redoing this in March 2020, it seems sensible to start by summarizing the large IPUMS data extract into a smaller table of occupation codes by year and save this as <code>OCC1950.rda</code>.  Then can then analyze that much smaller dataset in a separate vignette.</p>
+<h1 id="reading-and-summarizing-ipums">Reading and summarizing IPUMS</h1>
+<p>After logging into the IPUMS website, the two primary options are “Select Data” and “My Data”.  The latter shows previous selections with the following options:</p>
 <ul>
-<li>&ldquo;Download&rdquo; &ldquo;data&rdquo; and command files for SPSS, SAS, Stata, and R plus &ldquo;Codebook&rdquo; in &ldquo;Basic&rdquo; and &ldquo;DDI&rdquo; format for my most recent extracts.<br/></li>
-<li>&ldquo;revise&rdquo; if I want to change something in one of my previous extracts.<br/></li>
-<li>&ldquo;resubmit&rdquo; to repeat a previous extract to see if it has changed in case IPUMS may have been expanded since the earlier extract.<br/></li>
+<li>“Download” “data” and command files for SPSS, SAS, Stata, and R plus “Codebook” in “Basic” and “DDI” format for my most recent extracts.</li>
+<li>“revise” if I want to change something in one of my previous extracts.</li>
+<li>“resubmit” to repeat a previous extract to see if it has changed in case IPUMS may have been expanded since the earlier extract.</li>
 </ul>
-
-<p>In 2018 from &ldquo;Select Data&rdquo;, I chose &ldquo;Select harmonized variables&rdquo; &gt; Person &gt; Work.  </p>
-
-<p>From here, I first selected &ldquo;<code>OCC1950</code> = Occupation 1950 basis&rdquo; and got something useful doing that.  </p>
-
-<p>I tried other similar extracts as outlined in the Appendix below.  I decided the best extract for my purposes seemed to be the one I started with using <code>OCC1950</code>.  The rest of this vignette describes summarizing that into a matrix estimating the percent of the US population by year in each <code>OCC1950</code> code in March 2020.  </p>
-
-<pre><code class="r"># The code in this snippet is a slight modification 
+<p>In 2018 from “Select Data”, I chose “Select harmonized variables” &gt; Person &gt; Work.</p>
+<p>From here, I first selected “<code>OCC1950</code> = Occupation 1950 basis” and got something useful doing that.</p>
+<p>I tried other similar extracts as outlined in the Appendix below.  I decided the best extract for my purposes seemed to be the one I started with using <code>OCC1950</code>.  The rest of this vignette describes summarizing that into a matrix estimating the percent of the US population by year in each <code>OCC1950</code> code in March 2020.</p>
+<pre><code class="language-r"># The code in this snippet is a slight modification 
 # of the R code from usa_00006.R, 2020-03-18.  
 if (!require(&quot;ipumsr&quot;)){
   msg &lt;- paste(&quot;Reading IPUMS data into R&quot;, 
     &quot;requires the ipumsr package. It can be&quot;,
-    &quot;installed using:\ninstall.packages(&#39;ipumsr&#39;)&quot;)
+    &quot;installed using:\ninstall.packages('ipumsr')&quot;)
   stop(msg)
 }
 </code></pre>
-
 <pre><code>## Loading required package: ipumsr
 </code></pre>
-
-<pre><code class="r"># NOTE:  base::dir works differently  
+<pre><code class="language-r"># NOTE:  base::dir works differently  
 # within an R Markdown file than 
 # from an ordinary command prompt, 
 # at least under macOS 10.15.3 on 2020-03-18.  
@@ -248,7 +182,6 @@ if (!require(&quot;ipumsr&quot;)){
 
 dir()
 </code></pre>
-
 <pre><code>##  [1] &quot;IPUMS-references.bib&quot;            &quot;UpdatingUSGDPpresidents.R&quot;      
 ##  [3] &quot;UpdatingUSGDPpresidents.Rmd&quot;     &quot;UpdatingUSGDPpresidents.html&quot;   
 ##  [5] &quot;nuclearArmageddon.R&quot;             &quot;nuclearArmageddon.Rmd&quot;          
@@ -257,10 +190,8 @@ dir()
 ## [11] &quot;updateOCC1950.Rmd&quot;               &quot;update_nuclearWeaponStates.R&quot;   
 ## [13] &quot;update_nuclearWeaponStates.Rmd&quot;  &quot;update_nuclearWeaponStates.html&quot;
 </code></pre>
-
-<pre><code class="r">dir(getwd())
+<pre><code class="language-r">dir(getwd())
 </code></pre>
-
 <pre><code>##  [1] &quot;IPUMS-references.bib&quot;            &quot;UpdatingUSGDPpresidents.R&quot;      
 ##  [3] &quot;UpdatingUSGDPpresidents.Rmd&quot;     &quot;UpdatingUSGDPpresidents.html&quot;   
 ##  [5] &quot;nuclearArmageddon.R&quot;             &quot;nuclearArmageddon.Rmd&quot;          
@@ -269,23 +200,20 @@ dir()
 ## [11] &quot;updateOCC1950.Rmd&quot;               &quot;update_nuclearWeaponStates.R&quot;   
 ## [13] &quot;update_nuclearWeaponStates.Rmd&quot;  &quot;update_nuclearWeaponStates.html&quot;
 </code></pre>
-
-<pre><code class="r"># copy and paste the following 
+<pre><code class="language-r"># copy and paste the following 
 # from &quot;Accountants-IPUMS.Rmd&quot; in R Studio 
 # into the Console below:  
 
-IPUMSdir &lt;- &#39;IPUMS&#39;
+IPUMSdir &lt;- 'IPUMS'
 (ddiXml &lt;- dir(IPUMSdir, pattern=&quot;usa_00006.xml&quot;, 
       full.names = TRUE))
 </code></pre>
-
 <pre><code>## character(0)
 </code></pre>
-
-<pre><code class="r"># OR execute the following inside 
+<pre><code class="language-r"># OR execute the following inside 
 # &quot;Accountants-IPUMS.Rmd&quot; in R Studio:  
 if(length(ddiXml)!=1){
-#  print(ddiXml &lt;- file.path(&#39;..&#39;, &#39;..&#39;, &#39;IPUMS&#39;))
+#  print(ddiXml &lt;- file.path('..', '..', 'IPUMS'))
   print(ddiXml &lt;- dir(pattern=&quot;usa_00006.xml&quot;,      
       full.names = TRUE))
 # NOTE:  This worked under macOS 10.15.3 
@@ -293,13 +221,10 @@ if(length(ddiXml)!=1){
 # It has not been tested on other platforms.  
 }
 </code></pre>
-
 <pre><code>## character(0)
 </code></pre>
-
-<p>Some of the computations below are fairly long, because this dataset is so large.  This vignette is structured so nearly all the R code in this vignette will be skipped in routine package testing and would only be executed if a user arranged so a file containing the desired IPUMS data extract can be found.  We do this here by creating a variable <code>readAndCompute</code> that is <code>FALSE</code> by default and is set to <code>TRUE</code> only when the the desired data are available for manual processing.  </p>
-
-<pre><code class="r">readAndCompute &lt;- FALSE
+<p>Some of the computations below are fairly long, because this dataset is so large.  This vignette is structured so nearly all the R code in this vignette will be skipped in routine package testing and would only be executed if a user arranged so a file containing the desired IPUMS data extract can be found.  We do this here by creating a variable <code>readAndCompute</code> that is <code>FALSE</code> by default and is set to <code>TRUE</code> only when the the desired data are available for manual processing.</p>
+<pre><code class="language-r">readAndCompute &lt;- FALSE
 if((length(ddiXml)==1) &amp;&amp; (!fda::CRAN())){
   readAndCompute &lt;- TRUE
   ddiDat &lt;- read_ipums_ddi(ddiXml)
@@ -308,22 +233,16 @@ if((length(ddiXml)==1) &amp;&amp; (!fda::CRAN())){
   ))
 }
 </code></pre>
-
-<p>On 2020-03-19 this took roughly 40 seconds on a MacBook Pro with a 2.8 GHz quad-core Intel core i7 with 16 GB RAM.  </p>
-
-<p><code>IPUMSdata</code> is an object with a huge number of rows and 8 columns:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>On 2020-03-19 this took roughly 40 seconds on a MacBook Pro with a 2.8 GHz quad-core Intel core i7 with 16 GB RAM.</p>
+<p><code>IPUMSdata</code> is an object with a huge number of rows and 8 columns:</p>
+<pre><code class="language-r">if(readAndCompute){
   str(IPUMSdata)
   nrow(IPUMSdata)/1e6
 }
 </code></pre>
-
-<p><code>IPUMSdata</code> is an object of classes <code>tbl_df</code>, <code>tbl</code> and <code>data.frame</code> with over 114 million rows for <code>dat00001.xml</code>.  </p>
-
-<p>That&#39;s too few rows to have one row for each person in the most recent census and certainly too few to have one row for each household in all the census since 1850:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p><code>IPUMSdata</code> is an object of classes <code>tbl_df</code>, <code>tbl</code> and <code>data.frame</code> with over 114 million rows for <code>dat00001.xml</code>.</p>
+<p>That’s too few rows to have one row for each person in the most recent census and certainly too few to have one row for each household in all the census since 1850:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etYr &lt;-  system.time(
     tbl_year &lt;- table(IPUMSdata$YEAR)
   ))
@@ -331,31 +250,23 @@ if((length(ddiXml)==1) &amp;&amp; (!fda::CRAN())){
   tbl_year
 }
 </code></pre>
-
-<p>The key point from the the print of <code>tbl_year</code> and this plot is that this dataset includes data from every census except 1890 plus for each year between 2000 and 2016.  </p>
-
-<p>Before proceeding, let&#39;s check <code>IPUMSdata</code> for missing values:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>The key point from the the print of <code>tbl_year</code> and this plot is that this dataset includes data from every census except 1890 plus for each year between 2000 and 2016.</p>
+<p>Before proceeding, let’s check <code>IPUMSdata</code> for missing values:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etNA &lt;-  system.time(
     nNA &lt;- sapply(IPUMSdata, function(x)sum(is.na(x)))
   ))
   print(nNA)
 }
 </code></pre>
-
-<p>No missing values!  </p>
-
-<p>Let&#39;s look at <code>var_desc</code> for <code>HHWT</code>:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>No missing values!</p>
+<p>Let’s look at <code>var_desc</code> for <code>HHWT</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   attributes(IPUMSdata$HHWT)
 }
 </code></pre>
-
-<p>Let&#39;s look at the distribution of <code>HHWT</code>:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Let’s look at the distribution of <code>HHWT</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etQ &lt;-  system.time({
     rngHHWT &lt;- range(IPUMSdata$HHWT)
     qtleHHWT &lt;- quantile(IPUMSdata$HHWT)
@@ -364,50 +275,39 @@ if((length(ddiXml)==1) &amp;&amp; (!fda::CRAN())){
   qtleHHWT
 }
 </code></pre>
-
-<p>Let&#39;s also examine the the attributes of <code>OCC1950</code>: </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Let’s also examine the the attributes of <code>OCC1950</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etCodes &lt;-  system.time(
     OCC50codes &lt;- attributes(IPUMSdata$OCC1950)
   ))
   str(OCC50codes)
 }
 </code></pre>
-
-<p>We&#39;re especially interested in &ldquo;labels&rdquo;:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>We’re especially interested in “labels”:</p>
+<pre><code class="language-r">if(readAndCompute){
 #  OCCcodes$labels
   print(OCC50codes$var_desc)
   print(head(OCC50codes$labels))
   tail(OCC50codes$labels)
 }
 </code></pre>
-
-<p>The &ldquo;labels&rdquo; attribute from <code>OCC1950</code> provided a translate table giving English-language names to the numeric codes.</p>
-
-<p>Are all these codes used?  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>The “labels” attribute from <code>OCC1950</code> provided a translate table giving English-language names to the numeric codes.</p>
+<p>Are all these codes used?</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etOcc1 &lt;-  system.time(
     Occ1 &lt;- table(IPUMSdata$OCC1950)
   ))
   str(Occ1)
 }
 </code></pre>
-
-<p>Two codes are not used.  What are they?  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Two codes are not used.  What are they?</p>
+<pre><code class="language-r">if(readAndCompute){
   OCC50codes$labels[!(
     OCC50codes$labels %in% names(Occ1))]
 }
 </code></pre>
-
-<p>Let&#39;s sum <code>HHWT</code> within <code>YEAR</code> and <code>OCC1950</code>:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Let’s sum <code>HHWT</code> within <code>YEAR</code> and <code>OCC1950</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etOccYr &lt;-  system.time(
     OccYr &lt;- tapply(IPUMSdata$HHWT, 
         IPUMSdata[c(&quot;OCC1950&quot;, &quot;YEAR&quot;)], sum)
@@ -415,27 +315,20 @@ if((length(ddiXml)==1) &amp;&amp; (!fda::CRAN())){
   str(OccYr)
 }
 </code></pre>
-
-<p>This is an array of <code>OCC1950</code> by <code>YEAR</code>.  We will convert this into a matrix of the proportion of the workforce in each <code>OCC1950</code> code with two attributes: </p>
-
+<p>This is an array of <code>OCC1950</code> by <code>YEAR</code>.  We will convert this into a matrix of the proportion of the workforce in each <code>OCC1950</code> code with two attributes:</p>
 <ol>
-<li> <code>codes</code> = <code>OCC50codes</code></li>
-<li> <code>workforce</code> = <code>colSums(YrOcc)</code></li>
+<li><code>codes</code> = <code>OCC50codes</code></li>
+<li><code>workforce</code> = <code>colSums(YrOcc)</code></li>
 </ol>
-
-<p>We need the <code>codes</code> to allow us to make any use of these data, and <code>workforce</code> gives us an estimate of the size of the workforce by year. 
-To confirm the latter, let&#39;s compute it:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>We need the <code>codes</code> to allow us to make any use of these data, and <code>workforce</code> gives us an estimate of the size of the workforce by year.
+To confirm the latter, let’s compute it:</p>
+<pre><code class="language-r">if(readAndCompute){
   (totWts &lt;- colSums(OccYr))
 }
 </code></pre>
-
-<p>All <code>NA</code>s.  One explanation for this is no year has seen the use of all occupation codes.  For example, we should not expect to see many &ldquo;&quot;Airplane pilots and navigators&rdquo; in the nineteenth century!<sup>[[[w:Airline#</sup> The first airlines|The world&#39;s first airline company]] was German using airships, founded in 1909.]  </p>
-
-<p>To check this, we will <code>table(OCC1950&quot;, YEAR)</code>:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>All <code>NA</code>s.  One explanation for this is no year has seen the use of all occupation codes.  For example, we should not expect to see many ““Airplane pilots and navigators” in the nineteenth century!^[[[w:Airline# The first airlines|The world’s first airline company]] was German using airships, founded in 1909.]</p>
+<p>To check this, we will <code>table(OCC1950&quot;, YEAR)</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   print(etOY &lt;-  system.time(
     OY &lt;- with(IPUMSdata, table(OCC1950, YEAR))  
   ))
@@ -443,91 +336,69 @@ To confirm the latter, let&#39;s compute it:  </p>
   sum(is.na(OccYr) - (OY==0))
 }
 </code></pre>
-
-<p>Wonderful:  This says that all <code>NA</code>s in <code>OccYr</code> should be 0:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Wonderful:  This says that all <code>NA</code>s in <code>OccYr</code> should be 0:</p>
+<pre><code class="language-r">if(readAndCompute){
   OccYr[is.na(OccYr)] &lt;- 0
 }
 </code></pre>
-
-<p>Now let&#39;s repeat the sums by year, comparing with <code>USGDPpresidents$population.K</code>:    </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Now let’s repeat the sums by year, comparing with <code>USGDPpresidents$population.K</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   (totWts &lt;- colSums(OccYr))
   library(Ecdat)
   selGDP &lt;- (USGDPpresidents$Year %in% names(totWts))
   USpops &lt;- USGDPpresidents[selGDP, ]
   ylim &lt;- range(totWts/1e6, USpops$population.K/1e3)
-# png(&#39;IPUMS HHWT and US Population.png&#39;)  
-  plot(names(totWts), totWts/1e6, xlab=&#39;&#39;,
+# png('IPUMS HHWT and US Population.png')  
+  plot(names(totWts), totWts/1e6, xlab='',
        ylab=&quot;millions&quot;, 
-       main=&#39;sum(HHWT) vs. US Population&#39;, las=1)
+       main='sum(HHWT) vs. US Population', las=1)
   with(USpops, lines(Year, population.K/1e3))
 # dev.off()
 }
 </code></pre>
-
-<p>This plot suggests that <code>HHWT</code> attempts to weight the observations so the total matches the US population but has problems for 1970 and every year since 2000.  A simple fix is to rescale all the numbers so they match.  Let&#39;s first check by plotting the ratio:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>This plot suggests that <code>HHWT</code> attempts to weight the observations so the total matches the US population but has problems for 1970 and every year since 2000.  A simple fix is to rescale all the numbers so they match.  Let’s first check by plotting the ratio:</p>
+<pre><code class="language-r">if(readAndCompute){
   tot_pop &lt;- (totWts / (USpops$population.K*1000))
-  plot(USpops$Year, tot_pop, type=&#39;b&#39;, las=1)
-  abline(h=1, lty=&#39;dotted&#39;, col=&#39;red&#39;)
+  plot(USpops$Year, tot_pop, type='b', las=1)
+  abline(h=1, lty='dotted', col='red')
 }
 </code></pre>
-
-<p>We can make these numbers match by dividing <code>OccYr</code> by <code>tot_pop</code>:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>We can make these numbers match by dividing <code>OccYr</code> by <code>tot_pop</code>:</p>
+<pre><code class="language-r">if(readAndCompute){
   nOcc &lt;- nrow(OccYr)
   Occ1950 &lt;- (OccYr / rep(tot_pop, e=nOcc))
   (revTots &lt;- colSums(Occ1950))
-  plot(USpops$Year, revTots/1e6, type=&#39;b&#39;, las=1)
+  plot(USpops$Year, revTots/1e6, type='b', las=1)
 }
 </code></pre>
-
-<p>Great.  Now let&#39;s create <code>OCC1950</code> = proportion of population:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Great.  Now let’s create <code>OCC1950</code> = proportion of population:</p>
+<pre><code class="language-r">if(readAndCompute){
   OCC1950 &lt;- (Occ1950 / rep(revTots, e=nOcc))
   quantile(chkTots &lt;- colSums(OCC1950))
 }
 </code></pre>
-
-<p>Let&#39;s make <code>rownames</code> = occupation names rather than the codes:  </p>
-
-<pre><code class="r">if(readAndCompute){
+<p>Let’s make <code>rownames</code> = occupation names rather than the codes:</p>
+<pre><code class="language-r">if(readAndCompute){
   rownames(OCC1950) &lt;- names(Occ1)
 }
 </code></pre>
-
-<p>Let&#39;s save this:  </p>
-
-<pre><code class="r">if(readAndCompute){
-  save(OCC1950, file=&#39;OCC1950.rda&#39;)
+<p>Let’s save this:</p>
+<pre><code class="language-r">if(readAndCompute){
+  save(OCC1950, file='OCC1950.rda')
   dir(full=TRUE)
 }
 </code></pre>
-
-<h1>Appendix:  Experiment with other variables</h1>
-
-<p>After my initial data extraction, I tried adding <code>OCC</code> = &ldquo;Occupation&rdquo;.  Then &ldquo;Data cart:  Your data extract&rdquo; said, &ldquo;2 variable, 32 samples&rdquo;.  Then clicking &ldquo;View Cart&rdquo; listed 9 variables, being <code>YEAR</code>, <code>DATANUM</code>, <code>SERIAL</code>, <code>HHWT</code>, <code>GQ</code>, <code>PERNUM</code>, <code>PERWT</code>, <code>OCC</code>, and <code>OCC1950</code>. Then I clicked, &ldquo;Create data extract&rdquo;. This allowed me to further &ldquo;select data quality flags&rdquo; for <code>GQ</code>, <code>OCC</code>, and <code>OCC1950</code>. </p>
-
-<p>The first time I did this, I ignored the data quality flags.  The second time, I requested them. </p>
-
-<p>However, with both the additional <code>OCC</code> and the data quality flags, the data set was bigger than I could read into my computer.  So I split that extract into two for seq(1850, 2000, 10) and for 2001:2016.  When I read the 2001:2016 extract, I found that I could not understand <code>OCC</code> nor the data quality flags.  I decided that the answer I already had was probably good enough, and it wasn&#39;t clear if I could learn enough to justify the work of further study of <code>OCC</code> and the data quality flags.  </p>
-
-<p>In any event, after each data selection, I was given an &ldquo;estimated size&rdquo; for the extract (5340 MB for one trial). I entered something to &ldquo;Describe your extract&rdquo;. Then I clicked, &ldquo;Submit extract&rdquo;.  The IPUMS web site responded saying, &ldquo;Your extract request has been submitted.  You will be notified by email at (the email address I had given them) when it has been created.&rdquo;  Under &ldquo;Data&rdquo;, it said, &ldquo;Processing&hellip;&rdquo;.  </p>
-
-<p>After a while (47 minutes for one extract on 2018-09-03) I got an email saying my extract was ready for download.  I returned to the web site and clicked something under &ldquo;Data&rdquo;.</p>
-
-<p>To help with questions about the format, etc., I studied <code>help(pac=ipumsr)</code>. I found that the <code>ipumsr</code> package included seven vignettes. One of those is titled <a href="https://tech.popdata.org/ipumsr/articles/ipums.html">&ldquo;Introduction to <code>ipumsr</code> - IPUMS Data in R&rdquo;</a>.  From that, I learned that I needed to right-click (<code>ctrl-click</code> on a Mac) on <code>DDI</code> under <code>Codebook</code> and then select &ldquo;Save link as&hellip;&rdquo;.  Moreover, I should NOT do this in Safari.  Google Chrome worked for me for this on 2018-09-01 and Firefox worked when I repeated it with a slightly different extract on 2018-09-03.  </p>
-
-<p>When I repeated this 2020-03-18, I downloaded <code>&quot;usa_00003.dat&quot;</code> and <code>&quot;use_00005.dat&quot;</code> consuming 2.3 and 3.8 GB.  Codebooks are also available.  </p>
-
-<p>Then I followed the instructions in the &ldquo;Command File&rdquo; for R.  With one extract, I got, &ldquo;Error: Error in <code>read_tokens_(data, tokenizer, col_specs, col_names, locale_</code>, : Evaluation error: vector memory exhausted (limit reached?).&rdquo;  After that, I redid the extract to select less data to file(s) I could read.  </p>
-
+<h1 id="appendix-experiment-with-other-variables">Appendix:  Experiment with other variables</h1>
+<p>After my initial data extraction, I tried adding <code>OCC</code> = “Occupation”.  Then “Data cart:  Your data extract” said, “2 variable, 32 samples”.  Then clicking “View Cart” listed 9 variables, being <code>YEAR</code>, <code>DATANUM</code>, <code>SERIAL</code>, <code>HHWT</code>, <code>GQ</code>, <code>PERNUM</code>, <code>PERWT</code>, <code>OCC</code>, and <code>OCC1950</code>. Then I clicked, “Create data extract”. This allowed me to further “select data quality flags” for <code>GQ</code>, <code>OCC</code>, and <code>OCC1950</code>.</p>
+<p>The first time I did this, I ignored the data quality flags.  The second time, I requested them.</p>
+<p>However, with both the additional <code>OCC</code> and the data quality flags, the data set was bigger than I could read into my computer.  So I split that extract into two for seq(1850, 2000, 10) and for 2001:2016.  When I read the 2001:2016 extract, I found that I could not understand <code>OCC</code> nor the data quality flags.  I decided that the answer I already had was probably good enough, and it wasn’t clear if I could learn enough to justify the work of further study of <code>OCC</code> and the data quality flags.</p>
+<p>In any event, after each data selection, I was given an “estimated size” for the extract (5340 MB for one trial). I entered something to “Describe your extract”. Then I clicked, “Submit extract”.  The IPUMS web site responded saying, “Your extract request has been submitted.  You will be notified by email at (the email address I had given them) when it has been created.”  Under “Data”, it said, “Processing…”.</p>
+<p>After a while (47 minutes for one extract on 2018-09-03) I got an email saying my extract was ready for download.  I returned to the web site and clicked something under “Data”.</p>
+<p>To help with questions about the format, etc., I studied <code>help(pac=ipumsr)</code>. I found that the <code>ipumsr</code> package included seven vignettes. One of those is titled <a href="https://tech.popdata.org/ipumsr/articles/ipums.html">“Introduction to <code>ipumsr</code> - IPUMS Data in R”</a>.  From that, I learned that I needed to right-click (<code>ctrl-click</code> on a Mac) on <code>DDI</code> under <code>Codebook</code> and then select “Save link as…”.  Moreover, I should NOT do this in Safari.  Google Chrome worked for me for this on 2018-09-01 and Firefox worked when I repeated it with a slightly different extract on 2018-09-03.</p>
+<p>When I repeated this 2020-03-18, I downloaded <code>&quot;usa_00003.dat&quot;</code> and <code>&quot;use_00005.dat&quot;</code> consuming 2.3 and 3.8 GB.  Codebooks are also available.</p>
+<p>Then I followed the instructions in the “Command File” for R.  With one extract, I got, “Error: Error in <code>read_tokens_(data, tokenizer, col_specs, col_names, locale_</code>, : Evaluation error: vector memory exhausted (limit reached?).”  After that, I redid the extract to select less data to file(s) I could read.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" defer></script>
 </body>
-
 </html>

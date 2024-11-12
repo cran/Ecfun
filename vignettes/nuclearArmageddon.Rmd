@@ -14,11 +14,11 @@ output: html_document
 # output: word_document
 
 vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Time to nuclear Armageddon}
   %\VignetteKeyword{nuclear Armageddon}
-  %\VignetteEngine{knitr::rmarkdown}
   %\SweaveUTF8
-  \usepackage[utf8](inputenc)
+  %\usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}

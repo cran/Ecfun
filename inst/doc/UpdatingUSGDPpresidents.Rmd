@@ -4,11 +4,11 @@ author: "Spencer Graves"
 date: "2022-02-22"
 output: html_document
 vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Updating USGDPpresidents}
   %\VignetteKeyword{USGDPpresidents}
-  %\VignetteEngine{knitr::rmarkdown}
   %\SweaveUTF8
-  \usepackage[utf8](inputenc)
+  %\usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}

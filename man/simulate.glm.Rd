@@ -17,7 +17,7 @@
   function in two fundamental and important ways:  
 
   \enumerate{
-    \item{
+    \item
       \code{stats::\link[stats]{simulate}}
       returns simulated data consistent with the 
       model fit assuming the estimated model 
@@ -35,8 +35,7 @@
       or \code{response} but currently \emph{NOT} 
       pseudo-random numbers on the scale of the 
       response.  
-    }
-    \item{ 
+    \item 
       The \code{simulate.glm} function documented
       here also accepts an optional \code{newdata}
       argument, not accepted by 
@@ -46,7 +45,6 @@
       the cases in the training set with no 
       possibilities for use for different sets 
       of conditions.  
-    }
   }  
 }
 \usage{
@@ -76,12 +74,11 @@
   \item{type}{
     the type of simulations required. 
     \itemize{
-      \item{coef}{
+      \item \code{coef}: 
         Simulated coefficents using 
         \code{mvtnorm::\link[mvtnorm]{rmvnorm}(nsim,
         coef(object), vcov(object))}.  
-      }
-      \item{link}{
+      \item \code{link}: 
         The default \code{type}='link' is on the 
         scale of the linear predictors using 
         \code{\link[mvtnorm]{rmvnorm}} applied  
@@ -92,12 +89,10 @@
         For a default binomial model, these are 
         of log-odds (probabilities on logit 
         scale).
-      }
-      \item{response}{
+      \item \code{response}: 
         \code{object[['linkinv']]} of \code{
         type = 'link'}.  For a binomial model, 
         these are predicted probabilities.  
-      }
     }
   }
   \item{...}{

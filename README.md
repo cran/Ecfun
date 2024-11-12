@@ -2,6 +2,10 @@
 
 Functions and vignettes to update a few data sets in 'Ecdat' and to create, manipulate, plot, and analyze some of those and similar data sets.
     
+# 2024-11-09
+    
+Added functions readDW_NOMINATE and findCountry 
+    
 # 2021-06-29 
 All `read*` functions in this package have been removed, because it wasn't clear if anyone was using them.  Other functions that called an `Ecfun::read*` function by default were also deleted, especially `UShouse.senate`, `USsenateClass`, and `mergeUShouse.senate`.  These all scraped websites, and the demand for them seemed not to justify the work of maintaining them.  
 

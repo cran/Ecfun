@@ -65,7 +65,7 @@ matchQuote(x,  Quote='"', sep=' ',
   shortened with the following attributes 
   explaining what was found:  
   
-  \itemize{
+  \describe{
       indices of the input \code{x} with 
       an unmatched 
       

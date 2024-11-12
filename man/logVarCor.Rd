@@ -48,7 +48,7 @@ logVarCor(x, corr, ...)
   \code{\link{diag}}
   \code{\link{cov2cor}}
   \code{\link{lower.tri}}
-  \code{\link{pdLogChol}} converts a k-dimensional 
+  \code{\link[nlme]{pdLogChol}} converts a k-dimensional 
   covariance matrix into a vector of length 
   \code{choose(k+1, 2)}.  By contrast, \code{logVarCor} 
   returns a vector of length \code{k} with a "corr" 
