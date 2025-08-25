@@ -1,6 +1,6 @@
 Package: Ecfun
-Version: 0.3-6
-Date: 2024-11-11
+Version: 0.4.0
+Date: 2025-08-24
 Title: Functions for 'Ecdat'
 Authors@R: c(person(given = "Spencer",
                   family = "Graves",
@@ -13,7 +13,7 @@ Suggests: car, DescTools, Ecdat, maps, grid, gridBase, pryr, knitr,
         rmarkdown, invgamma, ipumsr, lubridate, bayesplot, bssm,
         ggplot2, tibble, kableExtra, openxlsx, fitdistrplus, purrr,
         markdown, EnvStats, drc, zoo, prodlim, plyr, TRAMPR, raster,
-        readxl
+        readxl, pandoc
 VignetteBuilder: knitr
 Imports: fda, tis, jpeg, MASS, stringi, methods, xml2, BMA, mvtnorm,
         rvest, readr, rworldmap
@@ -24,6 +24,6 @@ License: GPL (>= 2)
 Language: en-us
 URL: https://www.r-project.org
 NeedsCompilation: no
-Packaged: 2024-11-12 09:13:43 UTC; sg
+Packaged: 2025-08-24 15:58:34 UTC; sg
 Repository: CRAN
-Date/Publication: 2024-11-12 10:00:02 UTC
+Date/Publication: 2025-08-25 08:40:18 UTC

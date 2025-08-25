@@ -83,7 +83,14 @@ if(Update){
 ## ----pop----------------------------------------------------------------------
 if(Update){
   selPop <- grep('Population', names(USGDP))
-  USGDPp2$population.K[selGDP] <- USGDP[,selPop]
+  sPop <- (USGDP[,selPop]/1000)
+  quantile(ePop <- ((USGDPp2$population.K[selGDP] /sPop)-1), 
+           na.rm=TRUE)
+}
+
+## ----pop2---------------------------------------------------------------------
+if(Update){
+  USGDPp2$population.K[selGDP] <- sPop
   print(names(USGDP)[selPop])
 }
 
@@ -103,9 +110,11 @@ if(Update){
 ## ----executive----------------------------------------------------------------
 if(Update){
   exec <- as.character(USGDPp2$executive)
-  exec[is.na(exec)] <- c('Trump', 'Trump', 'Biden')
-  lvlexec <- c(levels(USGDPp2$executive), 
-               'Biden')
+  newExec <- 'Biden' 
+  exec[is.na(exec)] <- newExec
+  lvlexec <- levels(USGDPp2$executive)
+  if(!(newExec %in% lvlexec))
+    lvlexec <- c(lvlexec, newexec)
   USGDPp2$executive <- ordered(exec, lvlexec)
 }
 
@@ -152,10 +161,15 @@ if(Update){
 if(Update){
   selU4GDP <- (USGDPp2$Year %in% BLS$Year)
   selBLS <- (BLS$Year %in% USGDPp2$Year)
-  USGDPp2[selU4GDP, 'unemployment'] <- 
-          unemp[selBLS]
-#  USGDPp2$unemployment[iNew] <- c(4.875, 
-#                    4.35, 3.89166666666667)
+  dunemp <- (USGDPp2[selU4GDP, 'unemployment'] - 
+          unemp[selBLS])
+  cbind(USGDPp2[selU4GDP, c('Year', 'unemployment')], 
+        unemp[selBLS], dunemp)
+}
+
+## ----replaceUnemp-------------------------------------------------------------
+if(Update){
+  USGDPp2[selU4GDP, 'unemployment'] <- unemp[selBLS]
   USGDPp2$unempSource[iNew] <- USGDPp2$unempSource[
     iNew[1]-1]
   tail(USGDPp2)
@@ -191,44 +205,202 @@ if(Update){
 # }
 
 ## ----BudgetFile---------------------------------------------------------------
+(xls2 <- dir(pattern='\\.xlsx$'))
 if(Update){
-  (BudgetFiles <- grep('^BUDGET', xls, value=TRUE))
+  (BudgetFiles <- grep('^BUDGET', xls2, value=TRUE))
   (BudgetF2_1 <- grep('2-1', BudgetFiles, value=TRUE))
-  (BudgetFile <- tail(BudgetF2_1, 1))
+  (BudgetFile <- (if(length(BudgetF2_1)>0) 
+    tail(BudgetF2_1, 1) else tail(BudgetFiles, 1)))
 }
 
 ## ----readBudget---------------------------------------------------------------
 if(Update){
-  str(Budget <- read_excel(BudgetFile, skip=3))
+  Budget <- read_excel(BudgetFile, 
+          sheet='hist01z1', skip=3)
+  head(Budget)
+  tail(Budget)  
 }
 
 ## ----drop2--------------------------------------------------------------------
 if(Update){
   library(Ecfun)
-  str(Budg <- asNumericDF(Budget[-(1:2), 1:3]))
+  nBudg0 <- nrow(Budget)
+  iBudg <- sort(seq(to=nBudg0-2, length=40))
+  str(Budg <- asNumericDF(Budget[iBudg, 1:4]))
+  tail(Budg)
 }
 
 ## ----updateBudget-------------------------------------------------------------
 if(Update){
   selGDP4budg <- (USGDPp2$Year %in% Budg[, 1])
   selBudg <- (Budg[, 1] %in% USGDPp2$Year)
-  USGDPp2[selGDP4budg, 
-    c('fedReceipts', 'fedOutlays')] <- Budg[selBudg, 2:3]
+  dfedR <- (USGDPp2[selGDP4budg, 'fedReceipts'] 
+              - Budg[selBudg, 2])
+  dfedO <- (USGDPp2[selGDP4budg, 'fedOutlays'] 
+              - Budg[selBudg, 3])
+  dfedS <- (USGDPp2[selGDP4budg, 'fedSurplus'] 
+              - Budg[selBudg, 4])
+  tail(cbind(USGDPp2[selGDP4budg, c('Year', 
+          'fedReceipts', 'fedOutlays', 'fedSurplus')], 
+       Budg[selBudg, 2:4], dfedR, dfedO, dfedS), 10)
+  matplot(cbind(dfedR, dfedO, dfedS), type='l')
 }
 
-## ----fedOutlays_pGDP----------------------------------------------------------
+## ----updateBudget2------------------------------------------------------------
 if(Update){
-  sum(i1843 <- (USGDP$Year==1843))
-  GDPnom <- (USGDP$Nominal.GDP..million.of.Dollars.
-          / (1+i1843))
-  plot(USGDP$Year, GDPnom, type='l', log='y')
-  abline(v=1843)
+  table(sel2017_2024 <- (USGDPp2$Year %in% 2017:2024))
+  table(s2017_2024 <- (Budg[, 1] %in% 2017:2024))
 
-  fedOp <- (USGDPp2$fedOutlays[selGDP] / GDPnom)
-  plot(USGDP$Year, fedOp, type='l', log='y')
+  USGDPp2[sel2017_2024, c('fedReceipts', 'fedOutlays', 
+      'fedSurplus')] <- Budg[s2017_2024, 2:4]
+  tail(USGDPp2)
+}
 
-  USGDPp2$fedOutlays_pGDP <- NA
-  USGDPp2$fedOutlays_pGDP[selGDP] <- fedOp
+## ----plotBudget---------------------------------------------------------------
+if(Update){
+  Xlim <- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+  plot(fedReceipts ~Year, USGDPp2, log='y', type='l', 
+     xlim=Xlim, las=2)
+  Xlim <- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+
+  plot(fedOutlays ~Year, USGDPp2, log='y', type='l', 
+     xlim=Xlim, las=2)
+
+  plot(fedSurplus ~Year, USGDPp2, type='l', 
+     xlim=Xlim, las=2)
+}
+
+## ----debtData-----------------------------------------------------------------
+(csv3 <- dir(pattern='\\.csv$'))
+if(Update){
+  (debtFiles <- grep('^HstDebt', csv3, value=TRUE))
+  tail(HstDebt <- read.csv(debtFiles))
+  (HstDebt6 <- head(HstDebt))
+  tail(USGDPp2[c('Year', 'fedDebt')])
+}
+
+## ----debtD--------------------------------------------------------------------
+if(Update){
+  nobs <- nrow(USGDPp2)
+  (endRows <- seq(nobs, by=-1, length=6))
+  (dHstDebt6 <- (USGDPp2$fedDebt[endRows]-HstDebt6[, 2]))
+}
+
+## ----newDebt------------------------------------------------------------------
+if(Update){
+  (USGDPp2$fedDebt[endRows] <-HstDebt6[, 2])
+  tail(USGDPp2)
+  plot(fedDebt ~Year, USGDPp2, type='l', log='y',
+     xlim=Xlim, las=2)
+}
+
+## ----currentGDP---------------------------------------------------------------
+if(Update){
+  selEnd <- (USGDPp2$Year>1843) 
+  currentGDP <- with(USGDPp2[selEnd, ], 
+      1000 * population.K * realGDPperCapita 
+          * GDPdeflator / 100)
+  plot(USGDPp2$Year[selEnd], currentGDP, 
+       log='y', type='l', las=2)
+  tail(currentGDP)
+}
+
+## ----fedReceipts--------------------------------------------------------------
+if(Update){
+  plot(fedReceipts~Year, USGDPp2[selEnd, ], log='y', 
+     type='l', las=2)
+}
+
+## ----fedR_p-------------------------------------------------------------------
+if(Update){
+  fedR_p <- (1e6*USGDPp2$fedReceipts[selEnd] / 
+             currentGDP)
+  plot(USGDPp2$Year[selEnd], fedR_p, type='l', 
+     las=2, log='y')
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedReceipts_pGDP[selEnd], fedR_p), 
+        type='l', las=2, log='y')
+}
+
+## ----fedR_p2------------------------------------------------------------------
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedReceipts_pGDP[selEnd] / fedR_p, 
+        type='l', las=2, log='y')
+}
+
+## ----fedR_p3------------------------------------------------------------------
+if(Update){
+  USGDPp2$fedReceipts_pGDP[selEnd] <- fedR_p
+  tail(USGDPp2)
+}
+
+## ----fedO_p-------------------------------------------------------------------
+if(Update){
+  fedO_p <- (1e6*USGDPp2$fedOutlays[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedOutlays_pGDP[selEnd], fedO_p), 
+        type='l', las=2, log='y')
+}
+
+## ----fedO_p2------------------------------------------------------------------
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedOutlays_pGDP[selEnd] / fedO_p, 
+        type='l', las=2, log='y')
+}
+
+## ----fedO_p3------------------------------------------------------------------
+if(Update){
+  USGDPp2$fedOutlays_pGDP[selEnd] <- fedO_p
+  tail(USGDPp2)
+}
+
+## ----fedS_p-------------------------------------------------------------------
+if(Update){
+  fedS_p <- (1e6*USGDPp2$fedSurplus[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedSurplus_pGDP[selEnd], fedS_p), 
+        type='l', las=2)
+}
+
+## ----fedS_p2------------------------------------------------------------------
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p, 
+        type='l', las=2)
+  quantile(rSup <- (USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p), 
+           na.rm=TRUE)
+}
+
+## ----fedS_p3------------------------------------------------------------------
+if(Update){
+  USGDPp2$fedSurplus_pGDP[selEnd] <- fedS_p
+  tail(USGDPp2)
+}
+
+## ----fedD_p-------------------------------------------------------------------
+if(Update){
+  fedD_p <- (USGDPp2$fedDebt[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedDebt_pGDP[selEnd], fedD_p), 
+        type='l', las=2, log='y')
+}
+
+## ----fedD_p2------------------------------------------------------------------
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedDebt_pGDP[selEnd] / fedD_p, 
+        type='l', las=2)
+}
+
+## ----fedD_p3------------------------------------------------------------------
+if(Update){
+  USGDPp2$fedDebt_pGDP[selEnd] <- fedD_p
+  tail(USGDPp2)
 }
 
 ## ----USGDPpresNew-------------------------------------------------------------
@@ -240,8 +412,66 @@ if(Update){
      USGDPpresidents[sel,], type='l', log='y', 
      xlab='', ylab='US federal outlays, % of GDP')
   abline(h=2:3)
-  war <- (USGDPpresidents$war !='')
-  abline(v=USGDPpresidents$Year[war], 
+  War <- (USGDPpresidents$war !='')
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+
+## ----Defecit?-----------------------------------------------------------------
+if(Update){
+  selD <- !is.na(USGDPpresidents$fedSurplus_pGDP)
+  plot(-100*fedSurplus_pGDP~Year, 
+     USGDPpresidents[sel,], type='l', 
+     xlab='', ylab='US federal deficit, % of GDP')
+  abline(h=2:3)
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+
+## ----inflation----------------------------------------------------------------
+if(Update){
+  selI <- (USGDPpresidents$Year>1789)
+  quantile(diff(USGDPpresidents$Year[selI]))
+}
+
+## ----infl1--------------------------------------------------------------------
+if(Update){
+  infl <- 100*diff(log(USGDPpresidents$CPI[selI]))
+  yr2 <- USGDPpresidents$Year[selI][-1]
+  plot(yr2, infl, type='l', las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+
+## ----infl2--------------------------------------------------------------------
+if(Update){
+  infl2 <- 100*diff(log(
+    USGDPpresidents$GDPdeflator[selI]))
+  plot(yr2, infl2, type='l', las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+
+## ----battleDeaths2------------------------------------------------------------
+if(Update){
+  plot(battleDeathsPMP~Year, USGDPpresidents,  
+       type='l', las=2, xlim=Xlim)
+  abline(h=100)
+  
+  plot(1+battleDeathsPMP~Year, USGDPpresidents,  
+       type='l', las=2, xlim=Xlim, log='y')
+  abline(h=100)
+  abline(v=USGDPpresidents$Year[War], 
     lty='dotted', col='light gray')
   abline(v=c(1929, 1933), col='red', lty='dotted')
   text(1931, 22, 'Hoover', srt=90, col='red')

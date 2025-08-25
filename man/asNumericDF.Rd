@@ -284,11 +284,11 @@ if(is.null(attr(xPOSIX, 'tzone')))
 \dontshow{stopifnot(}
 {
 #all.equal(xPOSIX, xP)
-# As of 2022-10-06 I don't know how to write code
+# As of 2024-08-24 I don't know how to write code
 # that will get a consistent answer with 
 # different version R-devel with differences
-# less than an hour
-if(madP>(6*60*60)){
+# of 12 hours or less
+if(madP>(12*60*60)){
   madPmsg <- paste('Discrepancy betw fn and manual comp ', 
        'too large; is ', madP, 'seconds')
   stop(madPmsg)

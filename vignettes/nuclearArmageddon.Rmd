@@ -66,7 +66,7 @@ S_k = \sum_{i=1}^k{T_i}.
 The exponential distribution is the simplest lifetime distribution.  It is widely used for applications like this and seems reasonable in this context.  
 
 [For setting math in RMarkdown, we are following 
-[Cosma Shalizi (2016) "Using R Markdown for Class Reports"](https://www.stat.cmu.edu/~cshalizi/rmarkdown/#math-in-r-markdown).]
+[Cosma Shalizi (2016) "Using R Markdown for Class Reports"](https://www.stat.cmu.edu/~cshalizi/rmarkdown/#math-in-r-markdown/).]
 
 We code this as follows:  
 
@@ -127,7 +127,7 @@ lambda <- lambdaHat+seq(-50, 1000, 50)
 (logLR2 <- 2*(logLk(lambdaHat) - logLk(lambda)))
 ```
 
-After several attempts at adjusting the parameters for the [`seq`](https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/seq) function while including 0 in the sequence, I gave up trying to get a range with 0 inside and just over [`qchisq(0.99, 1)`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/Chisquare) = 6.63 on both ends: Obviously, I got it for $\lambda$ small.  However, it seemed infeasible to do this with only a relatively few points for $\lambda$ large: The MLE here is only the second of 22 evenly-spaced points on the $\lambda$ scale while the value for the `22nd` point is not close to the target 6.63.  Let's try $u = \log(\lambda)$:  
+After several attempts at adjusting the parameters for the [`seq`](https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/seq/) function while including 0 in the sequence, I gave up trying to get a range with 0 inside and just over [`qchisq(0.99, 1)`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/Chisquare/) = 6.63 on both ends: Obviously, I got it for $\lambda$ small.  However, it seemed infeasible to do this with only a relatively few points for $\lambda$ large: The MLE here is only the second of 22 evenly-spaced points on the $\lambda$ scale while the value for the `22nd` point is not close to the target 6.63.  Let's try $u = \log(\lambda)$:  
 
 ```{r CIlog}
 l_lam <- log(lambdaHat)+seq(-2, 6, 1)
@@ -141,7 +141,7 @@ theta <- (1/lambdaHat + seq(-.016, .06, .004))
 (logLR2_th <- 2*(logLk(lambdaHat) - logLk(1/theta)))
 ```
 
-This looks worse:  With $\hat\theta = 1/\hat\lambda = 0.0178$, it seems infeasible to get a sequence of only a few equally-spaced positive numbers that include 0 and still produce numbers just over [`qchisq(0.99, 1)`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/Chisquare) = 6.63 on either ends, as we created on the $\lambda$ scale, let alone both as we have on the $u$ scale.  
+This looks worse:  With $\hat\theta = 1/\hat\lambda = 0.0178$, it seems infeasible to get a sequence of only a few equally-spaced positive numbers that include 0 and still produce numbers just over [`qchisq(0.99, 1)`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/Chisquare/) = 6.63 on either ends, as we created on the $\lambda$ scale, let alone both as we have on the $u$ scale.  
 
 This suggests we should parameterize our analysis in terms of $u = \log(\lambda)$.  To confirm this, let's create plots on all three scales, starting with $u$.  
 
@@ -434,7 +434,7 @@ If $(k-1-r)$ is an integer less than 1, this is infinite, which it is for $k$ = 
 
 This also elevates the priority for increasing $k$ by considering a larger list of nuclear crises, as previously mentioned.  
 
-Functions to compute the density, cumulative probability distribution (CDF), quantiles, and random numbers for this distribution are available in the CRAN package [`invgamma`](https://www.rdocumentation.org/packages/invgamma/versions/1.1/topics/invgamma).  We will use those in the following.  
+Functions to compute the density, cumulative probability distribution (CDF), quantiles, and random numbers for this distribution are available in the CRAN package [`invgamma`](https://www.rdocumentation.org/packages/invgamma/versions/1.1/topics/invgamma/).  We will use those in the following.  
 
 ```{r rlam}
 library(invgamma)
@@ -461,7 +461,7 @@ Doing this requires an iteration, because no simple formula exists for this. We 
 > `0.1 = pbeta(0.3, shape1, shape2)`    
 > `0.9 = pbeta(0.6, shape1, shape2)`
 
-The most reliable way to solve equations like these is to convert this into a minimization problem and use something like [`optim`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/optim):  
+The most reliable way to solve equations like these is to convert this into a minimization problem and use something like [`optim`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/optim/):  
 
 ```{r betaSSQ}
 Dev2 <- function(shapes, p=c(.3, .6), q=c(.1, .9)){
@@ -610,7 +610,7 @@ if(!fda::CRAN()){
 }
 ```
 
-Let's make a normal probability plot of `log(mcArm7)`. With this many points, the standard [`qqnorm`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/qqnorm) function can take a long time creating the plot.  Let's start by sorting the points as a separate step:  
+Let's make a normal probability plot of `log(mcArm7)`. With this many points, the standard [`qqnorm`](https://www.rdocumentation.org/packages/stats/versions/3.5.2/topics/qqnorm/) function can take a long time creating the plot.  Let's start by sorting the points as a separate step:  
 
 ```{r sort7}
 if(fda::CRAN()){

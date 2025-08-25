@@ -372,7 +372,7 @@ availInPkg &lt;- objects(2,
         pattern=&#39;nuclearWeaponStates&#39;)
 canWrite &lt;- FALSE 
 (TempDir &lt;- tempdir())</code></pre>
-<pre><code>## [1] &quot;/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T//RtmpJ7shNK&quot;</code></pre>
+<pre><code>## [1] &quot;/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T//RtmpI5mNCO&quot;</code></pre>
 <pre class="r"><code># Write the name of TempDir so I can find it. 
 # Or set 
 # TempDir &lt;- getwd()
@@ -389,7 +389,7 @@ if(&#39;nuclearWeaponStates&#39; %in% availInPkg){
   }
 } 
 getwd()</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T/RtmprGKc3V/Rbuild3888337032d2/Ecfun/vignettes&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T/RtmpHRNbbn/Rbuild11cd57e99bead/Ecfun/vignettes&quot;</code></pre>
 <pre class="r"><code>dir(TempDir)</code></pre>
 <pre><code>## character(0)</code></pre>
 </div>
@@ -404,8 +404,13 @@ That’s because we want (a) <code>firstTestYr</code> to be
 <code>diff(firstTestYr)</code>.</p>
 <p>If you edit it externally, put it in the current working directory
 and read it as follows:</p>
-<pre class="r"><code>library(Ecfun)
-if(canWrite){
+<pre class="r"><code>library(Ecfun)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Ecfun&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     sign</code></pre>
+<pre class="r"><code>if(canWrite){
   nWS &lt;- read.csv(TempFile, 
               stringsAsFactors = FALSE)
   igno &lt;- c(&#39;nation&#39;, &#39;ctry&#39;, &#39;Maddison&#39;)

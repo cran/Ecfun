@@ -1,7 +1,7 @@
 ---
 title: "Updating `USGDPpresidents`"
 author: "Spencer Graves"
-date: "2022-02-22"
+date: "2025-08-22"
 output: html_document
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -136,14 +136,24 @@ if(Update){
 }
 ```  
 
-Compare the index year of "GDP.Deflator" with that in `USGDPpresidents.Rd`:  If they are different, fix `USGDPpresidents.Rd`.  
+Compare the index year of "GDP.Deflator" with that in `USGDPpresidents.Rd`:  If they are different, fix `USGDPpresidents.Rd`. 
 
 Now update population:  
 
 ```{r pop}
 if(Update){
   selPop <- grep('Population', names(USGDP))
-  USGDPp2$population.K[selGDP] <- USGDP[,selPop]
+  sPop <- (USGDP[,selPop]/1000)
+  quantile(ePop <- ((USGDPp2$population.K[selGDP] /sPop)-1), 
+           na.rm=TRUE)
+}
+```
+  
+Check. Replace. 
+
+```{r pop2}
+if(Update){
+  USGDPp2$population.K[selGDP] <- sPop
   print(names(USGDP)[selPop])
 }
 ```  
@@ -164,7 +174,7 @@ if(Update){
 }
 ```  
 
-Compare the index year of `Real.GDP.per.capita` with that in `USGDPpresidents.Rd`:  If they are different, fix `USGDPpresidents.Rd`.  
+Compare the index year of `Real.GDP.per.capita` with that in `USGDPpresidents.Rd`:  If they are different, fix `USGDPpresidents.Rd`.
 
 Next:  executive:  
 
@@ -176,9 +186,11 @@ BOTH:
 ```{r executive}
 if(Update){
   exec <- as.character(USGDPp2$executive)
-  exec[is.na(exec)] <- c('Trump', 'Trump', 'Biden')
-  lvlexec <- c(levels(USGDPp2$executive), 
-               'Biden')
+  newExec <- 'Biden' 
+  exec[is.na(exec)] <- newExec
+  lvlexec <- levels(USGDPp2$executive)
+  if(!(newExec %in% lvlexec))
+    lvlexec <- c(lvlexec, newexec)
   USGDPp2$executive <- ordered(exec, lvlexec)
 }
 ```  
@@ -224,7 +236,7 @@ if(Update){
 ## Unemployment?  
 
 Unemployment figures came from different 
-sources for different years.  Since 1940 
+sources for different years. Since 1940 
 the source has been the Bureau of Labor 
 Statistics (BLS), series `LNS14000000` from 
 the Current Population Survey.  These data 
@@ -235,15 +247,11 @@ Download the most recent years as an Excel
 file, compute row averages, and transfer the 
 numbers for the most recent years here.  
 
-NOTE:  When I did that on 2022-02-22 I found 
-minor discrepancies in earlier years.  Pushing 
-this further I found that I could download data 
-back to 1948.  The average unemployment per this
-BLS computation for 1948 and 1947 were 3.75 and 
-6.05 percent, respectively, vs. 0.038 and 0.059
-in the previous version of `USGDPpresidents` for
-those years.  I therefore decided to read that 
-`*.xlsx` file and replace all those numbers.
+NOTE: When I visited the [Current Population Survey of the Bureau of Labor Statistics](https://www.bls.gov/cps/) on 2025-08-22, I found a huge number of options. I clicked, "CPS Data", then ["Data retrieval tools"](https://www.bls.gov/cps/data.htm), then "Labor Force Statistics (Current Population Survey - CPS)" ["Top Picks"](https://data.bls.gov/toppicks?survey=ln). Then I found `Unemployment Rate - LNS14000000` and checked that. Then near the bottom of that page, I clicked, "Retrieve data". That produced a table for years 2015:2025 with columns Jan, Feb, ..., December, with the data for 2025 incomplete, as it should be. Just above that table it said, "Download: xlsx". I clicked that. I opened that spreadsheet and added column N = average of columns B - M. 
+
+Then I compared those numbers with the numbers in `USGDPp2[c('Year', 'unemployment')]`. The numbers for 2020 were slightly different: 8.091667 in the previous version and 8.1 for the new number. 
+
+Let's read the new numbers and compare the numbers to confirm that we have read them correctly, then replace the old numbers (including NAs) with the new numbers. 
 
 ```{r xlsx}
 if(Update){
@@ -268,16 +276,24 @@ if(Update){
 }
 ```
 
-Store these `unemp` numbers   
+Store these `unemp` numbers after checking first. 
   
 ```{r unemp}
 if(Update){
   selU4GDP <- (USGDPp2$Year %in% BLS$Year)
   selBLS <- (BLS$Year %in% USGDPp2$Year)
-  USGDPp2[selU4GDP, 'unemployment'] <- 
-          unemp[selBLS]
-#  USGDPp2$unemployment[iNew] <- c(4.875, 
-#                    4.35, 3.89166666666667)
+  dunemp <- (USGDPp2[selU4GDP, 'unemployment'] - 
+          unemp[selBLS])
+  cbind(USGDPp2[selU4GDP, c('Year', 'unemployment')], 
+        unemp[selBLS], dunemp)
+}
+```
+
+As expected. Replace. 
+
+```{r replaceUnemp}
+if(Update){
+  USGDPp2[selU4GDP, 'unemployment'] <- unemp[selBLS]
   USGDPp2$unempSource[iNew] <- USGDPp2$unempSource[
     iNew[1]-1]
   tail(USGDPp2)
@@ -287,6 +303,8 @@ if(Update){
 ## `fedReceipts`, `fedOutlays`
 
 We get `fedReceipts` and `fedOutlays` from two different sources.  Let's start with the historical data first.  
+
+### Skip historical data on `fedRecepts` and `fedOutlays`
 
 We manually copied the historical data from series Y 335 and 336 in [United States Census Bureau (1975) Bicentennial Edition: Historical Statistics of the United States, Colonial Times to 1970, Part 2.  Chapter Y. Government](https://www.census.gov/library/publications/1975/compendia/hist_stats_colonial-1970.html) into a LibreOffice `*.ods` file.  We need to read that once and add it to `USGDPp`:  
 
@@ -325,53 +343,285 @@ if(Update){
 }
 ```
 
-New let's add the new data.  
+### new data on `fedRecepts` and `fedOutlays`
+
+For the latest data on `fedReceipts`, `fedOutlays`, and `fedSurplus`, 
+I went to the website for [The White House President's Budget Historical Tables](https://www.whitehouse.gov/omb/information-resources/budget/historical-tables/). On 2025-08-22, I saw "Historical Tables" in 3 places on that page. I clicked on the bottom one and got, `"`BUDGET-2026-HIST.xlsx`. The file I got doing this on 2025-01-22 included "Table 1.1-Summary of Receipts, Outlays, and Surpluses or Deficits (-): 1789-2026" included budget forecasts. The version of this table I got 2025-08-22 included data through 2024 but no forecasts. 
 
 ```{r BudgetFile}
+(xls2 <- dir(pattern='\\.xlsx$'))
 if(Update){
-  (BudgetFiles <- grep('^BUDGET', xls, value=TRUE))
+  (BudgetFiles <- grep('^BUDGET', xls2, value=TRUE))
   (BudgetF2_1 <- grep('2-1', BudgetFiles, value=TRUE))
-  (BudgetFile <- tail(BudgetF2_1, 1))
+  (BudgetFile <- (if(length(BudgetF2_1)>0) 
+    tail(BudgetF2_1, 1) else tail(BudgetFiles, 1)))
 }
 ```
+
+Confirm that `BudgetFile` is what we want. 
+
+From opening this file in spreadsheet software, it appears that we want tab `hist01z1`. 
 
 ```{r readBudget}
 if(Update){
-  str(Budget <- read_excel(BudgetFile, skip=3))
+  Budget <- read_excel(BudgetFile, 
+          sheet='hist01z1', skip=3)
+  head(Budget)
+  tail(Budget)  
 }
 ```
+
+Let's use only the most recent 40 years, because there are anomalies in these data like "-*" for a number that is "$500 thousand or less" and `TQ` for "transitional quarter" when the US had its fiscal year change from starting July 1 to October 1. We also drop the last two row, because they are comments. And keep only columns 1:4: 
 
 ```{r drop2}
 if(Update){
   library(Ecfun)
-  str(Budg <- asNumericDF(Budget[-(1:2), 1:3]))
+  nBudg0 <- nrow(Budget)
+  iBudg <- sort(seq(to=nBudg0-2, length=40))
+  str(Budg <- asNumericDF(Budget[iBudg, 1:4]))
+  tail(Budg)
 }
 ```
+
 
 ```{r updateBudget}
 if(Update){
   selGDP4budg <- (USGDPp2$Year %in% Budg[, 1])
   selBudg <- (Budg[, 1] %in% USGDPp2$Year)
-  USGDPp2[selGDP4budg, 
-    c('fedReceipts', 'fedOutlays')] <- Budg[selBudg, 2:3]
+  dfedR <- (USGDPp2[selGDP4budg, 'fedReceipts'] 
+              - Budg[selBudg, 2])
+  dfedO <- (USGDPp2[selGDP4budg, 'fedOutlays'] 
+              - Budg[selBudg, 3])
+  dfedS <- (USGDPp2[selGDP4budg, 'fedSurplus'] 
+              - Budg[selBudg, 4])
+  tail(cbind(USGDPp2[selGDP4budg, c('Year', 
+          'fedReceipts', 'fedOutlays', 'fedSurplus')], 
+       Budg[selBudg, 2:4], dfedR, dfedO, dfedS), 10)
+  matplot(cbind(dfedR, dfedO, dfedS), type='l')
 }
 ```
 
-Finally:  `fedOutlays_pGDP`
+There are tiny changes in the years since 2017. There may also be a few in earlier years, but we will ignore the earlier years. 
 
-```{r fedOutlays_pGDP}
+Let's replace the numbers for `fedReceipts`, `fedOutlays`, and `fedSurplus` for 2017:2024. 
+
+```{r updateBudget2}
 if(Update){
-  sum(i1843 <- (USGDP$Year==1843))
-  GDPnom <- (USGDP$Nominal.GDP..million.of.Dollars.
-          / (1+i1843))
-  plot(USGDP$Year, GDPnom, type='l', log='y')
-  abline(v=1843)
+  table(sel2017_2024 <- (USGDPp2$Year %in% 2017:2024))
+  table(s2017_2024 <- (Budg[, 1] %in% 2017:2024))
 
-  fedOp <- (USGDPp2$fedOutlays[selGDP] / GDPnom)
-  plot(USGDP$Year, fedOp, type='l', log='y')
+  USGDPp2[sel2017_2024, c('fedReceipts', 'fedOutlays', 
+      'fedSurplus')] <- Budg[s2017_2024, 2:4]
+  tail(USGDPp2)
+}
+```
 
-  USGDPp2$fedOutlays_pGDP <- NA
-  USGDPp2$fedOutlays_pGDP[selGDP] <- fedOp
+Let's plot these budget numbers before proceeding. 
+
+```{r plotBudget}
+if(Update){
+  Xlim <- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+  plot(fedReceipts ~Year, USGDPp2, log='y', type='l', 
+     xlim=Xlim, las=2)
+  Xlim <- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+
+  plot(fedOutlays ~Year, USGDPp2, log='y', type='l', 
+     xlim=Xlim, las=2)
+
+  plot(fedSurplus ~Year, USGDPp2, type='l', 
+     xlim=Xlim, las=2)
+}
+```
+
+`fedDebt` is *not* the negative of a simple cumulative sum `fedSurplus`. The sources of the discrepancies are not clear.However, some outlays are "Off-budget" including a ["black budget"](https://en.wikipedia.org/wiki/Black_budget#United_States) that is not revealed to many (and perhaps all) members of the US Congress. It's not obvious, at least to this researcher, if interest on the national debt is included in the official budget. 
+
+`fedDebt` are available as ["Historical Debt Outstanding" from the US Treasury](https://fiscaldata.treasury.gov/datasets/historical-debt-outstanding/historical-debt-outstanding). On 2025-08-23 we requested "Date Range (Record Date): All", then "CSV" and "Download CSV File". The result was `HstDebt_17900101_20240930.csv`. 
+
+```{r debtData}
+(csv3 <- dir(pattern='\\.csv$'))
+if(Update){
+  (debtFiles <- grep('^HstDebt', csv3, value=TRUE))
+  tail(HstDebt <- read.csv(debtFiles))
+  (HstDebt6 <- head(HstDebt))
+  tail(USGDPp2[c('Year', 'fedDebt')])
+}
+```
+
+Visual inspection suggests that the numbers match for 2019:2021. Let's compute the difference to confirm. 
+
+```{r debtD}
+if(Update){
+  nobs <- nrow(USGDPp2)
+  (endRows <- seq(nobs, by=-1, length=6))
+  (dHstDebt6 <- (USGDPp2$fedDebt[endRows]-HstDebt6[, 2]))
+}
+```
+
+Roundoff error. Let's replace those numbers. 
+
+```{r newDebt}
+if(Update){
+  (USGDPp2$fedDebt[endRows] <-HstDebt6[, 2])
+  tail(USGDPp2)
+  plot(fedDebt ~Year, USGDPp2, type='l', log='y',
+     xlim=Xlim, las=2)
+}
+```
+
+Finally:  `fedOutlays`, ... `fedDebt` as a percent of `GDP`.  
+
+For `*_pGDP`, I'm getting discrepancies that seem a little more than roundoff error. Let's look at the numbers since 1843, which was the year the US first adopted a fiscal year different from the calendar year. 
+
+```{r currentGDP}
+if(Update){
+  selEnd <- (USGDPp2$Year>1843) 
+  currentGDP <- with(USGDPp2[selEnd, ], 
+      1000 * population.K * realGDPperCapita 
+          * GDPdeflator / 100)
+  plot(USGDPp2$Year[selEnd], currentGDP, 
+       log='y', type='l', las=2)
+  tail(currentGDP)
+}
+```
+  
+GDP for 2024 is just over 29 trillion. Confirmed. 
+And the plot also looks plausible. Continue. 
+
+```{r fedReceipts}
+if(Update){
+  plot(fedReceipts~Year, USGDPp2[selEnd, ], log='y', 
+     type='l', las=2)
+}
+```
+
+Plausible. 
+
+```{r fedR_p}
+if(Update){
+  fedR_p <- (1e6*USGDPp2$fedReceipts[selEnd] / 
+             currentGDP)
+  plot(USGDPp2$Year[selEnd], fedR_p, type='l', 
+     las=2, log='y')
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedReceipts_pGDP[selEnd], fedR_p), 
+        type='l', las=2, log='y')
+}
+```
+
+Good. Ratio? 
+
+```{r fedR_p2}
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedReceipts_pGDP[selEnd] / fedR_p, 
+        type='l', las=2, log='y')
+}
+```
+
+The new numbers differ by less than 3 percent from the previous numbers. I don't think I care. 
+
+Use the new numbers.  
+
+```{r fedR_p3}
+if(Update){
+  USGDPp2$fedReceipts_pGDP[selEnd] <- fedR_p
+  tail(USGDPp2)
+}
+```
+
+Next `fedOutlays_pGDP`. 
+
+```{r fedO_p}
+if(Update){
+  fedO_p <- (1e6*USGDPp2$fedOutlays[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedOutlays_pGDP[selEnd], fedO_p), 
+        type='l', las=2, log='y')
+}
+```
+
+Good, similar to Receipts. Ratio? 
+
+```{r fedO_p2}
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedOutlays_pGDP[selEnd] / fedO_p, 
+        type='l', las=2, log='y')
+}
+```
+
+Like Receipts. Store. 
+
+```{r fedO_p3}
+if(Update){
+  USGDPp2$fedOutlays_pGDP[selEnd] <- fedO_p
+  tail(USGDPp2)
+}
+```
+
+Good. Surplus? 
+
+```{r fedS_p}
+if(Update){
+  fedS_p <- (1e6*USGDPp2$fedSurplus[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedSurplus_pGDP[selEnd], fedS_p), 
+        type='l', las=2)
+}
+```
+
+Good, similar to Receipts and Outlays. Ratio? 
+
+```{r fedS_p2}
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p, 
+        type='l', las=2)
+  quantile(rSup <- (USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p), 
+           na.rm=TRUE)
+}
+```
+
+Good, similar to Receipts and Outlays. Store. 
+
+```{r fedS_p3}
+if(Update){
+  USGDPp2$fedSurplus_pGDP[selEnd] <- fedS_p
+  tail(USGDPp2)
+}
+```
+
+`fedDebt`? 
+
+```{r fedD_p}
+if(Update){
+  fedD_p <- (USGDPp2$fedDebt[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedDebt_pGDP[selEnd], fedD_p), 
+        type='l', las=2, log='y')
+}
+```
+
+Good, similar to Receipts, Outlays and Surplus. Ratio? 
+
+```{r fedD_p2}
+if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedDebt_pGDP[selEnd] / fedD_p, 
+        type='l', las=2)
+}
+```
+
+As before. Store. 
+
+
+```{r fedD_p3}
+if(Update){
+  USGDPp2$fedDebt_pGDP[selEnd] <- fedD_p
+  tail(USGDPp2)
 }
 ```
 
@@ -386,13 +636,84 @@ if(Update){
      USGDPpresidents[sel,], type='l', log='y', 
      xlab='', ylab='US federal outlays, % of GDP')
   abline(h=2:3)
-  war <- (USGDPpresidents$war !='')
-  abline(v=USGDPpresidents$Year[war], 
+  War <- (USGDPpresidents$war !='')
+  abline(v=USGDPpresidents$Year[War], 
     lty='dotted', col='light gray')
   abline(v=c(1929, 1933), col='red', lty='dotted')
   text(1931, 22, 'Hoover', srt=90, col='red')
 }
 ```
+
+How about the same plot of Deficit = -`fedSurplus_pGDP`? 
+
+```{r Defecit?}
+if(Update){
+  selD <- !is.na(USGDPpresidents$fedSurplus_pGDP)
+  plot(-100*fedSurplus_pGDP~Year, 
+     USGDPpresidents[sel,], type='l', 
+     xlab='', ylab='US federal deficit, % of GDP')
+  abline(h=2:3)
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+```
+
+What about inflation = `diff(log(CPI))`? 
+
+```{r inflation}
+if(Update){
+  selI <- (USGDPpresidents$Year>1789)
+  quantile(diff(USGDPpresidents$Year[selI]))
+}
+```
+
+```{r infl1}
+if(Update){
+  infl <- 100*diff(log(USGDPpresidents$CPI[selI]))
+  yr2 <- USGDPpresidents$Year[selI][-1]
+  plot(yr2, infl, type='l', las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+```
+
+```{r infl2}
+if(Update){
+  infl2 <- 100*diff(log(
+    USGDPpresidents$GDPdeflator[selI]))
+  plot(yr2, infl2, type='l', las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+```
+
+```{r battleDeaths2}
+if(Update){
+  plot(battleDeathsPMP~Year, USGDPpresidents,  
+       type='l', las=2, xlim=Xlim)
+  abline(h=100)
+  
+  plot(1+battleDeathsPMP~Year, USGDPpresidents,  
+       type='l', las=2, xlim=Xlim, log='y')
+  abline(h=100)
+  abline(v=USGDPpresidents$Year[War], 
+    lty='dotted', col='light gray')
+  abline(v=c(1929, 1933), col='red', lty='dotted')
+  text(1931, 22, 'Hoover', srt=90, col='red')
+}
+```
+
+
+
+
 ## Done:  Save
 
 ```{r save}

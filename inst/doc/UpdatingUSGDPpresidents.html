@@ -11,7 +11,7 @@
 
 <meta name="author" content="Spencer Graves" />
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2025-08-22" />
 
 <title>Updating USGDPpresidents</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">Updating <code>USGDPpresidents</code></h1>
 <h4 class="author">Spencer Graves</h4>
-<h4 class="date">2022-02-22</h4>
+<h4 class="date">2025-08-22</h4>
 
 </div>
 
@@ -375,24 +375,18 @@ into the desired working directory.)</p>
 <p>Start by checking the span of years in
 <code>USGDPpresidents</code>:</p>
 <pre class="r"><code>library(Ecdat)</code></pre>
-<pre><code>## Loading required package: Ecfun</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Ecfun&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     sign</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;Ecdat&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:datasets&#39;:
 ## 
 ##     Orange</code></pre>
 <pre class="r"><code>(rngYrs &lt;- range(USGDPpresidents$Year))</code></pre>
-<pre><code>## [1] 1610 2021</code></pre>
+<pre><code>## [1] 1610 2024</code></pre>
 <p>Next download “GDP - US” and “CPI - US” from <a href="https://www.measuringworth.com/">Measuring Worth</a>. On
 2022-02-16 this produced two csv files, which I downloaded and copied
 into a directory in which we wish to work.</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T/RtmprGKc3V/Rbuild3888337032d2/Ecfun/vignettes&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/2n/zqk768wj3818l8x2wttbc5kw0000gn/T/RtmpHRNbbn/Rbuild11cd57e99bead/Ecfun/vignettes&quot;</code></pre>
 <pre class="r"><code>(csv2 &lt;- dir(pattern=&#39;\\.csv$&#39;))</code></pre>
 <pre><code>## character(0)</code></pre>
 <pre class="r"><code>(CPIcsvs &lt;- grep(&#39;^USCPI&#39;, csv2, value=TRUE))</code></pre>
@@ -478,7 +472,13 @@ that (and this) should be updated.</p>
 <p>Now update population:</p>
 <pre class="r"><code>if(Update){
   selPop &lt;- grep(&#39;Population&#39;, names(USGDP))
-  USGDPp2$population.K[selGDP] &lt;- USGDP[,selPop]
+  sPop &lt;- (USGDP[,selPop]/1000)
+  quantile(ePop &lt;- ((USGDPp2$population.K[selGDP] /sPop)-1), 
+           na.rm=TRUE)
+}</code></pre>
+<p>Check. Replace.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2$population.K[selGDP] &lt;- sPop
   print(names(USGDP)[selPop])
 }</code></pre>
 <p>Now <code>realGDPperCapita</code>. This also has a reference year, so
@@ -504,9 +504,11 @@ SINCE THE PREVIOUS VERSION? ** WAS THAT PERSON NOT IN THE PREVIOUS
 VERSION?</p>
 <pre class="r"><code>if(Update){
   exec &lt;- as.character(USGDPp2$executive)
-  exec[is.na(exec)] &lt;- c(&#39;Trump&#39;, &#39;Trump&#39;, &#39;Biden&#39;)
-  lvlexec &lt;- c(levels(USGDPp2$executive), 
-               &#39;Biden&#39;)
+  newExec &lt;- &#39;Biden&#39; 
+  exec[is.na(exec)] &lt;- newExec
+  lvlexec &lt;- levels(USGDPp2$executive)
+  if(!(newExec %in% lvlexec))
+    lvlexec &lt;- c(lvlexec, newexec)
   USGDPp2$executive &lt;- ordered(exec, lvlexec)
 }</code></pre>
 <p>Similarly: war</p>
@@ -543,13 +545,23 @@ These data are available as a monthly series from the <a href="https://www.bls.g
 of Labor Statistics</a>.<br />
 Download the most recent years as an Excel file, compute row averages,
 and transfer the numbers for the most recent years here.</p>
-<p>NOTE: When I did that on 2022-02-22 I found minor discrepancies in
-earlier years. Pushing this further I found that I could download data
-back to 1948. The average unemployment per this BLS computation for 1948
-and 1947 were 3.75 and 6.05 percent, respectively, vs. 0.038 and 0.059
-in the previous version of <code>USGDPpresidents</code> for those years.
-I therefore decided to read that <code>*.xlsx</code> file and replace
-all those numbers.</p>
+<p>NOTE: When I visited the <a href="https://www.bls.gov/cps/">Current
+Population Survey of the Bureau of Labor Statistics</a> on 2025-08-22, I
+found a huge number of options. I clicked, “CPS Data”, then <a href="https://www.bls.gov/cps/data.htm">“Data retrieval tools”</a>, then
+“Labor Force Statistics (Current Population Survey - CPS)” <a href="https://data.bls.gov/toppicks?survey=ln">“Top Picks”</a>. Then I
+found <code>Unemployment Rate - LNS14000000</code> and checked that.
+Then near the bottom of that page, I clicked, “Retrieve data”. That
+produced a table for years 2015:2025 with columns Jan, Feb, …, December,
+with the data for 2025 incomplete, as it should be. Just above that
+table it said, “Download: xlsx”. I clicked that. I opened that
+spreadsheet and added column N = average of columns B - M.</p>
+<p>Then I compared those numbers with the numbers in
+<code>USGDPp2[c(&#39;Year&#39;, &#39;unemployment&#39;)]</code>. The numbers for 2020
+were slightly different: 8.091667 in the previous version and 8.1 for
+the new number.</p>
+<p>Let’s read the new numbers and compare the numbers to confirm that we
+have read them correctly, then replace the old numbers (including NAs)
+with the new numbers.</p>
 <pre class="r"><code>if(Update){
   (xls &lt;- dir(pattern=&#39;\\.xlsx$&#39;))
   (BLSxls &lt;- grep(&#39;^Series&#39;, xls, value=TRUE))
@@ -564,14 +576,18 @@ separately.</p>
   UNEMP &lt;- as.matrix(BLS[2:13])
   str(unemp &lt;- apply(UNEMP, 1, mean))
 }</code></pre>
-<p>Store these <code>unemp</code> numbers</p>
+<p>Store these <code>unemp</code> numbers after checking first.</p>
 <pre class="r"><code>if(Update){
   selU4GDP &lt;- (USGDPp2$Year %in% BLS$Year)
   selBLS &lt;- (BLS$Year %in% USGDPp2$Year)
-  USGDPp2[selU4GDP, &#39;unemployment&#39;] &lt;- 
-          unemp[selBLS]
-#  USGDPp2$unemployment[iNew] &lt;- c(4.875, 
-#                    4.35, 3.89166666666667)
+  dunemp &lt;- (USGDPp2[selU4GDP, &#39;unemployment&#39;] - 
+          unemp[selBLS])
+  cbind(USGDPp2[selU4GDP, c(&#39;Year&#39;, &#39;unemployment&#39;)], 
+        unemp[selBLS], dunemp)
+}</code></pre>
+<p>As expected. Replace.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2[selU4GDP, &#39;unemployment&#39;] &lt;- unemp[selBLS]
   USGDPp2$unempSource[iNew] &lt;- USGDPp2$unempSource[
     iNew[1]-1]
   tail(USGDPp2)
@@ -581,6 +597,9 @@ separately.</p>
 <h2><code>fedReceipts</code>, <code>fedOutlays</code></h2>
 <p>We get <code>fedReceipts</code> and <code>fedOutlays</code> from two
 different sources. Let’s start with the historical data first.</p>
+<div id="skip-historical-data-on-fedrecepts-and-fedoutlays" class="section level3">
+<h3>Skip historical data on <code>fedRecepts</code> and
+<code>fedOutlays</code></h3>
 <p>We manually copied the historical data from series Y 335 and 336 in
 <a href="https://www.census.gov/library/publications/1975/compendia/hist_stats_colonial-1970.html">United
 States Census Bureau (1975) Bicentennial Edition: Historical Statistics
@@ -609,39 +628,223 @@ read that once and add it to <code>USGDPp</code>:</p>
       (Hst[2:3] / 1000)
   USGDPp2[c(&#39;Year&#39;, &#39;fedReceipts&#39;, &#39;fedOutlays&#39;)]
 }</code></pre>
-<p>New let’s add the new data.</p>
+</div>
+<div id="new-data-on-fedrecepts-and-fedoutlays" class="section level3">
+<h3>new data on <code>fedRecepts</code> and <code>fedOutlays</code></h3>
+<p>For the latest data on <code>fedReceipts</code>,
+<code>fedOutlays</code>, and <code>fedSurplus</code>, I went to the
+website for <a href="https://www.whitehouse.gov/omb/information-resources/budget/historical-tables/">The
+White House President’s Budget Historical Tables</a>. On 2025-08-22, I
+saw “Historical Tables” in 3 places on that page. I clicked on the
+bottom one and got, <code>&quot;</code>BUDGET-2026-HIST.xlsx`. The file I got
+doing this on 2025-01-22 included “Table 1.1-Summary of Receipts,
+Outlays, and Surpluses or Deficits (-): 1789-2026” included budget
+forecasts. The version of this table I got 2025-08-22 included data
+through 2024 but no forecasts.</p>
+<pre class="r"><code>(xls2 &lt;- dir(pattern=&#39;\\.xlsx$&#39;))</code></pre>
+<pre><code>## character(0)</code></pre>
 <pre class="r"><code>if(Update){
-  (BudgetFiles &lt;- grep(&#39;^BUDGET&#39;, xls, value=TRUE))
+  (BudgetFiles &lt;- grep(&#39;^BUDGET&#39;, xls2, value=TRUE))
   (BudgetF2_1 &lt;- grep(&#39;2-1&#39;, BudgetFiles, value=TRUE))
-  (BudgetFile &lt;- tail(BudgetF2_1, 1))
+  (BudgetFile &lt;- (if(length(BudgetF2_1)&gt;0) 
+    tail(BudgetF2_1, 1) else tail(BudgetFiles, 1)))
 }</code></pre>
+<p>Confirm that <code>BudgetFile</code> is what we want.</p>
+<p>From opening this file in spreadsheet software, it appears that we
+want tab <code>hist01z1</code>.</p>
 <pre class="r"><code>if(Update){
-  str(Budget &lt;- read_excel(BudgetFile, skip=3))
+  Budget &lt;- read_excel(BudgetFile, 
+          sheet=&#39;hist01z1&#39;, skip=3)
+  head(Budget)
+  tail(Budget)  
 }</code></pre>
+<p>Let’s use only the most recent 40 years, because there are anomalies
+in these data like “-*” for a number that is “$500 thousand or less” and
+<code>TQ</code> for “transitional quarter” when the US had its fiscal
+year change from starting July 1 to October 1. We also drop the last two
+row, because they are comments. And keep only columns 1:4:</p>
 <pre class="r"><code>if(Update){
   library(Ecfun)
-  str(Budg &lt;- asNumericDF(Budget[-(1:2), 1:3]))
+  nBudg0 &lt;- nrow(Budget)
+  iBudg &lt;- sort(seq(to=nBudg0-2, length=40))
+  str(Budg &lt;- asNumericDF(Budget[iBudg, 1:4]))
+  tail(Budg)
 }</code></pre>
 <pre class="r"><code>if(Update){
   selGDP4budg &lt;- (USGDPp2$Year %in% Budg[, 1])
   selBudg &lt;- (Budg[, 1] %in% USGDPp2$Year)
-  USGDPp2[selGDP4budg, 
-    c(&#39;fedReceipts&#39;, &#39;fedOutlays&#39;)] &lt;- Budg[selBudg, 2:3]
+  dfedR &lt;- (USGDPp2[selGDP4budg, &#39;fedReceipts&#39;] 
+              - Budg[selBudg, 2])
+  dfedO &lt;- (USGDPp2[selGDP4budg, &#39;fedOutlays&#39;] 
+              - Budg[selBudg, 3])
+  dfedS &lt;- (USGDPp2[selGDP4budg, &#39;fedSurplus&#39;] 
+              - Budg[selBudg, 4])
+  tail(cbind(USGDPp2[selGDP4budg, c(&#39;Year&#39;, 
+          &#39;fedReceipts&#39;, &#39;fedOutlays&#39;, &#39;fedSurplus&#39;)], 
+       Budg[selBudg, 2:4], dfedR, dfedO, dfedS), 10)
+  matplot(cbind(dfedR, dfedO, dfedS), type=&#39;l&#39;)
 }</code></pre>
-<p>Finally: <code>fedOutlays_pGDP</code></p>
+<p>There are tiny changes in the years since 2017. There may also be a
+few in earlier years, but we will ignore the earlier years.</p>
+<p>Let’s replace the numbers for <code>fedReceipts</code>,
+<code>fedOutlays</code>, and <code>fedSurplus</code> for 2017:2024.</p>
 <pre class="r"><code>if(Update){
-  sum(i1843 &lt;- (USGDP$Year==1843))
-  GDPnom &lt;- (USGDP$Nominal.GDP..million.of.Dollars.
-          / (1+i1843))
-  plot(USGDP$Year, GDPnom, type=&#39;l&#39;, log=&#39;y&#39;)
-  abline(v=1843)
+  table(sel2017_2024 &lt;- (USGDPp2$Year %in% 2017:2024))
+  table(s2017_2024 &lt;- (Budg[, 1] %in% 2017:2024))
 
-  fedOp &lt;- (USGDPp2$fedOutlays[selGDP] / GDPnom)
-  plot(USGDP$Year, fedOp, type=&#39;l&#39;, log=&#39;y&#39;)
-
-  USGDPp2$fedOutlays_pGDP &lt;- NA
-  USGDPp2$fedOutlays_pGDP[selGDP] &lt;- fedOp
+  USGDPp2[sel2017_2024, c(&#39;fedReceipts&#39;, &#39;fedOutlays&#39;, 
+      &#39;fedSurplus&#39;)] &lt;- Budg[s2017_2024, 2:4]
+  tail(USGDPp2)
 }</code></pre>
+<p>Let’s plot these budget numbers before proceeding.</p>
+<pre class="r"><code>if(Update){
+  Xlim &lt;- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+  plot(fedReceipts ~Year, USGDPp2, log=&#39;y&#39;, type=&#39;l&#39;, 
+     xlim=Xlim, las=2)
+  Xlim &lt;- c(1790, max(USGDPp2$Year, na.rm=TRUE))
+
+  plot(fedOutlays ~Year, USGDPp2, log=&#39;y&#39;, type=&#39;l&#39;, 
+     xlim=Xlim, las=2)
+
+  plot(fedSurplus ~Year, USGDPp2, type=&#39;l&#39;, 
+     xlim=Xlim, las=2)
+}</code></pre>
+<p><code>fedDebt</code> is <em>not</em> the negative of a simple
+cumulative sum <code>fedSurplus</code>. The sources of the discrepancies
+are not clear.However, some outlays are “Off-budget” including a <a href="https://en.wikipedia.org/wiki/Black_budget#United_States">“black
+budget”</a> that is not revealed to many (and perhaps all) members of
+the US Congress. It’s not obvious, at least to this researcher, if
+interest on the national debt is included in the official budget.</p>
+<p><code>fedDebt</code> are available as <a href="https://fiscaldata.treasury.gov/datasets/historical-debt-outstanding/historical-debt-outstanding">“Historical
+Debt Outstanding” from the US Treasury</a>. On 2025-08-23 we requested
+“Date Range (Record Date): All”, then “CSV” and “Download CSV File”. The
+result was <code>HstDebt_17900101_20240930.csv</code>.</p>
+<pre class="r"><code>(csv3 &lt;- dir(pattern=&#39;\\.csv$&#39;))</code></pre>
+<pre><code>## character(0)</code></pre>
+<pre class="r"><code>if(Update){
+  (debtFiles &lt;- grep(&#39;^HstDebt&#39;, csv3, value=TRUE))
+  tail(HstDebt &lt;- read.csv(debtFiles))
+  (HstDebt6 &lt;- head(HstDebt))
+  tail(USGDPp2[c(&#39;Year&#39;, &#39;fedDebt&#39;)])
+}</code></pre>
+<p>Visual inspection suggests that the numbers match for 2019:2021.
+Let’s compute the difference to confirm.</p>
+<pre class="r"><code>if(Update){
+  nobs &lt;- nrow(USGDPp2)
+  (endRows &lt;- seq(nobs, by=-1, length=6))
+  (dHstDebt6 &lt;- (USGDPp2$fedDebt[endRows]-HstDebt6[, 2]))
+}</code></pre>
+<p>Roundoff error. Let’s replace those numbers.</p>
+<pre class="r"><code>if(Update){
+  (USGDPp2$fedDebt[endRows] &lt;-HstDebt6[, 2])
+  tail(USGDPp2)
+  plot(fedDebt ~Year, USGDPp2, type=&#39;l&#39;, log=&#39;y&#39;,
+     xlim=Xlim, las=2)
+}</code></pre>
+<p>Finally: <code>fedOutlays</code>, … <code>fedDebt</code> as a percent
+of <code>GDP</code>.</p>
+<p>For <code>*_pGDP</code>, I’m getting discrepancies that seem a little
+more than roundoff error. Let’s look at the numbers since 1843, which
+was the year the US first adopted a fiscal year different from the
+calendar year.</p>
+<pre class="r"><code>if(Update){
+  selEnd &lt;- (USGDPp2$Year&gt;1843) 
+  currentGDP &lt;- with(USGDPp2[selEnd, ], 
+      1000 * population.K * realGDPperCapita 
+          * GDPdeflator / 100)
+  plot(USGDPp2$Year[selEnd], currentGDP, 
+       log=&#39;y&#39;, type=&#39;l&#39;, las=2)
+  tail(currentGDP)
+}</code></pre>
+<p>GDP for 2024 is just over 29 trillion. Confirmed. And the plot also
+looks plausible. Continue.</p>
+<pre class="r"><code>if(Update){
+  plot(fedReceipts~Year, USGDPp2[selEnd, ], log=&#39;y&#39;, 
+     type=&#39;l&#39;, las=2)
+}</code></pre>
+<p>Plausible.</p>
+<pre class="r"><code>if(Update){
+  fedR_p &lt;- (1e6*USGDPp2$fedReceipts[selEnd] / 
+             currentGDP)
+  plot(USGDPp2$Year[selEnd], fedR_p, type=&#39;l&#39;, 
+     las=2, log=&#39;y&#39;)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedReceipts_pGDP[selEnd], fedR_p), 
+        type=&#39;l&#39;, las=2, log=&#39;y&#39;)
+}</code></pre>
+<p>Good. Ratio?</p>
+<pre class="r"><code>if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedReceipts_pGDP[selEnd] / fedR_p, 
+        type=&#39;l&#39;, las=2, log=&#39;y&#39;)
+}</code></pre>
+<p>The new numbers differ by less than 3 percent from the previous
+numbers. I don’t think I care.</p>
+<p>Use the new numbers.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2$fedReceipts_pGDP[selEnd] &lt;- fedR_p
+  tail(USGDPp2)
+}</code></pre>
+<p>Next <code>fedOutlays_pGDP</code>.</p>
+<pre class="r"><code>if(Update){
+  fedO_p &lt;- (1e6*USGDPp2$fedOutlays[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedOutlays_pGDP[selEnd], fedO_p), 
+        type=&#39;l&#39;, las=2, log=&#39;y&#39;)
+}</code></pre>
+<p>Good, similar to Receipts. Ratio?</p>
+<pre class="r"><code>if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedOutlays_pGDP[selEnd] / fedO_p, 
+        type=&#39;l&#39;, las=2, log=&#39;y&#39;)
+}</code></pre>
+<p>Like Receipts. Store.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2$fedOutlays_pGDP[selEnd] &lt;- fedO_p
+  tail(USGDPp2)
+}</code></pre>
+<p>Good. Surplus?</p>
+<pre class="r"><code>if(Update){
+  fedS_p &lt;- (1e6*USGDPp2$fedSurplus[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedSurplus_pGDP[selEnd], fedS_p), 
+        type=&#39;l&#39;, las=2)
+}</code></pre>
+<p>Good, similar to Receipts and Outlays. Ratio?</p>
+<pre class="r"><code>if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p, 
+        type=&#39;l&#39;, las=2)
+  quantile(rSup &lt;- (USGDPp2$fedSurplus_pGDP[selEnd] / fedS_p), 
+           na.rm=TRUE)
+}</code></pre>
+<p>Good, similar to Receipts and Outlays. Store.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2$fedSurplus_pGDP[selEnd] &lt;- fedS_p
+  tail(USGDPp2)
+}</code></pre>
+<p><code>fedDebt</code>?</p>
+<pre class="r"><code>if(Update){
+  fedD_p &lt;- (USGDPp2$fedDebt[selEnd] / 
+             currentGDP)
+  matplot(USGDPp2$Year[selEnd], 
+        cbind(USGDPp2$fedDebt_pGDP[selEnd], fedD_p), 
+        type=&#39;l&#39;, las=2, log=&#39;y&#39;)
+}</code></pre>
+<p>Good, similar to Receipts, Outlays and Surplus. Ratio?</p>
+<pre class="r"><code>if(Update){
+  plot(USGDPp2$Year[selEnd], 
+      USGDPp2$fedDebt_pGDP[selEnd] / fedD_p, 
+        type=&#39;l&#39;, las=2)
+}</code></pre>
+<p>As before. Store.</p>
+<pre class="r"><code>if(Update){
+  USGDPp2$fedDebt_pGDP[selEnd] &lt;- fedD_p
+  tail(USGDPp2)
+}</code></pre>
+</div>
 </div>
 <div id="plot-us-federal-outlays" class="section level2">
 <h2>Plot US federal outlays</h2>
@@ -653,8 +856,59 @@ read that once and add it to <code>USGDPp</code>:</p>
      USGDPpresidents[sel,], type=&#39;l&#39;, log=&#39;y&#39;, 
      xlab=&#39;&#39;, ylab=&#39;US federal outlays, % of GDP&#39;)
   abline(h=2:3)
-  war &lt;- (USGDPpresidents$war !=&#39;&#39;)
-  abline(v=USGDPpresidents$Year[war], 
+  War &lt;- (USGDPpresidents$war !=&#39;&#39;)
+  abline(v=USGDPpresidents$Year[War], 
+    lty=&#39;dotted&#39;, col=&#39;light gray&#39;)
+  abline(v=c(1929, 1933), col=&#39;red&#39;, lty=&#39;dotted&#39;)
+  text(1931, 22, &#39;Hoover&#39;, srt=90, col=&#39;red&#39;)
+}</code></pre>
+<p>How about the same plot of Deficit =
+-<code>fedSurplus_pGDP</code>?</p>
+<pre class="r"><code>if(Update){
+  selD &lt;- !is.na(USGDPpresidents$fedSurplus_pGDP)
+  plot(-100*fedSurplus_pGDP~Year, 
+     USGDPpresidents[sel,], type=&#39;l&#39;, 
+     xlab=&#39;&#39;, ylab=&#39;US federal deficit, % of GDP&#39;)
+  abline(h=2:3)
+  abline(v=USGDPpresidents$Year[War], 
+    lty=&#39;dotted&#39;, col=&#39;light gray&#39;)
+  abline(v=c(1929, 1933), col=&#39;red&#39;, lty=&#39;dotted&#39;)
+  text(1931, 22, &#39;Hoover&#39;, srt=90, col=&#39;red&#39;)
+}</code></pre>
+<p>What about inflation = <code>diff(log(CPI))</code>?</p>
+<pre class="r"><code>if(Update){
+  selI &lt;- (USGDPpresidents$Year&gt;1789)
+  quantile(diff(USGDPpresidents$Year[selI]))
+}</code></pre>
+<pre class="r"><code>if(Update){
+  infl &lt;- 100*diff(log(USGDPpresidents$CPI[selI]))
+  yr2 &lt;- USGDPpresidents$Year[selI][-1]
+  plot(yr2, infl, type=&#39;l&#39;, las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty=&#39;dotted&#39;, col=&#39;light gray&#39;)
+  abline(v=c(1929, 1933), col=&#39;red&#39;, lty=&#39;dotted&#39;)
+  text(1931, 22, &#39;Hoover&#39;, srt=90, col=&#39;red&#39;)
+}</code></pre>
+<pre class="r"><code>if(Update){
+  infl2 &lt;- 100*diff(log(
+    USGDPpresidents$GDPdeflator[selI]))
+  plot(yr2, infl2, type=&#39;l&#39;, las=2)
+  abline(h=c(-2, 0, 2, 10))
+  abline(v=USGDPpresidents$Year[War], 
+    lty=&#39;dotted&#39;, col=&#39;light gray&#39;)
+  abline(v=c(1929, 1933), col=&#39;red&#39;, lty=&#39;dotted&#39;)
+  text(1931, 22, &#39;Hoover&#39;, srt=90, col=&#39;red&#39;)
+}</code></pre>
+<pre class="r"><code>if(Update){
+  plot(battleDeathsPMP~Year, USGDPpresidents,  
+       type=&#39;l&#39;, las=2, xlim=Xlim)
+  abline(h=100)
+  
+  plot(1+battleDeathsPMP~Year, USGDPpresidents,  
+       type=&#39;l&#39;, las=2, xlim=Xlim, log=&#39;y&#39;)
+  abline(h=100)
+  abline(v=USGDPpresidents$Year[War], 
     lty=&#39;dotted&#39;, col=&#39;light gray&#39;)
   abline(v=c(1929, 1933), col=&#39;red&#39;, lty=&#39;dotted&#39;)
   text(1931, 22, &#39;Hoover&#39;, srt=90, col=&#39;red&#39;)
